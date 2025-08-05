@@ -1,11 +1,12 @@
 import React from "react";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Register = () => {
         return (
                 <div className="min-w-screen min-h-screen bg-[#cdcae9] flex justify-center items-center ">
-                        <div className="w-[450px] text-white p-2 py-10 ">
-                                <div className="bg-[#6f68d1] px-6 py-7 rounded-md h-full">
+                        <div className="w-[450px] text-white p-2 py-10 relative">
+                                <div className="bg-[#6f68d1] p-6 rounded-md h-full">
                                         <h2 className="text-xl md:text-3xl mb-3 font-bold text-center">
                                                 Welcome to Ecommerce
                                         </h2>
@@ -15,7 +16,7 @@ const Register = () => {
                                         </p>
 
                                         {/* Form */}
-                                        <form className="flex flex-col gap-5">
+                                        <form className="flex flex-col gap-x-5 gap-y-4">
                                                 {/* Name */}
                                                 <div className="flex flex-col w-full gap-1 ">
                                                         <label htmlFor="name" className="text-md font-medium">
@@ -76,12 +77,12 @@ const Register = () => {
 
                                                 <button
                                                         type="submit"
-                                                        className="bg-slate-800 w-full cursor-pointer hover:bg-slate-800/50 hover:shadow-blue-300 hover:shadow-md text-white py-2 px-7 mb-3 rounded-md "
+                                                        className="bg-slate-800 w-full cursor-pointer hover:bg-slate-800/50 hover:shadow-blue-300 hover:shadow-md text-white py-2 px-7 mb-1 rounded-md "
                                                 >
                                                         Sign Up
                                                 </button>
 
-                                                <div className="flex items-center mb-3 gap-3 justify-center">
+                                                <div className="flex items-center mb-1 gap-3 justify-center">
                                                         <p className="text-md font-medium">Already have an account?</p>
                                                         <Link
                                                                 to="/login"
@@ -89,6 +90,30 @@ const Register = () => {
                                                         >
                                                                 Login
                                                         </Link>
+                                                </div>
+
+                                                <div className="w-full flex items-center justify-center mb-1">
+                                                        <div className="w-[45%] h-[1px] bg-white/90 flex items-center justify-center"></div>
+                                                        <div className="w-[10%] flex justify-center items-center">
+                                                                <span className="pb-1">Or</span>
+                                                        </div>
+                                                        <div className="w-[45%] bg-white/90 h-[1px]"></div>
+                                                </div>
+
+                                                <div className="flex justify-center items-center gap-5">
+                                                        <div className="w-[135px] h-[40px] flex rounded-md bg-orange-600 shadow-lg hover:shadow-orange-600/70 justify-center cursor-pointer items-center overflow-hidden">
+                                                                <span>
+                                                                        {" "}
+                                                                        <FaGoogle />
+                                                                </span>
+                                                        </div>
+
+                                                        <div className="w-[135px] h-[45px] flex rounded-md bg-blue-600 shadow-lg hover:shadow-blue-600/70 justify-center cursor-pointer items-center overflow-hidden">
+                                                                <span>
+                                                                        {" "}
+                                                                        <FaFacebook />
+                                                                </span>
+                                                        </div>
                                                 </div>
                                         </form>
                                 </div>
