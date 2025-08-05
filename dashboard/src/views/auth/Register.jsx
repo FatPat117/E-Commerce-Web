@@ -6,7 +6,7 @@ const Register = () => {
         return (
                 <div className="min-w-screen min-h-screen bg-[#cdcae9] flex justify-center items-center ">
                         <div className="w-[450px] text-white p-2 py-10 relative">
-                                <div className="bg-[#6f68d1] p-6 rounded-md h-full">
+                                <div className="bg-[#6f68d1] p-5 rounded-md h-full">
                                         <h2 className="text-xl md:text-3xl mb-3 font-bold text-center">
                                                 Welcome to Ecommerce
                                         </h2>
