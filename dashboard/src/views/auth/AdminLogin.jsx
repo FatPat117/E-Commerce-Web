@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { PropagateLoader } from "react-spinners";
 import { admin_login } from "../../store/Reducers/authReducer";
 
 const AdminLogin = () => {
         const dispatch = useDispatch();
+        const { loader } = useSelector((state) => state.auth);
 
         const [hiddenPassword, setHiddenPassword] = useState(true);
         const [state, setState] = useState({
@@ -24,6 +26,14 @@ const AdminLogin = () => {
 
         const togglePassword = () => {
                 setHiddenPassword(!hiddenPassword);
+        };
+
+        const overrideStyle = {
+                display: "flex",
+                margin: "0 auto",
+                height: "24px",
+                justifyContent: "center",
+                alignItems: "center",
         };
         return (
                 <div className="min-w-screen min-h-screen bg-[#cdcae9] flex justify-center items-center ">
@@ -85,9 +95,17 @@ const AdminLogin = () => {
 
                                                 <button
                                                         type="submit"
-                                                        className="bg-slate-800 w-full cursor-pointer hover:bg-slate-800/50 hover:shadow-blue-300 hover:shadow-md text-white py-2 px-7 mb-1 rounded-md "
+                                                        className=" h-[40px] bg-slate-800 w-full cursor-pointer hover:bg-slate-800/50 hover:shadow-blue-300 hover:shadow-md text-white py-2 px-7 mb-1 rounded-md "
+                                                        disabled={loader}
                                                 >
-                                                        Log In
+                                                        {loader ? (
+                                                                <PropagateLoader
+                                                                        color="#fff"
+                                                                        cssOverride={overrideStyle}
+                                                                />
+                                                        ) : (
+                                                                "Log In"
+                                                        )}
                                                 </button>
                                         </form>
                                 </div>

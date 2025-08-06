@@ -27,7 +27,15 @@ export const authReducer = createSlice({
                         state.successMessage = action.payload;
                 },
         },
-        extraReducers: (builder) => {},
+        extraReducers: (builder) => {
+                builder.addCase(admin_login.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(admin_login.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.userInfo = action.payload;
+                });
+        },
 });
 
 export const { setSuccessMessage } = authReducer.actions;
