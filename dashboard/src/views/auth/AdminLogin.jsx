@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { admin_login } from "../../store/Reducers/authReducer";
 
 const AdminLogin = () => {
+        const dispatch = useDispatch();
+
         const [hiddenPassword, setHiddenPassword] = useState(true);
         const [state, setState] = useState({
                 email: "",
@@ -14,7 +18,8 @@ const AdminLogin = () => {
 
         const handleSubmit = (e) => {
                 e.preventDefault();
-                console.log(state);
+
+                dispatch(admin_login(state));
         };
 
         const togglePassword = () => {
