@@ -15,7 +15,7 @@ export const admin_login = createAsyncThunk("auth/admin_login", async (data, { r
                 });
                 // console.log(response.data);
 
-                return fulfillWithValue(response.data.data); // trả về data
+                return fulfillWithValue(response.data); // trả về data
         } catch (err) {
                 // console.log(err.response.data.message);
                 return rejectWithValue(err.response.data.message); // trả về message
@@ -37,7 +37,7 @@ export const authReducer = createSlice({
                 });
                 builder.addCase(admin_login.fulfilled, (state, action) => {
                         state.loader = false;
-                        state.userInfo = action.payload;
+                        state.userInfo = action.payload.data;
                         state.successMessage = action.payload.message;
                         state.errorMessage = "";
                 });
