@@ -8,14 +8,17 @@ const initialState = {
         userInfo: null,
 };
 
-export const admin_login = createAsyncThunk("auth/admin_login", async (data) => {
+export const admin_login = createAsyncThunk("auth/admin_login", async (data, { rejectWithValue, fulfillWithValue }) => {
         try {
                 const response = await api.post("/auth/admin-login", data, {
                         withCredentials: true,
                 });
-                console.log(response.data);
+                // console.log(response.data);
+
+                return fulfillWithValue(response.data.data); // trả về data
         } catch (err) {
-                console.log(err.response.data.message);
+                // console.log(err.response.data.message);
+                return rejectWithValue(err.response.data.message); // trả về message
         }
 });
 
@@ -23,8 +26,9 @@ export const authReducer = createSlice({
         name: "auth",
         initialState,
         reducers: {
-                setSuccessMessage: (state, action) => {
-                        state.successMessage = action.payload;
+                messageClear: (state) => {
+                        state.successMessage = "";
+                        state.errorMessage = "";
                 },
         },
         extraReducers: (builder) => {
@@ -34,9 +38,15 @@ export const authReducer = createSlice({
                 builder.addCase(admin_login.fulfilled, (state, action) => {
                         state.loader = false;
                         state.userInfo = action.payload;
+                        state.successMessage = action.payload.message;
+                        state.errorMessage = "";
+                });
+                builder.addCase(admin_login.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
                 });
         },
 });
 
-export const { setSuccessMessage } = authReducer.actions;
+export const { messageClear } = authReducer.actions;
 export default authReducer.reducer;

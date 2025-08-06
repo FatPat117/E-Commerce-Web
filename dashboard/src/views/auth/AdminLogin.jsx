@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { PropagateLoader } from "react-spinners";
-import { admin_login } from "../../store/Reducers/authReducer";
+import { admin_login, messageClear } from "../../store/Reducers/authReducer";
 
 const AdminLogin = () => {
         const dispatch = useDispatch();
-        const { loader } = useSelector((state) => state.auth);
+        const { loader, errorMessage } = useSelector((state) => state.auth);
 
         const [hiddenPassword, setHiddenPassword] = useState(true);
         const [state, setState] = useState({
@@ -35,6 +36,14 @@ const AdminLogin = () => {
                 justifyContent: "center",
                 alignItems: "center",
         };
+
+        useEffect(() => {
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [errorMessage, dispatch]);
+
         return (
                 <div className="min-w-screen min-h-screen bg-[#cdcae9] flex justify-center items-center ">
                         <div className="w-[430px] text-white p-2 py-10 relative">
