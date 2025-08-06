@@ -3,6 +3,11 @@ import rootReducers from "./rootReducers";
 
 const store = configureStore({
         reducer: rootReducers,
+        middleware: (getDefaultMiddleware) =>
+                getDefaultMiddleware({
+                        serializableCheck: false,
+                }),
+        devTools: true,
 });
 
 export default store;

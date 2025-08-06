@@ -15,7 +15,7 @@ export const authReducer = createSlice({
                         state.successMessage = action.payload;
                 },
         },
-        extraReducers: {},
+        extraReducers: (builder) => {},
 });
 
 export const { setSuccessMessage } = authReducer.actions;
