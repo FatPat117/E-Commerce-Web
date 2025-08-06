@@ -2,11 +2,15 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import authRoutes from "./routes/authRoutes.js";
+import connectDB from "./utils/db.js";
 
+import authRoutes from "./routes/authRoutes.js";
 dotenv.config();
 
 const app = express();
+
+// Connect to MongoDB
+connectDB();
 
 // Middleware
 app.use(express.json()); // for parsing application/json
