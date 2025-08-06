@@ -3,7 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./utils/db.js";
-
+import { notFound } from "./middlewares/error.js";
+import globalErrorHandler from "./middlewares/error.js";
 import authRoutes from "./routes/authRoutes.js";
 dotenv.config();
 
@@ -26,6 +27,8 @@ app.use(
 // Routes
 
 app.use("/api/auth", authRoutes);
+app.use(notFound);
+app.use(globalErrorHandler);
 
 // Initialize Server
 const PORT = process.env.PORT || 5000;
