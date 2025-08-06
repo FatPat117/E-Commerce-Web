@@ -12,9 +12,6 @@ const globalErrorHandler = (err, req, res, next) => {
                 errors,
                 stack,
                 data,
-                timestamp,
-                path,
-                method,
         });
 };
 
