@@ -8,11 +8,10 @@ const initialState = {
 };
 
 export const admin_login = createAsyncThunk("auth/admin_login", async (data) => {
-        console.log(data);
-        // const response = await api.post("/admin-login", data, {
-        //         withCredentials: true,
-        // });
-        // return response.data;
+        const response = await api.post("/admin-login", data, {
+                withCredentials: true,
+        });
+        return response.data;
 });
 
 export const authReducer = createSlice({

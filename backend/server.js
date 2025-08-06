@@ -1,9 +1,19 @@
-const express = require("express");
-const dotenv = require("dotenv");
-
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import express from "express";
+import authRoutes from "./routes/authRoutes.js";
 dotenv.config();
 
 const app = express();
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// Routes
+
+app.use("/api/auth", authRoutes);
 
 // Initialize Server
 const PORT = process.env.PORT || 5000;
