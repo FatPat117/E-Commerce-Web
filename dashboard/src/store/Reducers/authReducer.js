@@ -13,6 +13,8 @@ export const admin_login = createAsyncThunk("auth/admin_login", async (data, { r
                 const response = await api.post("/auth/admin-login", data, {
                         withCredentials: true,
                 });
+                const { token } = response.data.data;
+                localStorage.setItem("accessToken", token);
                 // console.log(response.data);
 
                 return fulfillWithValue(response.data); // trả về data

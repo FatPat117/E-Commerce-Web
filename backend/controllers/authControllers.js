@@ -25,7 +25,7 @@ const admin_login = asyncHandler(async (req, res) => {
         }
 
         // Generate token
-        const accessToken = createToken({ id: admin._id, role: admin.role });
+        const accessToken = createToken({ _id: admin._id, role: admin.role });
 
         const cookieOptions = {
                 httpOnly: true,
