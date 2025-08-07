@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getNav } from "../navigation";
 
 const Sidebar = () => {
+        const [allNav, setAllNav] = useState([]);
+
+        useEffect(() => {
+                const navs = getNav("admin");
+                console.log(navs);
+                setAllNav(navs);
+        }, []);
+
         return (
                 <div>
                         <div></div>
@@ -14,6 +23,8 @@ const Sidebar = () => {
                                                 <img src="/images/logo.png" alt="logo" className="w-full h-full" />
                                         </Link>
                                 </div>
+
+                                <div className="px-[16px] "></div>
                         </div>
                 </div>
         );
