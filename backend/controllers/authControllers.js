@@ -40,4 +40,31 @@ const admin_login = asyncHandler(async (req, res) => {
         res.status(200).json(new ApiResponse(200, "Admin login successful", { token: accessToken }));
 });
 
-export default { admin_login };
+const getUser = asyncHandler(async (req, res, next) => {
+        const userId = req._id;
+        const role = req.role;
+
+        // check if user is logged in
+        if (!userId) {
+                throw new ApiError(400, "Please login to access this page");
+        }
+
+        // check if user is admin
+        if (role === "admin") {
+                const admin = await Admin.findById(userId).select("-password");
+                if (!admin) {
+                        throw new ApiError(400, "Admin not found");
+                }
+                return res.status(200).json(new ApiResponse(200, "Admin found", admin));
+        }
+
+        // check if user is user
+        const user = await Admin.findById(userId).select("-password");
+        if (!user) {
+                throw new ApiError(400, "User not found");
+        }
+
+        res.status(200).json(new ApiResponse(200, "User found", user));
+});
+
+export default { admin_login, getUser };
