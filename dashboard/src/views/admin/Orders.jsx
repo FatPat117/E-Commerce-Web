@@ -5,6 +5,7 @@ const Orders = () => {
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
         const [perPage, setPerPage] = useState(10);
+        const [showOrders, setShowOrders] = useState(false);
 
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -74,8 +75,35 @@ const Orders = () => {
                                                                 <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
                                                                         <Link>View </Link>
                                                                 </div>
-                                                                <div className="py-3 w-[8%] font-medium text-sm whitespace-nowrap">
+                                                                <div
+                                                                        onClick={() => setShowOrders(!showOrders)}
+                                                                        className="py-3 w-[8%] font-medium text-sm whitespace-nowrap"
+                                                                >
                                                                         <BsArrowDownSquare size={20} />
+                                                                </div>
+                                                        </div>
+
+                                                        {/* The same orders from a OrderId */}
+                                                        <div
+                                                                className={
+                                                                        showOrders
+                                                                                ? "block border-b border-slate-700 bg-[#8288ed]"
+                                                                                : "hidden"
+                                                                }
+                                                        >
+                                                                <div className="flex justify-start items-start border-b border-slate-700">
+                                                                        <div className="py-3 w-[25%] font-medium text-sm whitespace-nowrap pl-3">
+                                                                                #123
+                                                                        </div>
+                                                                        <div className="py-3 w-[13%] font-medium text-sm whitespace-nowrap">
+                                                                                $54
+                                                                        </div>
+                                                                        <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
+                                                                                Pending
+                                                                        </div>
+                                                                        <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
+                                                                                Pending
+                                                                        </div>
                                                                 </div>
                                                         </div>
                                                 </div>
