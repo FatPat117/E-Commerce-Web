@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Chart from "react-apexcharts";
 import { FaCartArrowDown, FaUsers } from "react-icons/fa";
 import { MdCurrencyExchange, MdProductionQuantityLimits } from "react-icons/md";
-
+import { Link } from "react-router-dom";
 const AdminDashboard = () => {
         const [state, setState] = useState({
                 series: [
@@ -69,31 +69,9 @@ const AdminDashboard = () => {
                         responsive: [
                                 {
                                         breakpoint: 565,
-                                        yaxis: {
-                                                categories: [
-                                                        "Jan",
-                                                        "Feb",
-                                                        "Mar",
-                                                        "Apr",
-                                                        "May",
-                                                        "Jun",
-                                                        "Jul",
-                                                        "Aug",
-                                                        "Sep",
-                                                        "Oct",
-                                                        "Nov",
-                                                        "Dec",
-                                                ],
-                                        },
                                         options: {
-                                                plotOptions: {
-                                                        bar: {
-                                                                horizontal: true,
-                                                        },
-                                                },
-                                                chart: {
-                                                        height: "550px",
-                                                },
+                                                chart: { height: 550 },
+                                                plotOptions: { bar: { horizontal: true } },
                                         },
                                 },
                         ],
@@ -152,8 +130,9 @@ const AdminDashboard = () => {
                                 </div>
                         </div>
 
-                        {/* Charts */}
+                        {/* Second Part */}
                         <div className="w-full flex flex-wrap mt-7 ">
+                                {/* Charts */}
                                 <div className="w-full lg:w-7/12 lg:pr-3">
                                         <div className="w-full bg-[#6a5fdf] p-4 rounded-md">
                                                 <Chart
@@ -162,6 +141,92 @@ const AdminDashboard = () => {
                                                         type="bar"
                                                         height="350"
                                                 />
+                                        </div>
+                                </div>
+
+                                {/* Sellers Chat */}
+                                <div className="w-full lg:w-5/12 lg:pl-4 mt-7 lg:mt-0">
+                                        <div className="w-full bg-[#6a5fdf] p-4  rounded-md text-[#d0d2d6] ">
+                                                <div className="flex items-center justify-between">
+                                                        <h2 className="font-semibold text-lg text-[#d0d2d6] pb-3">
+                                                                Recent Sellers Message
+                                                        </h2>
+                                                        <Link className="font-semibold text-sm text-[#d0d2d6] relative -top-[5px] ">
+                                                                View All
+                                                        </Link>
+                                                </div>
+
+                                                {/* Chat Box */}
+                                                <div className="flex flex-col gap-2 pt-6 text-[#d0d2d6]">
+                                                        <ol className="relative border-1 border-slate-500 ml-4">
+                                                                <li className="mb-3 ml-6">
+                                                                        <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] z-10 rounded-full">
+                                                                                <img
+                                                                                        src="/images/admin.jpg"
+                                                                                        alt="avatar"
+                                                                                        className="w-full rounded-full h-full shadow-lg"
+                                                                                />
+                                                                        </div>
+                                                                        <div className="p-3 bg-slate-800 rounded-lg border border-slate-500 shadow-sm">
+                                                                                <div className="flex justify-between items-center mb-2">
+                                                                                        <Link className="text-md font-normal">
+                                                                                                Admin
+                                                                                        </Link>
+                                                                                        <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
+                                                                                                2 days ago
+                                                                                        </time>
+                                                                                </div>
+                                                                                <div className="p-2 text-md font-normal bg-slate-700 rounded-lg border border-slate-800">
+                                                                                        <p>How are you</p>
+                                                                                </div>
+                                                                        </div>
+                                                                </li>
+                                                                <li className="mb-3 ml-6">
+                                                                        <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] z-10 rounded-full">
+                                                                                <img
+                                                                                        src="/images/admin.jpg"
+                                                                                        alt="avatar"
+                                                                                        className="w-full rounded-full h-full shadow-lg"
+                                                                                />
+                                                                        </div>
+                                                                        <div className="p-3 bg-slate-800 rounded-lg border border-slate-500 shadow-sm">
+                                                                                <div className="flex justify-between items-center mb-2">
+                                                                                        <Link className="text-md font-normal">
+                                                                                                Admin
+                                                                                        </Link>
+                                                                                        <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
+                                                                                                2 days ago
+                                                                                        </time>
+                                                                                </div>
+                                                                                <div className="p-2 text-md font-normal bg-slate-700 rounded-lg border border-slate-800">
+                                                                                        <p>How are you</p>
+                                                                                </div>
+                                                                        </div>
+                                                                </li>
+                                                                <li className="mb-3 ml-6">
+                                                                        <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] z-10 rounded-full">
+                                                                                <img
+                                                                                        src="/images/admin.jpg"
+                                                                                        alt="avatar"
+                                                                                        className="w-full rounded-full h-full shadow-lg"
+                                                                                />
+                                                                        </div>
+                                                                        <div className="p-3 bg-slate-800 rounded-lg border border-slate-500 shadow-sm">
+                                                                                <div className="flex justify-between items-center mb-2">
+                                                                                        <Link className="text-md font-normal">
+                                                                                                Admin
+                                                                                        </Link>
+                                                                                        <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
+                                                                                                2 days ago
+                                                                                        </time>
+                                                                                </div>
+                                                                                <div className="p-2 text-md font-normal bg-slate-700 rounded-lg border border-slate-800">
+                                                                                        <p>How are you</p>
+                                                                                </div>
+                                                                        </div>
+                                                                </li>
+                                                        </ol>
+                                                </div>
                                         </div>
                                 </div>
                         </div>
