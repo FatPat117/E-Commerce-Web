@@ -262,72 +262,43 @@ const AdminDashboard = () => {
                                                         </tr>
                                                 </thead>
                                                 {/* <tbody className="text-center"> */}
-                                                <tbody className="text-center">
-                                                        <tr>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        #34343
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        $212
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        Pending
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        Delivered
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        Active
-                                                                </td>
-                                                        </tr>
-
-                                                        <tr>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        #34343
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        $212
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        Pending
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        Delivered
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        Active
-                                                                </td>
-                                                        </tr>
+                                                <tbody className="">
+                                                        {[1, 2, 3, 4, 5].map((data, idx) => {
+                                                                return (
+                                                                        <tr key={idx} className="border-b">
+                                                                                <td
+                                                                                        scope="row"
+                                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
+                                                                                >
+                                                                                        #34343
+                                                                                </td>
+                                                                                <td
+                                                                                        scope="row"
+                                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
+                                                                                >
+                                                                                        $212
+                                                                                </td>
+                                                                                <td
+                                                                                        scope="row"
+                                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
+                                                                                >
+                                                                                        Pending
+                                                                                </td>
+                                                                                <td
+                                                                                        scope="row"
+                                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
+                                                                                >
+                                                                                        Delivered
+                                                                                </td>
+                                                                                <td
+                                                                                        scope="row"
+                                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
+                                                                                >
+                                                                                        <Link>View</Link>
+                                                                                </td>
+                                                                        </tr>
+                                                                );
+                                                        })}
                                                 </tbody>
                                         </table>
                                 </div>
