@@ -20,13 +20,16 @@ const AdminDashboard = () => {
                         },
                 ],
                 options: {
-                        color: ["#181ee8", "#181ee8"],
+                        // colors: ["#181ee8", "#181ee8"],
                         plotOptions: {
-                                radius: 30,
+                                bar: {
+                                        borderRadius: 3,
+                                        columnWidth: "70%",
+                                },
                         },
                         chart: {
                                 background: "transparent",
-                                fontColor: "#d0d2d6",
+                                foreColor: "#d0d2d6",
                         },
                         dataLabels: {
                                 enabled: false,
@@ -63,6 +66,37 @@ const AdminDashboard = () => {
                         legend: {
                                 position: "top",
                         },
+                        responsive: [
+                                {
+                                        breakpoint: 565,
+                                        yaxis: {
+                                                categories: [
+                                                        "Jan",
+                                                        "Feb",
+                                                        "Mar",
+                                                        "Apr",
+                                                        "May",
+                                                        "Jun",
+                                                        "Jul",
+                                                        "Aug",
+                                                        "Sep",
+                                                        "Oct",
+                                                        "Nov",
+                                                        "Dec",
+                                                ],
+                                        },
+                                        options: {
+                                                plotOptions: {
+                                                        bar: {
+                                                                horizontal: true,
+                                                        },
+                                                },
+                                                chart: {
+                                                        height: "550px",
+                                                },
+                                        },
+                                },
+                        ],
                 },
         });
 
