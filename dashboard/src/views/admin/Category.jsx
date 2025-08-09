@@ -1,14 +1,25 @@
 import React, { useState } from "react";
-import { FaEdit, FaImage, FaTrash } from "react-icons/fa";
+import { FaEdit, FaImage, FaTimes, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
 const Category = () => {
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
         const [perPage, setPerPage] = useState(5);
-        const [showAddCategory, setShowAddCategory] = useState(true);
+        const [showAddCategory, setShowAddCategory] = useState(false);
         return (
                 <div className="px-2 lg:px-7 pt-5">
+                        {/* Mobile view */}
+                        <div className="flex lg:hidden justify-between items-center mb-5 p-4 bg-[#6a5fdf] rounded-md">
+                                <h1 className="text-[#d0d2d6] font-semibold text-lg">Category</h1>
+                                <button
+                                        onClick={() => setShowAddCategory(!showAddCategory)}
+                                        className="cursor-pointer text-white bg-red-500 shadow-lg hover:shadow-red-500 hover:bg-red-400 transition-colors duration-300 px-4 py-2 rounded-md text-sm "
+                                >
+                                        Add
+                                </button>
+                        </div>
+
                         <div className="flex flex-wrap w-full">
                                 {/* Right part */}
                                 <div className="w-full lg:w-7/12 ">
@@ -118,17 +129,30 @@ const Category = () => {
 
                                 {/* Left part : Add category*/}
                                 <div
-                                        className={`w-[320px] lg:w-5/12 translate-x-100 lg:translate-x-0 lg:relative lg:right-0 fixed ${
-                                                showAddCategory
-                                                        ? "right-0"
-                                                        : "-right-[340px] z-20 top-0 transition-all duration-500"
+                                        className={`w-[320px] lg:w-5/12 lg:relative lg:right-0 fixed  z-50 transition-all duration-500 ${
+                                                showAddCategory ? "right-0 top-0" : "-right-[340px] top-0 "
                                         }`}
                                 >
                                         <div className="w-full pl-5 ">
                                                 <div className="bg-[#6a5fdf] h-screen lg:h-auto px-3 py-2 lg:rounded-md text-[#d0d2d6]">
-                                                        <h1 className="text-[#d0dd26] font-semibold text-xl mb-4 w-full text-center">
-                                                                Add category
-                                                        </h1>
+                                                        <div className="flex justify-between items-center">
+                                                                <h1 className="text-[#d0dd26] font-semibold text-xl mb-4 w-full text-center">
+                                                                        Add category
+                                                                </h1>
+
+                                                                {/* Close button */}
+                                                                <div className="block lg:hidden cursor-pointer">
+                                                                        <button
+                                                                                className="cursor-pointer"
+                                                                                onClick={() =>
+                                                                                        setShowAddCategory(false)
+                                                                                }
+                                                                        >
+                                                                                <FaTimes />
+                                                                        </button>
+                                                                </div>
+                                                        </div>
+
                                                         <form>
                                                                 {/* Search Input */}
                                                                 <div className="flex flex-col w-full gap-1 mb-3">
