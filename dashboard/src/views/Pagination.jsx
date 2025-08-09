@@ -1,5 +1,5 @@
 import React from "react";
-import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 const Pagination = ({ pageNumber, setPageNumber, totalItem, perPage, showPage }) => {
         let totalPage = Math.ceil(totalItem / perPage);
@@ -41,12 +41,24 @@ const Pagination = ({ pageNumber, setPageNumber, totalItem, perPage, showPage })
                         {pageNumber > 1 && (
                                 <li
                                         className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-[#000000] cursor-pointer hover:bg-indigo-400 hover:text-white transition-colors duration-300"
-                                        onClick={() => setPageNumber(1)}
+                                        onClick={() => {
+                                                setPageNumber(pageNumber - 1 <= 0 ? 1 : pageNumber - 1);
+                                        }}
                                 >
                                         <MdKeyboardDoubleArrowLeft />
                                 </li>
                         )}
                         {createButton()}
+                        {pageNumber < totalPage && (
+                                <li
+                                        className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-[#000000] cursor-pointer hover:bg-indigo-400 hover:text-white transition-colors duration-300"
+                                        onClick={() => {
+                                                setPageNumber(pageNumber + 1 > totalPage ? totalPage : pageNumber + 1);
+                                        }}
+                                >
+                                        <MdKeyboardDoubleArrowRight />
+                                </li>
+                        )}
                 </ul>
         );
 };

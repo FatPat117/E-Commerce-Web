@@ -112,13 +112,15 @@ const Orders = () => {
                                 </div>
 
                                 {/* Pagination */}
-                                <Pagination
-                                        pageNumber={currentPage}
-                                        setPageNumber={setCurrentPage}
-                                        totalItem={50}
-                                        perPage={perPage}
-                                        showPage={3}
-                                />
+                                <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
+                                        <Pagination
+                                                pageNumber={currentPage}
+                                                setPageNumber={setCurrentPage}
+                                                totalItem={50}
+                                                perPage={perPage}
+                                                showPage={3}
+                                        />
+                                </div>
                         </div>
                 </div>
         );
