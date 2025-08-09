@@ -5,7 +5,7 @@ import Pagination from "../Pagination";
 const Orders = () => {
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
-        const [perPage, setPerPage] = useState(10);
+        const [perPage, setPerPage] = useState(5);
         const [showOrders, setShowOrders] = useState(false);
 
         return (
@@ -117,7 +117,7 @@ const Orders = () => {
                                         setPageNumber={setCurrentPage}
                                         totalItem={50}
                                         perPage={perPage}
-                                        showItem={3}
+                                        showPage={3}
                                 />
                         </div>
                 </div>
