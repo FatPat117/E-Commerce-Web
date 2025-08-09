@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 const Category = () => {
         const [perPage, setPerPage] = useState(5);
 
@@ -58,27 +60,38 @@ const Category = () => {
                                                                                         >
                                                                                                 <td
                                                                                                         scope="row"
-                                                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
+                                                                                                        className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                                 >
-                                                                                                        #34343
+                                                                                                        {data}
                                                                                                 </td>
                                                                                                 <td
                                                                                                         scope="row"
-                                                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
+                                                                                                        className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                                 >
-                                                                                                        $212
+                                                                                                        <img
+                                                                                                                src={`/category/${data}.jpg`}
+                                                                                                                alt="category-image"
+                                                                                                                className="w-[45px] h-[45px] object-cover"
+                                                                                                        />
                                                                                                 </td>
                                                                                                 <td
                                                                                                         scope="row"
-                                                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
+                                                                                                        className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                                 >
-                                                                                                        Pending
+                                                                                                        TShirt
                                                                                                 </td>
                                                                                                 <td
                                                                                                         scope="row"
-                                                                                                        className="py-3 px-4 font-medium whitespace-nowrap"
+                                                                                                        className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                                 >
-                                                                                                        Delivered
+                                                                                                        <div className="flex items-center justify-start gap-4">
+                                                                                                                <Link className="p-[8px]  bg-yellow-500 rounded-md hover:shadow-lg hover:shadow-yellow-500/50">
+                                                                                                                        <FaEdit />
+                                                                                                                </Link>
+                                                                                                                <Link className="p-[8px]  bg-red-500 rounded-md hover:shadow-lg hover:shadow-red-500/50">
+                                                                                                                        <FaTrash />
+                                                                                                                </Link>
+                                                                                                        </div>
                                                                                                 </td>
                                                                                         </tr>
                                                                                 );
