@@ -52,13 +52,17 @@ const AddProduct = () => {
         };
 
         const categorySearch = (e) => {
-                setSearchValue(e.target.value);
-                setTimeout(() => {
-                        const filteredCategory = categories.filter((cate) =>
-                                cate.name.toLowerCase().includes(e.target.value.toLowerCase())
-                        );
-                        setAllCategory(filteredCategory);
-                }, 1000);
+                const value = e.target.value;
+                setSearchValue(value);
+
+                if (value.length > 0) {
+                        setTimeout(() => {
+                                const filteredCategory = categories.filter((cate) =>
+                                        cate.name.toLowerCase().includes(value.toLowerCase())
+                                );
+                                setAllCategory(filteredCategory);
+                        }, 1000);
+                }
         };
 
         return (
@@ -76,7 +80,7 @@ const AddProduct = () => {
                                 <div>
                                         <form action="">
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full text-[#d0d2d6]">
-                                                        {/* pRoduct Name */}
+                                                        {/* Product Name */}
                                                         <div className="flex flex-col w-full gap-1">
                                                                 <label htmlFor="name">Product Name</label>
                                                                 <input
@@ -120,7 +124,7 @@ const AddProduct = () => {
                                                                 />
                                                                 {/* Select category */}
                                                                 <div
-                                                                        className={`absolute top-[101%] bg-slate-600 w-full transition-all p-2 ${
+                                                                        className={`absolute top-[101%] bg-slate-600 w-full transition-all p-1 ${
                                                                                 cateShow ? "scale-100" : "scale-0"
                                                                         }`}
                                                                 >
@@ -153,6 +157,12 @@ const AddProduct = () => {
                                                                                                                 categories
                                                                                                         );
                                                                                                 }}
+                                                                                                className={`px-4 py-2 hover:bg-indigo-500 hover:text-white hover:shadow-md w-full cursor-pointer transition-all duration-300 ${
+                                                                                                        category ==
+                                                                                                        cate.name
+                                                                                                                ? "bg-indigo-500 text-white"
+                                                                                                                : ""
+                                                                                                }`}
                                                                                                 key={idx}
                                                                                         >
                                                                                                 {cate.name}
