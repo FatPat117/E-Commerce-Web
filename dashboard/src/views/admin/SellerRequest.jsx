@@ -7,7 +7,7 @@ const SellerRequest = () => {
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
         const [perPage, setPerPage] = useState(5);
-        const [showAddCategory, setShowAddCategory] = useState(false);
+
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <h1 className="text-[20px] mb-3 font-bold">Seller Request</h1>
@@ -30,6 +30,8 @@ const SellerRequest = () => {
                                         <input
                                                 type="text"
                                                 placeholder="search"
+                                                value={searchValue}
+                                                onChange={(e) => setSearchValue(e.target.value)}
                                                 className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                         />
                                 </div>
