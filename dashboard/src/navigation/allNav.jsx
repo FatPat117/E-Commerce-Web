@@ -2,9 +2,8 @@ import { AiOutlineDashboard, AiOutlineShoppingCart } from "react-icons/ai";
 import { BiCategory } from "react-icons/bi";
 import { FaUserTimes, FaUsers } from "react-icons/fa";
 import { FaCodePullRequest } from "react-icons/fa6";
-import { IoIosChatbubbles } from "react-icons/io";
+import { IoIosAddCircle, IoIosChatbubbles } from "react-icons/io";
 import { MdPayment } from "react-icons/md";
-
 export const allNav = [
         {
                 id: 1,
@@ -74,7 +73,7 @@ export const allNav = [
         {
                 id: 2,
                 title: "Add Product",
-                icon: <AiOutlineDashboard />,
+                icon: <IoIosAddCircle />,
                 role: "seller",
                 path: "/seller/dashboard/add-product",
         },
