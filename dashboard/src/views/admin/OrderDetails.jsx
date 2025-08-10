@@ -27,13 +27,208 @@ const OrderDetails = () => {
                                                 <h2>#123123</h2>
                                                 <span>3 Oct 2025</span>
                                         </div>
-                                        <div className="flex flex-wrap">
+
+                                        <div className="flex flex-wrap mt-3">
+                                                {/* Deliver To */}
                                                 <div className="w-[30%]">
                                                         <div className="pr-3 text-[#d0d2d6] text-lg">
-                                                                <div className="flex flex-col gap-1">
-                                                                        <h2 className="pb-2 font-semibold text-xl">
+                                                                <div className="flex flex-col mt-2">
+                                                                        <h2 className="font-semibold text-xl">
                                                                                 Deliver To: Ponyo
                                                                         </h2>
+                                                                        <p>
+                                                                                <span className="text-sm">
+                                                                                        14/6 ThanhPhu District
+                                                                                </span>
+                                                                        </p>
+                                                                </div>
+
+                                                                <div className="flex justify-start items-center gap-3 mt-2">
+                                                                        <h2>Payment Status:</h2>
+                                                                        <span className="text-base"> Paid</span>
+                                                                </div>
+
+                                                                <span className="mt-2 block">Price: $231</span>
+
+                                                                {/* Order Items 1 */}
+                                                                <div className="mt-4 flex flex-col gap-4 bg-[#8288ed] rounded-lg p-2 ">
+                                                                        <div className="text-[#d0d2d6] ">
+                                                                                <div className="flex gap-3 text-md bg-[#8288ed] rounded-lg p-2">
+                                                                                        <img
+                                                                                                className="w-[50px] h-[50px] object-cover"
+                                                                                                src="/category/1.jpg"
+                                                                                                alt="product-image"
+                                                                                        />
+
+                                                                                        <div>
+                                                                                                <h2>Product Name</h2>
+                                                                                                <p>
+                                                                                                        <span>
+                                                                                                                Brand :{" "}
+                                                                                                        </span>
+                                                                                                        <span>
+                                                                                                                Easy ||
+                                                                                                        </span>
+                                                                                                        <span className="text-lg">
+                                                                                                                {" "}
+                                                                                                                Quantity:
+                                                                                                                2
+                                                                                                        </span>
+                                                                                                </p>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+
+                                                                {/* Order Items 2 */}
+                                                                <div className="mt-4 flex flex-col gap-4 bg-[#8288ed] rounded-lg p-2 ">
+                                                                        <div className="text-[#d0d2d6] ">
+                                                                                <div className="flex gap-3 text-md bg-[#8288ed] rounded-lg p-2">
+                                                                                        <img
+                                                                                                className="w-[50px] h-[50px] object-cover"
+                                                                                                src="/category/1.jpg"
+                                                                                                alt="product-image"
+                                                                                        />
+
+                                                                                        <div>
+                                                                                                <h2>Product Name</h2>
+                                                                                                <p>
+                                                                                                        <span>
+                                                                                                                Brand :{" "}
+                                                                                                        </span>
+                                                                                                        <span>
+                                                                                                                Easy ||
+                                                                                                        </span>
+                                                                                                        <span className="text-lg">
+                                                                                                                {" "}
+                                                                                                                Quantity:
+                                                                                                                2
+                                                                                                        </span>
+                                                                                                </p>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+
+                                                                {/* Order Items 3 */}
+                                                                <div className="mt-4 flex flex-col gap-4 bg-[#8288ed] rounded-lg p-2 ">
+                                                                        <div className="text-[#d0d2d6] ">
+                                                                                <div className="flex gap-3 text-md bg-[#8288ed] rounded-lg p-2">
+                                                                                        <img
+                                                                                                className="w-[50px] h-[50px] object-cover"
+                                                                                                src="/category/1.jpg"
+                                                                                                alt="product-image"
+                                                                                        />
+
+                                                                                        <div>
+                                                                                                <h2>Product Name</h2>
+                                                                                                <p>
+                                                                                                        <span>
+                                                                                                                Brand :{" "}
+                                                                                                        </span>
+                                                                                                        <span>
+                                                                                                                Easy ||
+                                                                                                        </span>
+                                                                                                        <span className="text-lg">
+                                                                                                                {" "}
+                                                                                                                Quantity:
+                                                                                                                2
+                                                                                                        </span>
+                                                                                                </p>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                </div>
+
+                                                {/* Order Items */}
+                                                <div className="w-[70%]">
+                                                        <div className="pl-3">
+                                                                <div className="mt-4 flex flex-col bg-[#8288ed] rounded-md p-4">
+                                                                        {/* Items  1 */}
+                                                                        <div className="text-[#d0d2d6]">
+                                                                                <div className="flex justify-start items-center gap-3">
+                                                                                        <h2>Seller 1 Order: </h2>{" "}
+                                                                                        <span>Pending</span>
+                                                                                </div>
+
+                                                                                <div className=" flex flex-col gap-4 bg-[#8288ed] rounded-lg p-2 py-1 ">
+                                                                                        <div className="text-[#d0d2d6] ">
+                                                                                                <div className="flex gap-3 text-md bg-[#8288ed] rounded-lg p-2">
+                                                                                                        <img
+                                                                                                                className="w-[50px] h-[50px] object-cover"
+                                                                                                                src="/category/1.jpg"
+                                                                                                                alt="product-image"
+                                                                                                        />
+
+                                                                                                        <div>
+                                                                                                                <h2>
+                                                                                                                        Product
+                                                                                                                        Name
+                                                                                                                </h2>
+                                                                                                                <p>
+                                                                                                                        <span>
+                                                                                                                                Brand
+                                                                                                                                :{" "}
+                                                                                                                        </span>
+                                                                                                                        <span>
+                                                                                                                                Easy
+                                                                                                                                ||
+                                                                                                                        </span>
+                                                                                                                        <span className="text-lg">
+                                                                                                                                {" "}
+                                                                                                                                Quantity:
+                                                                                                                                2
+                                                                                                                        </span>
+                                                                                                                </p>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+
+                                                                        {/* Items  2*/}
+                                                                        <div className="text-[#d0d2d6]">
+                                                                                <div className="flex justify-start items-center gap-3">
+                                                                                        <h2>Seller 1 Order: </h2>{" "}
+                                                                                        <span>Pending</span>
+                                                                                </div>
+
+                                                                                <div className=" flex flex-col gap-4 bg-[#8288ed] rounded-lg p-2 py-1 ">
+                                                                                        <div className="text-[#d0d2d6] ">
+                                                                                                <div className="flex gap-3 text-md bg-[#8288ed] rounded-lg p-2">
+                                                                                                        <img
+                                                                                                                className="w-[50px] h-[50px] object-cover"
+                                                                                                                src="/category/1.jpg"
+                                                                                                                alt="product-image"
+                                                                                                        />
+
+                                                                                                        <div>
+                                                                                                                <h2>
+                                                                                                                        Product
+                                                                                                                        Name
+                                                                                                                </h2>
+                                                                                                                <p>
+                                                                                                                        <span>
+                                                                                                                                Brand
+                                                                                                                                :{" "}
+                                                                                                                        </span>
+                                                                                                                        <span>
+                                                                                                                                Easy
+                                                                                                                                ||
+                                                                                                                        </span>
+                                                                                                                        <span className="text-lg">
+                                                                                                                                {" "}
+                                                                                                                                Quantity:
+                                                                                                                                2
+                                                                                                                        </span>
+                                                                                                                </p>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
                                                                 </div>
                                                         </div>
                                                 </div>
