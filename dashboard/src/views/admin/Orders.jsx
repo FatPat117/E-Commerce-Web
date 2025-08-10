@@ -74,7 +74,11 @@ const Orders = () => {
                                                                         Pending
                                                                 </div>
                                                                 <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
-                                                                        <Link>View </Link>
+                                                                        <Link
+                                                                                to={`/admin/dashboard/order/details/${12321312}`}
+                                                                        >
+                                                                                View
+                                                                        </Link>
                                                                 </div>
                                                                 <div
                                                                         onClick={() => setShowOrders(!showOrders)}
