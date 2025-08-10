@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { FaList } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 
 const ChatSeller = () => {
         const [show, setShow] = useState(false);
+        const sellerId = 65;
 
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -12,9 +14,9 @@ const ChatSeller = () => {
                                         <div
                                                 className={`w-[280px] h-full absolute z-10 ${
                                                         show ? "-left-[16px]" : "-left-[336px]"
-                                                } md:left-0 md:relative transition-all`}
+                                                } md:left-0 md:relative transition-all duration-300`}
                                         >
-                                                <div className="w-full h-[calc(100vh-177px)] bg-[#9e99e9] md:bg-transparent overflow-y-auto">
+                                                <div className="w-full h-[calc(100vh-177px)] bg-[#9e99e9] md:bg-transparent overflow-y-auto transition-all duration-300">
                                                         <div className="flex text-xl justify-between items-center p-4 md:p-0 md:px-3 md:pb-3 text-white">
                                                                 <h2>Seller</h2>
                                                                 <span
@@ -28,7 +30,7 @@ const ChatSeller = () => {
                                                         {/* Chat list */}
                                                         <div
                                                                 className={
-                                                                        "h-[60px] flex items-center justify-start gap-3 text-white p-2 rounded-sm cursor-pointer"
+                                                                        "h-[60px] flex items-center justify-start gap-3 text-white p-2 rounded-md cursor-pointer bg-[#8288ed]"
                                                                 }
                                                         >
                                                                 <div className="relative">
@@ -47,6 +49,33 @@ const ChatSeller = () => {
                                                                                 </h2>
                                                                         </div>
                                                                 </div>
+                                                        </div>
+                                                </div>
+                                        </div>
+
+                                        {/* Chat Box */}
+                                        <div className="w-full md:w-[calc(100%-200px)] md:pl-4">
+                                                <div className="flex justify-between items-center">
+                                                        {sellerId && (
+                                                                <div className="flex justify-start items-center gap-3">
+                                                                        <div className="relative">
+                                                                                <img
+                                                                                        src="/images/admin.jpg"
+                                                                                        alt="avatar"
+                                                                                        className="w-[45px] h-[45px] rounded-full border-green-500 border-2 max-w-[45px] p-[2px] "
+                                                                                />
+                                                                                <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                                                                        </div>
+                                                                </div>
+                                                        )}
+
+                                                        <div className="w-[35px] flex md:hidden h-[35px] rounded-sm bg-blue-500 shadow-lg hover:shadow-blue-500/50 hover:shadow-md hover:bg-blue-400 transition-colors duration-300 text-white cursor-pointer justify-between items-center ">
+                                                                <span
+                                                                        onClick={() => setShow(!show)}
+                                                                        className="flex items-center justify-center w-full h-full"
+                                                                >
+                                                                        <FaList />
+                                                                </span>
                                                         </div>
                                                 </div>
                                         </div>
