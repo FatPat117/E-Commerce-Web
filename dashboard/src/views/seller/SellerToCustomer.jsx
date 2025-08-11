@@ -67,6 +67,9 @@ const SellerToCustomer = () => {
                                                                                 />
                                                                                 <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
                                                                         </div>
+                                                                        <h2 className="text-base text-white font-semibold">
+                                                                                Pitachiti
+                                                                        </h2>
                                                                 </div>
                                                         )}
 
