@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { IoMdImages } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 const AddProduct = () => {
@@ -36,6 +37,8 @@ const AddProduct = () => {
         const [allCategory, setAllCategory] = useState(categories);
         const [searchValue, setSearchValue] = useState("");
         const [category, setCategory] = useState(categories[0].name);
+        const [images, setImages] = useState([]);
+        const [imageShow, setImageShow] = useState(false);
 
         const [state, setState] = useState({
                 name: "",
@@ -49,6 +52,17 @@ const AddProduct = () => {
 
         const inputHandle = (e) => {
                 setState({ ...state, [e.target.name]: e.target.value });
+        };
+
+        const imageHandle = (e) => {
+                const files = e.target.files;
+                const length = files.length;
+
+                if (length > 0) {
+                        setImages([...images, ...files]);
+                        setImageShow(true);
+                }
+                console.log(images);
         };
 
         const categorySearch = (e) => {
@@ -227,6 +241,27 @@ const AddProduct = () => {
                                                                         onChange={inputHandle}
                                                                         className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                                                 ></textarea>
+                                                        </div>
+
+                                                        {/* Image upload */}
+                                                        <div className="grid lg:grid-cols-4 grid-cols-1  sm:grid-cols-2 md:grid-cols-3 sm:gap-4 gap-3 w-full text-[#d0d2d6] mb-4 mt-4">
+                                                                <label
+                                                                        htmlFor="image"
+                                                                        className="flex justify-center items-center flex-col h-[180px] cursor-pointer border-2 border-dashed hover:border-red-500 w-full text-[#d0d2d6]"
+                                                                >
+                                                                        <span>
+                                                                                <IoMdImages />
+                                                                        </span>
+                                                                        <p>Select Image</p>
+                                                                </label>
+                                                                <input
+                                                                        type="file"
+                                                                        id="image"
+                                                                        name="image"
+                                                                        multiple
+                                                                        onChange={imageHandle}
+                                                                        className="hidden"
+                                                                />
                                                         </div>
                                                 </div>
                                         </form>
