@@ -1,6 +1,6 @@
 import React from "react";
 
-const Search = ({ setPerPage, perPage }) => {
+const Search = ({ setPerPage, perPage, setSearchValue, searchValue }) => {
         return (
                 /* Select and Search field */
                 <div className="flex justify-between items-center">
@@ -20,6 +20,8 @@ const Search = ({ setPerPage, perPage }) => {
                                 type="text"
                                 placeholder="search"
                                 className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
                         />
                 </div>
         );

@@ -110,7 +110,10 @@ const AddProduct = () => {
                                 {/* First Part: Add Product */}
                                 <div className="flex justify-between items-center pb-4">
                                         <h1 className="text-[#d0d2d6] text-xl font-bold">Add Product</h1>
-                                        <Link className="bg-blue-500 hover:shadow-blue-500 hover:shadow-sm hover:bg-blue-400/60 transition-all duration-300 text-white px-4 py-2 my-2 rounded-md">
+                                        <Link
+                                                to="/seller/dashboard/products"
+                                                className="bg-blue-500 hover:shadow-blue-500 hover:shadow-sm hover:bg-blue-400/60 transition-all duration-300 text-white px-4 py-2 my-2 rounded-md"
+                                        >
                                                 All Product
                                         </Link>
                                 </div>

@@ -15,7 +15,13 @@ export const sellerRoutes = [
                 ability: ["seller"],
         },
         {
-                path: "/seller/dashboard/all-product",
+                path: "/seller/dashboard/add-product",
+                element: <AddProduct />,
+                ability: ["seller"],
+        },
+
+        {
+                path: "/seller/dashboard/products",
                 element: <Products />,
                 ability: ["seller"],
         },
