@@ -1,7 +1,32 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { MdCurrencyExchange } from "react-icons/md";
+import { FixedSizeList as List } from "react-window";
 
+function handleOnWheel({ deltaY }) {
+        console.log(deltaY);
+}
+
+const outerElementType = forwardRef((props, ref) => {
+        return <div ref={ref} {...props} onWheel={handleOnWheel} />;
+});
 const Payments = () => {
+        const array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        const Row = ({ index, style }) => {
+                return (
+                        <div style={style} className="flex text-sm border-b border-gray-300 text-white font-semibold ">
+                                <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">$43434</div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">
+                                        <span className="py-[2px] px-[5px] bg-slate-300 text-blue-500 rounded-md text-sm">
+                                                Pending
+                                        </span>
+                                </div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">25 Oct 2024</div>
+                        </div>
+                );
+        };
+
         return (
                 <div className="px-2 md:px-7 py-5">
                         {/* First Part: Total Sales, Products, Sellers, Orders */}
@@ -57,6 +82,7 @@ const Payments = () => {
 
                         {/* Second Part */}
                         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-2 pb-4 mt-5">
+                                {/* Send Request */}
                                 <div className="bg-[#6a5fdf] text-[#d0d2d6] rounded-md p-5">
                                         <h2 className="text-lg font-medium">Send Request</h2>
 
@@ -85,6 +111,57 @@ const Payments = () => {
                                         {/* Request Status */}
                                         <div className="mt-5">
                                                 <h2 className="text-lg pb-4">Pending Request</h2>
+
+                                                {/* List */}
+                                                <div className="w-full overflow-x-auto ">
+                                                        <div className="flex bg-[#a7a3de] uppercase text-sm font-bold min-w-[340px] rounded-md">
+                                                                <div className="w-[25%] p-2">No</div>
+                                                                <div className="w-[25%] p-2">Amount</div>
+                                                                <div className="w-[25%] p-2">Status</div>
+                                                                <div className="w-[25%] p-2">Date</div>
+                                                        </div>
+
+                                                        {/* React Window */}
+                                                        <List
+                                                                style={{ minWidth: "340px" }}
+                                                                className="List"
+                                                                height={350}
+                                                                itemCount={array.length}
+                                                                itemSize={37}
+                                                                outerElementType={outerElementType}
+                                                        >
+                                                                {Row}
+                                                        </List>
+                                                </div>
+                                        </div>
+                                </div>
+
+                                {/* Success Withdraw */}
+                                <div className="bg-[#6a5fdf] text-[#d0d2d6] rounded-md p-5">
+                                        {/* Request Status */}
+
+                                        <h2 className="text-lg pb-4">Success Withdraw</h2>
+
+                                        {/* List */}
+                                        <div className="w-full overflow-x-auto ">
+                                                <div className="flex bg-[#a7a3de] uppercase text-sm font-bold min-w-[340px] rounded-md">
+                                                        <div className="w-[25%] p-2">No</div>
+                                                        <div className="w-[25%] p-2">Amount</div>
+                                                        <div className="w-[25%] p-2">Status</div>
+                                                        <div className="w-[25%] p-2">Date</div>
+                                                </div>
+
+                                                {/* React Window */}
+                                                <List
+                                                        style={{ minWidth: "340px" }}
+                                                        className="List"
+                                                        height={350}
+                                                        itemCount={array.length}
+                                                        itemSize={37}
+                                                        outerElementType={outerElementType}
+                                                >
+                                                        {Row}
+                                                </List>
                                         </div>
                                 </div>
                         </div>

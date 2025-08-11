@@ -36,6 +36,7 @@ const PaymentRequest = () => {
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
                                 <h2 className="text-xl font-medium pb-5 text-[#d0d2d6]">Withdraw Requests</h2>
                                 <div className="w-full ">
+                                        {/* List */}
                                         <div className="w-full overflow-x-auto ">
                                                 <div className="flex bg-[#a7a3de] uppercase text-sm font-bold min-w-[340px] rounded-md">
                                                         <div className="w-[25%] p-2">No</div>
@@ -45,6 +46,7 @@ const PaymentRequest = () => {
                                                         <div className="w-[25%] p-2">Action</div>
                                                 </div>
 
+                                                {/* React Window */}
                                                 <List
                                                         style={{ minWidth: "340px" }}
                                                         className="List"
