@@ -101,7 +101,7 @@ export const allNav = [
         {
                 id: 6,
                 title: "Payment",
-                icon: <AiOutlineDashboard />,
+                icon: <MdPayment />,
                 role: "seller",
                 path: "/seller/dashboard/payments",
         },

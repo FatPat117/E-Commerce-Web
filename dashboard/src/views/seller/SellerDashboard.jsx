@@ -81,7 +81,7 @@ const SellerDashboard = () => {
         return (
                 <div className="px-2 md:px-7 py-5">
                         {/* First Part: Total Sales, Products, Sellers, Orders */}
-                        <div className="w-full grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4 gap-7 wrap">
+                        <div className="w-full grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-4  gap-7 wrap">
                                 {/* Total Sales */}
                                 <div className="flex justify-between items-center p-5 bg-[#fae8e8] rounded-md gap-3">
                                         <div className="flex flex-col justify-center items-start text-[#5c5a5a]">
