@@ -54,6 +54,40 @@ const Payments = () => {
                                         </div>
                                 </div>
                         </div>
+
+                        {/* Second Part */}
+                        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-2 pb-4 mt-5">
+                                <div className="bg-[#6a5fdf] text-[#d0d2d6] rounded-md p-5">
+                                        <h2 className="text-lg font-medium">Send Request</h2>
+
+                                        {/* Request amount */}
+                                        <div className="pt-5">
+                                                <form action="">
+                                                        <div className="flex gap-8 flex-wrap items-center">
+                                                                <input
+                                                                        min={0}
+                                                                        type="number"
+                                                                        name="amount"
+                                                                        placeholder="Amount"
+                                                                        className="px-3 py-3 md:w-[75%] focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
+                                                                />
+
+                                                                {/* button */}
+                                                                <div className=" text-center rounded-lg px-10 py-3  bg-red-500 w-[20%]  hover:shadow-red-500/50 hover:shadow-md hover:bg-red-400 transition-colors duration-300 text-white cursor-pointer ">
+                                                                        <button className="cursor-pointer">
+                                                                                Submit
+                                                                        </button>
+                                                                </div>
+                                                        </div>
+                                                </form>
+                                        </div>
+
+                                        {/* Request Status */}
+                                        <div className="mt-5">
+                                                <h2 className="text-lg pb-4">Pending Request</h2>
+                                        </div>
+                                </div>
+                        </div>
                 </div>
         );
 };
