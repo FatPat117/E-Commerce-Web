@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import Search from "../components/Search";
 import Pagination from "../Pagination";
 
-const Products = () => {
+const DiscountProducts = () => {
         const [perPage, setPerPage] = useState(5);
         const [searchValue, setSearchValue] = useState("");
         const [currentPage, setCurrentPage] = useState(1);
         return (
                 <div className="px-2 lg:px-7 pt-5">
-                        <h1 className="text-[#000000] text-xl font-bold">All Products</h1>
+                        <h1 className="text-[#000000] text-xl font-bold">Discount Products</h1>
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md mt-2">
                                 {/* Search and Select form */}
                                 <Search
@@ -150,4 +150,4 @@ const Products = () => {
         );
 };
 
-export default Products;
+export default DiscountProducts;

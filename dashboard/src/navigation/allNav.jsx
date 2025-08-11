@@ -3,7 +3,7 @@ import { BiCategory } from "react-icons/bi";
 import { FaUserTimes, FaUsers } from "react-icons/fa";
 import { FaCodePullRequest } from "react-icons/fa6";
 import { IoIosAddCircle, IoIosChatbubbles } from "react-icons/io";
-import { MdOutlineDensitySmall, MdPayment } from "react-icons/md";
+import { MdOutlineDensitySmall, MdOutlineDiscount, MdPayment } from "react-icons/md";
 export const allNav = [
         {
                 id: 1,
@@ -87,7 +87,7 @@ export const allNav = [
         {
                 id: 4,
                 title: "Discount Product",
-                icon: <AiOutlineDashboard />,
+                icon: <MdOutlineDiscount />,
                 role: "seller",
                 path: "/seller/dashboard/discount-product",
         },
