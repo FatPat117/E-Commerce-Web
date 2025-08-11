@@ -38,7 +38,7 @@ const AddProduct = () => {
         const [searchValue, setSearchValue] = useState("");
         const [category, setCategory] = useState(categories[0].name);
         const [images, setImages] = useState([]);
-        const [imageShow, setImageShow] = useState(false);
+        const [imageShow, setImageShow] = useState([]);
 
         const [state, setState] = useState({
                 name: "",
@@ -60,9 +60,27 @@ const AddProduct = () => {
 
                 if (length > 0) {
                         setImages([...images, ...files]);
-                        setImageShow(true);
+
+                        let imageUrl = [];
+
+                        for (let i = 0; i < length; i++) {
+                                imageUrl.push({ url: URL.createObjectURL(files[i]) });
+                        }
+
+                        setImageShow([...imageShow, ...imageUrl]);
                 }
-                console.log(images);
+
+                // console.log(imageShow);
+        };
+
+        const changeImage = (file, idx) => {
+                if (!file) return;
+                const newImageShow = [...imageShow];
+                const newImages = [...images];
+                newImageShow[idx] = { url: URL.createObjectURL(file) };
+                newImages[idx] = file;
+                setImageShow(newImageShow);
+                setImages(newImages);
         };
 
         const categorySearch = (e) => {
@@ -244,10 +262,37 @@ const AddProduct = () => {
                                                         </div>
 
                                                         {/* Image upload */}
-                                                        <div className="grid lg:grid-cols-4 grid-cols-1  sm:grid-cols-2 md:grid-cols-3 sm:gap-4 gap-3 w-full text-[#d0d2d6] mb-4 mt-4">
+                                                        <div className="grid col-span-2 lg:grid-cols-4 grid-cols-1  sm:grid-cols-2 md:grid-cols-3 sm:gap-4 gap-3 w-full text-[#d0d2d6] mb-4 mt-4">
+                                                                {imageShow?.map((img, idx) => {
+                                                                        return (
+                                                                                <div className="h-[300px] w-[300px] relative ">
+                                                                                        <label htmlFor={idx}>
+                                                                                                <img
+                                                                                                        src={img.url}
+                                                                                                        alt="image"
+                                                                                                        className="w-full h-full rounded-sm cursor-pointer"
+                                                                                                />
+                                                                                        </label>
+                                                                                        <input
+                                                                                                type="file"
+                                                                                                id={idx}
+                                                                                                className="hidden"
+                                                                                                onChange={(e) => {
+                                                                                                        changeImage(
+                                                                                                                e.target
+                                                                                                                        .files[0],
+                                                                                                                idx
+                                                                                                        );
+                                                                                                        e.target.value =
+                                                                                                                "";
+                                                                                                }}
+                                                                                        />
+                                                                                </div>
+                                                                        );
+                                                                })}
                                                                 <label
                                                                         htmlFor="image"
-                                                                        className="flex justify-center items-center flex-col h-[180px] cursor-pointer border-2 border-dashed hover:border-red-500 w-full text-[#d0d2d6]"
+                                                                        className="flex justify-center items-center flex-col h-[300px] cursor-pointer border-2 border-dashed hover:border-red-500 w-full text-[#d0d2d6]"
                                                                 >
                                                                         <span>
                                                                                 <IoMdImages />
