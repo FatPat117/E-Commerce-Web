@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px #6a5fdf inset !important; /* dùng màu nền mong muốn */
+        -webkit-text-fill-color: #d0d2d6 !important; /* màu chữ */
+        caret-color: #d0d2d6;
+        border: 2px solid #0f172a !important;
+
+        /* Giữ màu lâu, tránh flash vàng */
+        transition: background-color 5000s ease-in-out 0s;
+}
