@@ -1,6 +1,6 @@
 import { AiOutlineDashboard, AiOutlineShoppingCart } from "react-icons/ai";
 import { BiCategory } from "react-icons/bi";
-import { FaUserTimes, FaUsers } from "react-icons/fa";
+import { FaUser, FaUserTimes, FaUsers } from "react-icons/fa";
 import { FaCodePullRequest } from "react-icons/fa6";
 import { IoIosAddCircle, IoIosChatbubbles } from "react-icons/io";
 import { MdOutlineDensitySmall, MdOutlineDiscount, MdPayment } from "react-icons/md";
@@ -118,5 +118,12 @@ export const allNav = [
                 icon: <AiOutlineDashboard />,
                 role: "seller",
                 path: "/seller/dashboard/chat-support",
+        },
+        {
+                id: 9,
+                title: "Profile",
+                icon: <FaUser />,
+                role: "seller",
+                path: "/seller/dashboard/profile",
         },
 ];
