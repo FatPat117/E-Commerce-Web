@@ -1,10 +1,12 @@
 import bcrypt from "bcrypt";
 import Admin from "../models/adminModel.js";
+import sellerCustomer from "../models/chat/sellerCustomerModel.js";
 import Seller from "../models/sellerModel.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import createToken from "../utils/tokenCreate.js";
+
 const admin_login = asyncHandler(async (req, res) => {
         const { email, password } = req.body;
 
@@ -83,6 +85,8 @@ const seller_register = asyncHandler(async (req, res, next) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create seller
         const newSeller = await Seller.create({
                 name,
                 email,
@@ -90,7 +94,22 @@ const seller_register = asyncHandler(async (req, res, next) => {
                 method: "manual",
         });
 
-        res.status(201).json(new ApiResponse(201, "Seller registered successfully", newSeller));
+        // Create seller customer
+        await sellerCustomer.create({
+                myId: newSeller._id,
+        });
+
+        // Create token
+        const accessToken = createToken({ _id: newSeller._id, role: newSeller.role });
+        const cookieOptions = {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        };
+
+        res.cookie("accessToken", accessToken, cookieOptions);
+        res.status(201).json(new ApiResponse(201, "Seller registered successfully", { newSeller, token: accessToken }));
 });
 
 export default { admin_login, getUser, seller_register };
