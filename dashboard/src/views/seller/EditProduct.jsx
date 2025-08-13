@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 const EditProduct = () => {
@@ -54,42 +53,12 @@ const EditProduct = () => {
                 setState({ ...state, [e.target.name]: e.target.value });
         };
 
-        const imageHandle = (e) => {
-                const files = e.target.files;
-                const length = files.length;
-
-                if (length > 0) {
-                        setImages([...images, ...files]);
-
-                        let imageUrl = [];
-
-                        for (let i = 0; i < length; i++) {
-                                imageUrl.push({ url: URL.createObjectURL(files[i]) });
-                        }
-
-                        setImageShow([...imageShow, ...imageUrl]);
+        const changeImage = (img, files) => {
+                if (files.length > 0) {
+                        console.log(img, files);
                 }
-
-                // console.log(imageShow);
         };
 
-        const changeImage = (file, idx) => {
-                if (!file) return;
-                const newImageShow = [...imageShow];
-                const newImages = [...images];
-                newImageShow[idx] = { url: URL.createObjectURL(file) };
-                newImages[idx] = file;
-                setImageShow(newImageShow);
-                setImages(newImages);
-        };
-
-        const removeImage = (idx) => {
-                const newImageShow = [...imageShow];
-                const newImages = [...images];
-                newImageShow.splice(idx, 1);
-                newImages.splice(idx, 1);
-                setImageShow(newImageShow);
-        };
         const categorySearch = (e) => {
                 const value = e.target.value;
                 setSearchValue(value);
@@ -287,59 +256,30 @@ const EditProduct = () => {
 
                                                         {/* Image upload */}
                                                         <div className="grid col-span-2 lg:grid-cols-4 grid-cols-1  sm:grid-cols-2 md:grid-cols-3 sm:gap-4 gap-3 w-full text-[#d0d2d6] mb-4 mt-4">
-                                                                {imageShow?.map((img, idx) => {
+                                                                {imageShow.map((img, idx) => {
                                                                         return (
-                                                                                <div className="h-[250px] w-full relative ">
+                                                                                <div>
                                                                                         <label htmlFor={idx}>
                                                                                                 <img
                                                                                                         src={img}
                                                                                                         alt="image"
-                                                                                                        className="w-full h-full rounded-sm cursor-pointer"
                                                                                                 />
                                                                                         </label>
                                                                                         <input
+                                                                                                onChange={(e) =>
+                                                                                                        changeImage(
+                                                                                                                img,
+                                                                                                                e.target
+                                                                                                                        .files
+                                                                                                        )
+                                                                                                }
                                                                                                 type="file"
                                                                                                 id={idx}
                                                                                                 className="hidden"
-                                                                                                onChange={(e) => {
-                                                                                                        changeImage(
-                                                                                                                e.target
-                                                                                                                        .files[0],
-                                                                                                                idx
-                                                                                                        );
-                                                                                                        e.target.value =
-                                                                                                                "";
-                                                                                                }}
                                                                                         />
-
-                                                                                        <span
-                                                                                                className="w-[25px] h-[25px] py-2 z-10 cursor-pointer bg-slate-700 hover:bg-slate-600 shadow-md hover:shadow-slate-400 text-white absolute top-0 right-0 rounded-full flex items-center justify-center"
-                                                                                                onClick={() =>
-                                                                                                        removeImage(idx)
-                                                                                                }
-                                                                                        >
-                                                                                                <IoMdCloseCircle />
-                                                                                        </span>
                                                                                 </div>
                                                                         );
                                                                 })}
-                                                                <label
-                                                                        htmlFor="image"
-                                                                        className="flex justify-center items-center flex-col h-[250px] cursor-pointer border-2 border-dashed hover:border-red-500 w-full text-[#d0d2d6]"
-                                                                >
-                                                                        <span>
-                                                                                <IoMdImages />
-                                                                        </span>
-                                                                        <p>Select Image</p>
-                                                                </label>
-                                                                <input
-                                                                        type="file"
-                                                                        id="image"
-                                                                        name="image"
-                                                                        multiple
-                                                                        onChange={imageHandle}
-                                                                        className="hidden"
-                                                                />
                                                         </div>
                                                 </div>
 
