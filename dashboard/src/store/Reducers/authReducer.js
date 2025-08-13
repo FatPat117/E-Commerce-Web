@@ -32,9 +32,9 @@ export const seller_register = createAsyncThunk(
                                 withCredentials: true,
                         });
 
-                        // const { token } = response.data.data;
-                        // localStorage.setItem("accessToken", token);
-                        console.log(response.data);
+                        const { token } = response.data.data;
+                        localStorage.setItem("accessToken", token);
+                        // console.log(response.data);
 
                         return fulfillWithValue(response.data); // trả về data
                 } catch (err) {
@@ -54,6 +54,7 @@ export const authReducer = createSlice({
                 },
         },
         extraReducers: (builder) => {
+                // Admin_login
                 builder.addCase(admin_login.pending, (state) => {
                         state.loader = true;
                 });
@@ -64,6 +65,21 @@ export const authReducer = createSlice({
                         state.errorMessage = "";
                 });
                 builder.addCase(admin_login.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Seller register
+                builder.addCase(seller_register.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(seller_register.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.userInfo = action.payload.data.newSeller;
+                        state.successMessage = action.payload.message;
+                        state.errorMessage = "";
+                });
+                builder.addCase(seller_register.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { FaEye, FaEyeSlash, FaFacebook, FaGoogle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
-import { seller_register } from "../../store/Reducers/authReducer";
+import { messageClear, seller_register } from "../../store/Reducers/authReducer";
 import { overrideStyle } from "../../utils/utils";
-
 const Register = () => {
-        const { loader } = useSelector((state) => state.auth);
+        const { loader, successMessage, errorMessage } = useSelector((state) => state.auth);
         const dispatch = useDispatch();
+
+        const navigate = useNavigate();
         const [hiddenPassword, setHiddenPassword] = useState(true);
         const [state, setState] = useState({
                 name: "",
@@ -28,6 +30,18 @@ const Register = () => {
         const togglePassword = () => {
                 setHiddenPassword(!hiddenPassword);
         };
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                        navigate("/");
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
         return (
                 <div className="min-w-screen min-h-screen bg-[#cdcae9] flex justify-center items-center ">
                         <div className="w-[450px] text-white p-2 py-10 relative">
