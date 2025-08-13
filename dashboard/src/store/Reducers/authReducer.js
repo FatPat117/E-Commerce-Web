@@ -28,7 +28,7 @@ export const seller_register = createAsyncThunk(
         "auth/seller_register",
         async (data, { rejectWithValue, fulfillWithValue }) => {
                 try {
-                        const response = await api.post("/seller-register", data, {
+                        const response = await api.post("/auth/seller-register", data, {
                                 withCredentials: true,
                         });
 

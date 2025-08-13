@@ -67,4 +67,10 @@ const getUser = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "User found", user));
 });
 
-export default { admin_login, getUser };
+const seller_register = asyncHandler(async (req, res, next) => {
+        const { name, email, password } = req.body;
+
+        // Check if email , email, password is provided
+});
+
+export default { admin_login, getUser, seller_register };

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const adminSchema = new mongoose.Schema(
+const sellerSchema = new mongoose.Schema(
         {
                 name: {
                         type: String,
@@ -18,18 +18,34 @@ const adminSchema = new mongoose.Schema(
                         required: [true, "Password is required"],
                         select: false,
                 },
-                image: {
-                        type: String,
-                        required: [true, "Image is required"],
-                },
                 role: {
                         type: String,
-                        default: "admin",
+                        default: "seller",
+                },
+                status: {
+                        type: String,
+                        default: "pending",
+                },
+                payment: {
+                        type: String,
+                        default: "inactive",
+                },
+                method: {
+                        type: String,
+                        required: [true, "LogMethod is required"],
+                },
+                image: {
+                        type: String,
+                        default: "",
+                },
+                showInfo: {
+                        type: Object,
+                        default: {},
                 },
         },
         { timestamps: true }
 );
 
-const Admin = mongoose.model("Admin", adminSchema);
+const Seller = mongoose.model("Seller", sellerSchema);
 
-export default Admin;
+export default Seller;
