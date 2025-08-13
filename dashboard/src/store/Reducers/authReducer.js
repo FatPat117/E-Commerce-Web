@@ -44,6 +44,25 @@ export const seller_register = createAsyncThunk(
         }
 );
 
+export const seller_login = createAsyncThunk(
+        "auth/seller_login",
+        async (data, { rejectWithValue, fulfillWithValue }) => {
+                try {
+                        const response = await api.post("/auth/seller-login", data, {
+                                withCredentials: true,
+                        });
+                        const { token } = response.data.data;
+                        localStorage.setItem("accessToken", token);
+                        // console.log(response.data);
+
+                        return fulfillWithValue(response.data); // trả về data
+                } catch (err) {
+                        // console.log(err.response.data.message);
+                        return rejectWithValue(err.response.data.message); // trả về message
+                }
+        }
+);
+
 export const authReducer = createSlice({
         name: "auth",
         initialState,
@@ -80,6 +99,21 @@ export const authReducer = createSlice({
                         state.errorMessage = "";
                 });
                 builder.addCase(seller_register.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Seller login
+                builder.addCase(seller_login.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(seller_login.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.userInfo = action.payload.data;
+                        state.successMessage = action.payload.message;
+                        state.errorMessage = "";
+                });
+                builder.addCase(seller_login.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

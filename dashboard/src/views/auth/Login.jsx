@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { FaEye, FaEyeSlash, FaFacebook, FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { PropagateLoader } from "react-spinners";
+import { messageClear, seller_login } from "../../store/Reducers/authReducer";
+import { overrideStyle } from "../../utils/utils";
 const Login = () => {
+        const { loader, successMessage, errorMessage } = useSelector((state) => state.auth);
+        const dispatch = useDispatch();
+        const navigate = useNavigate();
         const [hiddenPassword, setHiddenPassword] = useState(true);
         const [state, setState] = useState({
                 email: "",
@@ -15,12 +22,25 @@ const Login = () => {
 
         const handleSubmit = (e) => {
                 e.preventDefault();
-                console.log(state);
+                dispatch(seller_login(state));
         };
 
         const togglePassword = () => {
                 setHiddenPassword(!hiddenPassword);
         };
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                        navigate("/");
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
+
         return (
                 <div className="min-w-screen min-h-screen bg-[#cdcae9] flex justify-center items-center ">
                         <div className="w-[430px] text-white p-2 py-10 relative">
@@ -75,9 +95,17 @@ const Login = () => {
 
                                                 <button
                                                         type="submit"
-                                                        className="bg-slate-800 w-full cursor-pointer hover:bg-slate-800/50 hover:shadow-blue-300 hover:shadow-md text-white py-2 px-7 mb-1 rounded-md "
+                                                        className=" h-[40px] bg-slate-800 w-full cursor-pointer hover:bg-slate-800/50 hover:shadow-blue-300 hover:shadow-md text-white py-2 px-7 mb-1 rounded-md "
+                                                        disabled={loader}
                                                 >
-                                                        Sign In
+                                                        {loader ? (
+                                                                <PropagateLoader
+                                                                        color="#fff"
+                                                                        cssOverride={overrideStyle}
+                                                                />
+                                                        ) : (
+                                                                "Sign In"
+                                                        )}
                                                 </button>
 
                                                 <div className="flex items-center mb-1 gap-3 justify-center">

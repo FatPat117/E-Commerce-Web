@@ -112,4 +112,37 @@ const seller_register = asyncHandler(async (req, res, next) => {
         res.status(201).json(new ApiResponse(201, "Seller registered successfully", { newSeller, token: accessToken }));
 });
 
-export default { admin_login, getUser, seller_register };
+const seller_login = asyncHandler(async (req, res, next) => {
+        const { email, password } = req.body;
+
+        // Check if email , email, password is provided
+        if (!email || !password) {
+                throw new ApiError(400, "All fields are required");
+        }
+
+        // Check if Seller is exist
+        const seller = await Seller.findOne({ email }).select("+password");
+        if (!seller) {
+                throw new ApiError(400, "Email not found");
+        }
+
+        // Check if password is correct
+        const isPasswordCorrect = await bcrypt.compare(password, seller.password);
+        if (!isPasswordCorrect) {
+                throw new ApiError(400, "Password is incorrect");
+        }
+
+        // Generate token
+        const accessToken = createToken({ _id: seller._id, role: seller.role });
+        const cookieOptions = {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        };
+
+        res.cookie("accessToken", accessToken, cookieOptions);
+        res.status(200).json(new ApiResponse(200, "Seller login successful", { token: accessToken }));
+});
+
+export default { admin_login, getUser, seller_register, seller_login };
