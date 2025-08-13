@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
 import { admin_login, messageClear } from "../../store/Reducers/authReducer";
+import { overrideStyle } from "../../utils/utils";
 
 const AdminLogin = () => {
         const navigate = useNavigate();
@@ -29,14 +30,6 @@ const AdminLogin = () => {
 
         const togglePassword = () => {
                 setHiddenPassword(!hiddenPassword);
-        };
-
-        const overrideStyle = {
-                display: "flex",
-                margin: "0 auto",
-                height: "24px",
-                justifyContent: "center",
-                alignItems: "center",
         };
 
         useEffect(() => {

@@ -24,6 +24,26 @@ export const admin_login = createAsyncThunk("auth/admin_login", async (data, { r
         }
 });
 
+export const seller_register = createAsyncThunk(
+        "auth/seller_register",
+        async (data, { rejectWithValue, fulfillWithValue }) => {
+                try {
+                        const response = await api.post("/seller-register", data, {
+                                withCredentials: true,
+                        });
+
+                        // const { token } = response.data.data;
+                        // localStorage.setItem("accessToken", token);
+                        // console.log(response.data);
+
+                        return fulfillWithValue(response.data); // trả về data
+                } catch (err) {
+                        // console.log(err.response.data.message);
+                        return rejectWithValue(err.response.data.message); // trả về message
+                }
+        }
+);
+
 export const authReducer = createSlice({
         name: "auth",
         initialState,

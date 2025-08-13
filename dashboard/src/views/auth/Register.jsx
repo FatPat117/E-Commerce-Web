@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { FaFacebook, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaFacebook, FaGoogle } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { PropagateLoader } from "react-spinners";
+import { seller_register } from "../../store/Reducers/authReducer";
+import { overrideStyle } from "../../utils/utils";
 
 const Register = () => {
+        const { loader } = useSelector((state) => state.auth);
+        const dispatch = useDispatch();
         const [hiddenPassword, setHiddenPassword] = useState(true);
         const [state, setState] = useState({
                 name: "",
@@ -16,7 +22,7 @@ const Register = () => {
 
         const handleSubmit = (e) => {
                 e.preventDefault();
-                console.log(state);
+                dispatch(seller_register(state));
         };
 
         const togglePassword = () => {
@@ -108,9 +114,17 @@ const Register = () => {
 
                                                 <button
                                                         type="submit"
-                                                        className="bg-slate-800 w-full cursor-pointer hover:bg-slate-800/50 hover:shadow-blue-300 hover:shadow-md text-white py-2 px-7 mb-1 rounded-md "
+                                                        className=" h-[40px] bg-slate-800 w-full cursor-pointer hover:bg-slate-800/50 hover:shadow-blue-300 hover:shadow-md text-white py-2 px-7 mb-1 rounded-md "
+                                                        disabled={loader}
                                                 >
-                                                        Sign Up
+                                                        {loader ? (
+                                                                <PropagateLoader
+                                                                        color="#fff"
+                                                                        cssOverride={overrideStyle}
+                                                                />
+                                                        ) : (
+                                                                "Sign Up"
+                                                        )}
                                                 </button>
 
                                                 <div className="flex items-center mb-1 gap-3 justify-center">
