@@ -1,10 +1,13 @@
 import React from "react";
-import { FaImage } from "react-icons/fa";
+import { FaEdit, FaImage } from "react-icons/fa";
 import { FadeLoader } from "react-spinners";
 
 const Profile = () => {
         const image = true;
         const loader = false;
+        const status = "";
+        const userInfo = null;
+
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full flex flex-wrap">
@@ -45,6 +48,127 @@ const Profile = () => {
                                                                 </label>
                                                         )}
                                                         <input type="file" className="hidden" id="img" />
+                                                </div>
+
+                                                {/* User profile */}
+                                                <div className="px-0 md:px-5 py-2">
+                                                        <div className="flex justify-between text-sm md:text-md flex-col gap-3 px-4 py-3 bg-slate-700 rounded-md relative">
+                                                                <span className="self-end p-[6px] bg-yellow-600 rounded-md hover:shadow-md hover:shadow-yellow-600/50 cursor-pointer absolute top-2 right-2">
+                                                                        <FaEdit />
+                                                                </span>
+                                                                <div className="flex gap-2">
+                                                                        <span className="font-bold text-md">
+                                                                                Name:{" "}
+                                                                        </span>
+                                                                        <span>Pitachiti</span>
+                                                                </div>
+                                                                <div className="flex gap-2">
+                                                                        <span className="font-bold text-md">
+                                                                                Email:{" "}
+                                                                        </span>
+                                                                        <span>Pitachiti@gmail.com</span>
+                                                                </div>
+                                                                <div className="flex gap-2">
+                                                                        <span className="font-bold text-md">
+                                                                                Role:{" "}
+                                                                        </span>
+                                                                        <span>Seller</span>
+                                                                </div>
+                                                                <div className="flex gap-2">
+                                                                        <span className="font-bold text-md">
+                                                                                Status:{" "}
+                                                                        </span>
+                                                                        <span>Active</span>
+                                                                </div>
+                                                                <div className="flex gap-2">
+                                                                        <span className="font-bold text-md">
+                                                                                Payment Account:{" "}
+                                                                        </span>
+                                                                        <p>
+                                                                                {status === "active" ? (
+                                                                                        <span className="bg-green-500 text-white px-2 py-1 rounded-lg font-normal ml-2">
+                                                                                                Pending
+                                                                                        </span>
+                                                                                ) : (
+                                                                                        <span className="bg-red-500 text-white px-2 py-1 rounded-lg cursor-pointer">
+                                                                                                Click activate
+                                                                                        </span>
+                                                                                )}
+                                                                        </p>
+                                                                </div>
+                                                        </div>
+                                                </div>
+
+                                                {/* Edit Form */}
+                                                <div className="px-0 md:px-5 py-2">
+                                                        {!userInfo && (
+                                                                <form>
+                                                                        {/* Shop Name */}
+                                                                        <div className="flex flex-col w-full gap-1 mb-2">
+                                                                                <label htmlFor="shopName">
+                                                                                        Shop Name
+                                                                                </label>
+                                                                                <input
+                                                                                        type="text"
+                                                                                        id="shopName"
+                                                                                        name="shopName"
+                                                                                        placeholder="Shop Name"
+                                                                                        className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
+                                                                                />
+                                                                        </div>
+
+                                                                        {/* Division Name */}
+                                                                        <div className="flex flex-col w-full gap-1 mb-2">
+                                                                                <label htmlFor="division">
+                                                                                        Division Name
+                                                                                </label>
+                                                                                <input
+                                                                                        type="text"
+                                                                                        id="division"
+                                                                                        name="division"
+                                                                                        placeholder="Division Name"
+                                                                                        className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
+                                                                                />
+                                                                        </div>
+
+                                                                        {/* District */}
+                                                                        <div className="flex flex-col w-full gap-1 mb-2">
+                                                                                <label htmlFor="district">
+                                                                                        District Name
+                                                                                </label>
+                                                                                <input
+                                                                                        type="text"
+                                                                                        id="district"
+                                                                                        name="district"
+                                                                                        placeholder="District Name"
+                                                                                        className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
+                                                                                />
+                                                                        </div>
+
+                                                                        {/* Sub District*/}
+                                                                        <div className="flex flex-col w-full gap-1 mb-2">
+                                                                                <label htmlFor="subdis">
+                                                                                        Sub District Name
+                                                                                </label>
+                                                                                <input
+                                                                                        type="text"
+                                                                                        id="subdis"
+                                                                                        name="subdis"
+                                                                                        placeholder="Sub District Name"
+                                                                                        className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
+                                                                                />
+                                                                        </div>
+
+                                                                        {/* button */}
+                                                                        <div className="flex">
+                                                                                <div className=" text-center rounded-lg px-7 py-3 mt-2 bg-red-500  hover:shadow-red-500/50 hover:shadow-md hover:bg-red-400 transition-colors duration-300 text-white cursor-pointer ">
+                                                                                        <button className="cursor-pointer">
+                                                                                                Update Profile
+                                                                                        </button>
+                                                                                </div>
+                                                                        </div>
+                                                                </form>
+                                                        )}
                                                 </div>
                                         </div>
                                 </div>
