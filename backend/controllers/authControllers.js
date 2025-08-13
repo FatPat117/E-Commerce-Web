@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import Admin from "../models/adminModel.js";
+import Seller from "../models/sellerModel.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
@@ -71,6 +72,25 @@ const seller_register = asyncHandler(async (req, res, next) => {
         const { name, email, password } = req.body;
 
         // Check if email , email, password is provided
+        if (!email || !password || !name) {
+                throw new ApiError(400, "All fields are required");
+        }
+
+        // Check if email is already in use
+        const seller = await Seller.findOne({ email });
+        if (seller) {
+                throw new ApiError(409, "Email is already used");
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newSeller = await Seller.create({
+                name,
+                email,
+                password: hashedPassword,
+                method: "manual",
+        });
+
+        res.status(201).json(new ApiResponse(201, "Seller registered successfully", newSeller));
 });
 
 export default { admin_login, getUser, seller_register };
