@@ -64,7 +64,6 @@ export const get_user_info = createAsyncThunk(
                         const response = await api.get("/auth/get-user", {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
 
                         return fulfillWithValue(response.data); // trả về data
                 } catch (err) {
@@ -84,7 +83,7 @@ const returnRole = (token) => {
                         return null;
                 }
 
-                return decodedToken.role;
+                return decodedToken.data.role;
         } else {
                 return null;
         }

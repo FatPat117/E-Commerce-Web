@@ -16,7 +16,7 @@ const admin_login = asyncHandler(async (req, res) => {
         }
 
         // Find admin by email
-        const admin = await Admin.findOne({ email });
+        const admin = await Admin.findOne({ email }).select("+password");
         if (!admin) {
                 throw new ApiError(400, "Email not found");
         }
@@ -58,7 +58,7 @@ const getUser = asyncHandler(async (req, res, next) => {
                 if (!admin) {
                         throw new ApiError(400, "Admin not found");
                 }
-                return res.status(200).json(new ApiResponse(200, "Admin found", admin));
+                return res.status(200).json(new ApiResponse(200, "", admin));
         }
 
         // check if user is user
