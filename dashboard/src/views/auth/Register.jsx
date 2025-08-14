@@ -9,7 +9,6 @@ import { overrideStyle } from "../../utils/utils";
 const Register = () => {
         const { loader, successMessage, errorMessage } = useSelector((state) => state.auth);
         const dispatch = useDispatch();
-
         const navigate = useNavigate();
         const [hiddenPassword, setHiddenPassword] = useState(true);
         const [state, setState] = useState({
