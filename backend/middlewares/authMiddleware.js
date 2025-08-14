@@ -20,8 +20,8 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
         // verify token
         const decoded = jwt.verify(token, process.env.SECRET);
 
-        req.role = decoded.role;
-        req._id = decoded._id;
+        req.role = decoded.data.role;
+        req._id = decoded.data._id;
         next();
 });
 

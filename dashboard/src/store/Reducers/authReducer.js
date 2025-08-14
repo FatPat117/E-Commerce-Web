@@ -61,7 +61,7 @@ export const get_user_info = createAsyncThunk(
         "auth/get_user_info",
         async (data, { rejectWithValue, fulfillWithValue }) => {
                 try {
-                        const response = await api.get("/auth/get-info", {
+                        const response = await api.get("/auth/get-user", {
                                 withCredentials: true,
                         });
                         console.log(response.data);
@@ -148,7 +148,6 @@ export const authReducer = createSlice({
                 builder.addCase(seller_login.fulfilled, (state, action) => {
                         state.loader = false;
                         state.token = action.payload.data.token;
-                        state.userInfo = action.payload.data.newSeller;
                         state.successMessage = action.payload.message;
                         state.errorMessage = "";
                         state.role = returnRole(action.payload.data.token);

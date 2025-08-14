@@ -62,12 +62,15 @@ const getUser = asyncHandler(async (req, res, next) => {
         }
 
         // check if user is user
-        const user = await Admin.findById(userId).select("-password");
-        if (!user) {
-                throw new ApiError(400, "User not found");
+        if (role === "seller") {
+                const seller = await Seller.findById(userId).select("-password");
+                if (!seller) {
+                        throw new ApiError(400, "Seller not found");
+                }
+                return res.status(200).json(new ApiResponse(200, "", seller));
         }
 
-        res.status(200).json(new ApiResponse(200, "User found", user));
+        throw new ApiError(400, "User not found");
 });
 
 const seller_register = asyncHandler(async (req, res, next) => {
