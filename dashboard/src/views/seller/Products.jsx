@@ -69,21 +69,21 @@ const Products = () => {
                                                 </thead>
                                                 {/* <tbody className="text-center"> */}
                                                 <tbody className="">
-                                                        {[1, 2, 3, 4, 5].map((data, idx) => {
+                                                        {products.map((data, idx) => {
                                                                 return (
                                                                         <tr key={idx} className="border-b">
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        {data}
+                                                                                        {idx + 1}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
                                                                                         <img
-                                                                                                src={`/category/${data}.jpg`}
+                                                                                                src={data.images[0]}
                                                                                                 alt="category-image"
                                                                                                 className="w-[45px] h-[45px] object-cover"
                                                                                         />
@@ -92,37 +92,44 @@ const Products = () => {
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        TShirt
+                                                                                        {data?.name?.slice(0, 15) +
+                                                                                                "..."}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Category
+                                                                                        {data.category}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Brand
+                                                                                        {data.brand}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Price
+                                                                                        ${data.price}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Discount
+                                                                                        {data.discount === 0 ? (
+                                                                                                <span>NO DISCOUNT</span>
+                                                                                        ) : (
+                                                                                                <span>
+                                                                                                        {data.discount}%
+                                                                                                </span>
+                                                                                        )}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Stock
+                                                                                        {data.stock}
                                                                                 </td>
 
                                                                                 <td
@@ -152,15 +159,17 @@ const Products = () => {
                                 </div>
 
                                 {/* Pagination */}
-                                <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
-                                        <Pagination
-                                                pageNumber={currentPage}
-                                                setPageNumber={setCurrentPage}
-                                                totalItem={50}
-                                                perPage={perPage}
-                                                showPage={3}
-                                        />
-                                </div>
+                                {totalProduct > perPage && (
+                                        <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
+                                                <Pagination
+                                                        pageNumber={currentPage}
+                                                        setPageNumber={setCurrentPage}
+                                                        totalItem={50}
+                                                        perPage={perPage}
+                                                        showPage={3}
+                                                />
+                                        </div>
+                                )}
                         </div>
                 </div>
         );
