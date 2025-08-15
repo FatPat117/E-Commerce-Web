@@ -38,8 +38,7 @@ const add_category = asyncHandler(async (req, res) => {
 });
 
 const get_category = asyncHandler(async (req, res) => {
-        const categories = await Category.find();
-        res.status(200).json(new ApiResponse(200, "Categories fetched successfully", { categories }));
+        const { page, perPage, searchValue } = req.query;
 });
 
 export default { add_category, get_category };

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
+// Add category
 export const categoryAdd = createAsyncThunk(
         "category/categoryAdd",
         async ({ name, image }, { fulfillWithValue, rejectWithValue }) => {
@@ -15,6 +16,25 @@ export const categoryAdd = createAsyncThunk(
                                 },
                         });
                         // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Get categort
+export const categoryGet = createAsyncThunk(
+        "category/categoryAdd",
+        async ({ perPage, page, searchValue }, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(
+                                `/category?perPage=${perPage}&page=${page}&searchValue=${searchValue}`,
+                                {
+                                        withCredentials: true,
+                                }
+                        );
+                        console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);

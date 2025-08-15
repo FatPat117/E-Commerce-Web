@@ -4,10 +4,10 @@ import { FaEdit, FaImage, FaTimes, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
-
-import { categoryAdd, messageClear } from "../../store/Reducers/categoryReducer";
+import { categoryAdd, categoryGet, messageClear } from "../../store/Reducers/categoryReducer";
 import { overrideStyle } from "../../utils/utils";
 import Pagination from "../Pagination";
+import Search from "../components/Search";
 const Category = () => {
         const { loader, errorMessage, successMessage } = useSelector((state) => state.category);
         const dispatch = useDispatch();
@@ -56,6 +56,15 @@ const Category = () => {
                 }
         }, [successMessage, errorMessage]);
 
+        useEffect(() => {
+                const obj = {
+                        perPage: parseInt(perPage),
+                        page: parseInt(currentPage),
+                        searchValue,
+                };
+                dispatch(categoryGet(obj));
+        }, [perPage, currentPage, searchValue]);
+
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         {/* Mobile view */}
@@ -74,27 +83,12 @@ const Category = () => {
                                 <div className="w-full lg:w-7/12 ">
                                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
                                                 {/* Select and Search field */}
-                                                <div className="flex justify-between items-center">
-                                                        <select
-                                                                onChange={(e) => setPerPage(parseInt(e.target.value))}
-                                                                name=""
-                                                                id=""
-                                                                value={perPage}
-                                                                className="px-4 py-2 focus:border-indigo-500 hover:border-indigo-500 outline-none bg-[#6a5fdf] border-2 border-slate-700 rounded-lg text-[#d0d2d6] overflow-hidden cursor-pointer"
-                                                        >
-                                                                <option value="5">5</option>
-                                                                <option value="10">10</option>
-                                                                <option value="15">15</option>
-                                                                <option value="20">20</option>
-                                                        </select>
-                                                        <input
-                                                                type="text"
-                                                                placeholder="search"
-                                                                value={searchValue}
-                                                                onChange={(e) => setSearchValue(e.target.value)}
-                                                                className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
-                                                        />
-                                                </div>
+                                                <Search
+                                                        setPerPage={setPerPage}
+                                                        perPage={perPage}
+                                                        setSearchValue={setSearchValue}
+                                                        searchValue={searchValue}
+                                                />
 
                                                 {/* Table */}
                                                 <div className="relative overflow-x-auto">
