@@ -69,7 +69,7 @@ const Products = () => {
                                                 </thead>
                                                 {/* <tbody className="text-center"> */}
                                                 <tbody className="">
-                                                        {products.map((data, idx) => {
+                                                        {products?.map((data, idx) => {
                                                                 return (
                                                                         <tr key={idx} className="border-b">
                                                                                 <td
