@@ -7,13 +7,34 @@ const ProtectedRoute = ({ route, children }) => {
 
         if (role) {
                 if (userInfo) {
-                        if (userInfo?.role == route?.role) {
-                                return <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>;
+                        // check if the route is visible to the user
+                        if (userInfo?.role === route?.role) {
+                                if (userInfo?.role === "seller") {
+                                        // seller mới có status
+                                        if (route?.status === userInfo?.status) {
+                                                return <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>;
+                                        } else {
+                                                if (userInfo?.status === "pending") {
+                                                        return <Navigate to="/seller/account-pending" replace />;
+                                                } else {
+                                                        return <Navigate to="/seller/account-deactive" replace />;
+                                                }
+                                        }
+
+                                        //
+                                } else {
+                                        // admin thì không cần check status
+                                        return <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>;
+                                }
                         } else {
-                                return <Navigate to="/unauthorized" />;
+                                if (route?.visibility?.includes(userInfo?.status)) {
+                                        return <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>;
+                                } else {
+                                        return <Navigate to="/seller/account-pending" replace />;
+                                }
                         }
                 } else {
-                        return <Navigate to="/unauthorized" />;
+                        return <Navigate to="/login" replace />;
                 }
         } else {
                 return <Navigate to="/login" replace />;
