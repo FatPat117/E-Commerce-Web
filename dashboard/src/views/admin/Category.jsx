@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { FaEdit, FaImage, FaTimes, FaTrash } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { PropagateLoader } from "react-spinners";
+import { overrideStyle } from "../../utils/utils";
 import Pagination from "../Pagination";
 const Category = () => {
+        const { loader, errorMessage, successMessage } = useSelector((state) => state.auth);
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
         const [perPage, setPerPage] = useState(5);
@@ -26,8 +30,9 @@ const Category = () => {
                         setState({ ...state, image: files[0] });
                 }
         };
-        const handleSubmit = (e) => {
+        const AddCategory = (e) => {
                 e.preventDefault();
+                console.log(state);
         };
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -177,7 +182,7 @@ const Category = () => {
                                                                 </div>
                                                         </div>
 
-                                                        <form onSubmit={handleSubmit}>
+                                                        <form onSubmit={AddCategory}>
                                                                 {/* Search Input */}
                                                                 <div className="flex flex-col w-full gap-1 mb-3">
                                                                         <label htmlFor="name">Category Name</label>
@@ -224,11 +229,24 @@ const Category = () => {
                                                                                 onChange={handleImage}
                                                                         />
 
-                                                                        <div className=" text-center rounded-lg px-7 py-3 mt-2 bg-red-500 w-full hover:shadow-red-500/50 hover:shadow-md hover:bg-red-400 transition-colors duration-300 text-white cursor-pointer ">
-                                                                                <button className="cursor-pointer">
-                                                                                        Add category
-                                                                                </button>
-                                                                        </div>
+                                                                        {/* Button */}
+                                                                        <div className="mt-4"></div>
+                                                                        <button
+                                                                                type="submit"
+                                                                                className=" h-[40px] bg-red-600  w-full cursor-pointer hover:bg-red-600/50 hover:shadow-red-600 hover:shadow-md text-white py-2 px-7 mb-1 rounded-md "
+                                                                                disabled={loader}
+                                                                        >
+                                                                                {loader ? (
+                                                                                        <PropagateLoader
+                                                                                                color="#fff"
+                                                                                                cssOverride={
+                                                                                                        overrideStyle
+                                                                                                }
+                                                                                        />
+                                                                                ) : (
+                                                                                        "Add category"
+                                                                                )}
+                                                                        </button>
                                                                 </div>
                                                         </form>
                                                 </div>
