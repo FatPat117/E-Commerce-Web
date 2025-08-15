@@ -335,7 +335,7 @@ const AddProduct = () => {
                                                 {/* button */}
                                                 <div className="flex">
                                                         <div className=" text-center rounded-lg px-7 py-3 mt-2 bg-red-500  hover:shadow-red-500/50 hover:shadow-md hover:bg-red-400 transition-colors duration-300 text-white cursor-pointer ">
-                                                                <button className="cursor-pointer">Add category</button>
+                                                                <button className="cursor-pointer">Add Product</button>
                                                         </div>
                                                 </div>
                                         </form>
