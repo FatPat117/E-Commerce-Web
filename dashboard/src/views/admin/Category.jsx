@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { FaEdit, FaImage, FaTimes, FaTrash } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
+import { categoryAdd } from "../../store/Reducers/categoryReducer";
 import { overrideStyle } from "../../utils/utils";
 import Pagination from "../Pagination";
 const Category = () => {
-        const { loader, errorMessage, successMessage } = useSelector((state) => state.auth);
+        const { loader, errorMessage, successMessage } = useSelector((state) => state.category);
+        const dispatch = useDispatch();
+
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
         const [perPage, setPerPage] = useState(5);
@@ -32,7 +35,7 @@ const Category = () => {
         };
         const AddCategory = (e) => {
                 e.preventDefault();
-                console.log(state);
+                dispatch(categoryAdd(state));
         };
         return (
                 <div className="px-2 lg:px-7 pt-5">

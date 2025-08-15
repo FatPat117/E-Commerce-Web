@@ -2,10 +2,11 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import connectDB from "./utils/db.js";
-import { notFound } from "./middlewares/error.js";
-import globalErrorHandler from "./middlewares/error.js";
+import globalErrorHandler, { notFound } from "./middlewares/error.js";
 import authRoutes from "./routes/authRoutes.js";
+import categoryRoutes from "./routes/dashboard/categoryRoutes.js";
+import connectDB from "./utils/db.js";
+
 dotenv.config();
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(
 // Routes
 
 app.use("/api/auth", authRoutes);
+app.use("/api/category", categoryRoutes);
 app.use(notFound);
 app.use(globalErrorHandler);
 

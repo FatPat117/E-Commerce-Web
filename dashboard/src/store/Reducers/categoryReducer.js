@@ -8,7 +8,7 @@ export const categoryAdd = createAsyncThunk(
                         const formData = new FormData();
                         formData.append("name", name);
                         formData.append("image", image);
-                        const response = await api.post("/category-add", formData, { withCredentials: true });
+                        const response = await api.post("/category", formData, { withCredentials: true });
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -30,7 +30,20 @@ const categoryReducer = createSlice({
                         state.errorMessage = "";
                 },
         },
-        extraReducers: (builder) => {},
+        extraReducers: (builder) => {
+                builder.addCase(categoryAdd.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(categoryAdd.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.categories.push(action.payload.data.category);
+                });
+                builder.addCase(categoryAdd.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+        },
 });
 
 export default categoryReducer.reducer;
