@@ -3,7 +3,11 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ route, children }) => {
-        const { role, userInfo } = useSelector((state) => state.auth);
+        const { role, userInfo, loader } = useSelector((state) => state.auth);
+
+        if (loader) {
+                return <div>Loading...</div>;
+        }
 
         // --- 1. Chưa đăng nhập ---
         if (!role || !userInfo) {
