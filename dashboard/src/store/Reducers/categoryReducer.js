@@ -14,7 +14,7 @@ export const categoryAdd = createAsyncThunk(
                                         "Content-Type": "multipart/form-data",
                                 },
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -52,4 +52,5 @@ const categoryReducer = createSlice({
         },
 });
 
+export const { messageClear } = categoryReducer.actions;
 export default categoryReducer.reducer;

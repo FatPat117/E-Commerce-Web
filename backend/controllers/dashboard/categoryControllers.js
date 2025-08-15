@@ -1,4 +1,4 @@
-import cloudinary from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import formidable from "formidable";
 import Category from "../../models/categoryModel.js";
 import ApiError from "../../utils/ApiError.js";

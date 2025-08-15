@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { FaEdit, FaImage, FaTimes, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
-import { categoryAdd } from "../../store/Reducers/categoryReducer";
+
+import { categoryAdd, messageClear } from "../../store/Reducers/categoryReducer";
 import { overrideStyle } from "../../utils/utils";
 import Pagination from "../Pagination";
 const Category = () => {
@@ -37,6 +39,23 @@ const Category = () => {
                 e.preventDefault();
                 dispatch(categoryAdd(state));
         };
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                        setState({
+                                name: "",
+                                image: "",
+                        });
+                        setImageShow("");
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
+
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         {/* Mobile view */}
