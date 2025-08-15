@@ -4,12 +4,9 @@ import api from "../../api/api";
 // Add product
 export const add_product = createAsyncThunk(
         "product/add_product",
-        async ({ name, image }, { fulfillWithValue, rejectWithValue }) => {
+        async (product, { fulfillWithValue, rejectWithValue }) => {
                 try {
-                        const formData = new FormData();
-                        formData.append("name", name);
-                        formData.append("image", image);
-                        const response = await api.post("/product", formData, {
+                        const response = await api.post("/product", product, {
                                 withCredentials: true,
                                 headers: {
                                         "Content-Type": "multipart/form-data",

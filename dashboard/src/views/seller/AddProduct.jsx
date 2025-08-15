@@ -3,6 +3,7 @@ import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { get_category } from "../../store/Reducers/categoryReducer";
+import { add_product } from "../../store/Reducers/productReducer";
 
 const AddProduct = () => {
         const dispatch = useDispatch();
@@ -26,7 +27,6 @@ const AddProduct = () => {
                 price: "",
                 brand: "",
                 stock: "",
-                category: "",
         });
 
         useEffect(() => {
@@ -89,7 +89,19 @@ const AddProduct = () => {
 
         const AddProduct = (e) => {
                 e.preventDefault();
-                // dispatch(add_product(state));
+                const formData = new FormData();
+                formData.append("name", state.name);
+                formData.append("brand", state.brand);
+                formData.append("category", category);
+                formData.append("stock", state.stock);
+                formData.append("price", state.price);
+                formData.append("discount", state.discount);
+                formData.append("description", state.description);
+                formData.append("shopName", "Easy Shop");
+                for (let i = 0; i < images.length; i++) {
+                        formData.append("images", images[i]);
+                }
+                dispatch(add_product(formData));
         };
 
         if (loader) {
