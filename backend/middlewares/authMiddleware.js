@@ -15,7 +15,7 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
         }
 
         if (!token) {
-                throw new ApiError(401, "Please login to access this page]");
+                throw new ApiError(401, "Please login to access this page");
         }
         // verify token
         const decoded = jwt.verify(token, process.env.SECRET);

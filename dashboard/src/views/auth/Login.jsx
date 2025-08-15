@@ -8,7 +8,7 @@ import { messageClear, seller_login } from "../../store/Reducers/authReducer";
 import { overrideStyle } from "../../utils/utils";
 
 const Login = () => {
-        const { loader, successMessage, errorMessage } = useSelector((state) => state.auth);
+        const { loader, successMessage, errorMessage, role } = useSelector((state) => state.auth);
         const dispatch = useDispatch();
         const navigate = useNavigate();
         const [hiddenPassword, setHiddenPassword] = useState(true);
@@ -34,7 +34,13 @@ const Login = () => {
                 if (successMessage) {
                         toast.success(successMessage);
                         dispatch(messageClear());
-                        navigate("/");
+                        if (role === "seller") {
+                                navigate("/seller/dashboard");
+                        } else if (role === "admin") {
+                                navigate("/admin/dashboard");
+                        } else {
+                                navigate("/");
+                        }
                 }
                 if (errorMessage) {
                         toast.error(errorMessage);
