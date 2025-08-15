@@ -23,9 +23,9 @@ export const categoryAdd = createAsyncThunk(
         }
 );
 
-// Get categort
+// Get category
 export const categoryGet = createAsyncThunk(
-        "category/categoryAdd",
+        "category/categoryGet",
         async ({ perPage, page, searchValue }, { fulfillWithValue, rejectWithValue }) => {
                 try {
                         const response = await api.get(
@@ -49,6 +49,7 @@ const categoryReducer = createSlice({
                 errorMessage: "",
                 loader: false,
                 categories: [],
+                totalCategory: 0,
         },
         reducers: {
                 messageClear: (state) => {
@@ -57,6 +58,7 @@ const categoryReducer = createSlice({
                 },
         },
         extraReducers: (builder) => {
+                // Add category
                 builder.addCase(categoryAdd.pending, (state) => {
                         state.loader = true;
                 });
@@ -66,6 +68,21 @@ const categoryReducer = createSlice({
                         state.categories.push(action.payload.data.category);
                 });
                 builder.addCase(categoryAdd.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                //  get category
+                builder.addCase(categoryGet.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(categoryGet.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.totalCategory = action.payload.data.totalCategory;
+                        state.categories = action.payload.data.category;
+                });
+                builder.addCase(categoryGet.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

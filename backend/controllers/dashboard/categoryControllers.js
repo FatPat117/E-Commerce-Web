@@ -36,40 +36,39 @@ const add_category = asyncHandler(async (req, res) => {
                 res.status(201).json(new ApiResponse(201, "Category added successfully", { category }));
         });
 });
-
 const get_category = asyncHandler(async (req, res) => {
         const { page, perPage, searchValue } = req.query;
-
         const skipPage = parseInt(perPage) * (parseInt(page) - 1);
 
-        if (searchValue) {
-                const category = await Category.find({
+        let category;
+        let totalCategory;
+
+        if (searchValue && perPage && page) {
+                category = await Category.find({
                         name: { $regex: searchValue, $options: "i" },
                 })
                         .skip(skipPage)
                         .limit(parseInt(perPage))
-                        .sort({ createAt: -1 });
+                        .sort({ createdAt: -1 });
 
-                const totalCategory = await Category.countDocuments({
+                totalCategory = await Category.countDocuments({
                         name: { $regex: searchValue, $options: "i" },
                 });
+        } else if (searchValue === "" && perPage && page) {
+                category = await Category.find().skip(skipPage).limit(parseInt(perPage)).sort({ createdAt: -1 });
 
-                res.status(200).json(
-                        new ApiResponse(200, "", {
-                                category,
-                                totalCategory,
-                        })
-                );
+                totalCategory = await Category.countDocuments();
         } else {
-                const category = await Category.find();
-                const totalCategory = await Category.countDocuments();
-                res.status(200).json(
-                        new ApiResponse(200, "Categories fetched successfully", {
-                                category,
-                                totalCategory,
-                        })
-                );
+                category = await Category.find();
+                totalCategory = await Category.countDocuments();
         }
+
+        res.status(200).json(
+                new ApiResponse(200, "", {
+                        category,
+                        totalCategory,
+                })
+        );
 });
 
 export default { add_category, get_category };

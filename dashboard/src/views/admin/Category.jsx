@@ -9,7 +9,10 @@ import { overrideStyle } from "../../utils/utils";
 import Pagination from "../Pagination";
 import Search from "../components/Search";
 const Category = () => {
-        const { loader, errorMessage, successMessage } = useSelector((state) => state.category);
+        const { loader, errorMessage, successMessage, categories, totalCategory } = useSelector(
+                (state) => state.category
+        );
+        console.log(categories);
         const dispatch = useDispatch();
 
         const [currentPage, setCurrentPage] = useState(1);
@@ -111,7 +114,7 @@ const Category = () => {
                                                                 </thead>
                                                                 {/* <tbody className="text-center"> */}
                                                                 <tbody className="">
-                                                                        {[1, 2, 3, 4, 5].map((data, idx) => {
+                                                                        {categories.map((data, idx) => {
                                                                                 return (
                                                                                         <tr
                                                                                                 key={idx}
@@ -121,14 +124,16 @@ const Category = () => {
                                                                                                         scope="row"
                                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                                 >
-                                                                                                        {data}
+                                                                                                        {idx + 1}
                                                                                                 </td>
                                                                                                 <td
                                                                                                         scope="row"
                                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                                 >
                                                                                                         <img
-                                                                                                                src={`/category/${data}.jpg`}
+                                                                                                                src={
+                                                                                                                        data.image
+                                                                                                                }
                                                                                                                 alt="category-image"
                                                                                                                 className="w-[45px] h-[45px] object-cover"
                                                                                                         />
@@ -137,7 +142,7 @@ const Category = () => {
                                                                                                         scope="row"
                                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                                 >
-                                                                                                        TShirt
+                                                                                                        {data.name}
                                                                                                 </td>
                                                                                                 <td
                                                                                                         scope="row"
@@ -164,7 +169,7 @@ const Category = () => {
                                                         <Pagination
                                                                 pageNumber={currentPage}
                                                                 setPageNumber={setCurrentPage}
-                                                                totalItem={50}
+                                                                totalItem={totalCategory}
                                                                 perPage={perPage}
                                                                 showPage={3}
                                                         />
