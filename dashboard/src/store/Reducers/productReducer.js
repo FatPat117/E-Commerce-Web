@@ -12,7 +12,7 @@ export const add_product = createAsyncThunk(
                                         "Content-Type": "multipart/form-data",
                                 },
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -21,8 +21,8 @@ export const add_product = createAsyncThunk(
 );
 
 // Get product
-export const get_product = createAsyncThunk(
-        "product/get_product",
+export const get_products = createAsyncThunk(
+        "product/get_products",
         async ({ perPage, page, searchValue }, { fulfillWithValue, rejectWithValue }) => {
                 try {
                         const response = await api.get(
@@ -62,7 +62,7 @@ const productReducer = createSlice({
                 builder.addCase(add_product.fulfilled, (state, action) => {
                         state.loader = false;
                         state.successMessage = action.payload.message;
-                        state.products.push(action.payload.data.product);
+                        state.products = action.payload.data.products;
                 });
                 builder.addCase(add_product.rejected, (state, action) => {
                         state.loader = false;
@@ -70,16 +70,16 @@ const productReducer = createSlice({
                 });
 
                 //  get product
-                builder.addCase(get_product.pending, (state) => {
+                builder.addCase(get_products.pending, (state) => {
                         state.loader = true;
                 });
-                builder.addCase(get_product.fulfilled, (state, action) => {
+                builder.addCase(get_products.fulfilled, (state, action) => {
                         state.loader = false;
                         state.successMessage = action.payload.message;
                         state.totalProduct = action.payload.data.totalProduct;
-                        state.products = action.payload.data.product;
+                        state.products = action.payload.data.products;
                 });
-                builder.addCase(get_product.rejected, (state, action) => {
+                builder.addCase(get_products.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

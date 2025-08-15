@@ -59,6 +59,38 @@ const add_product = asyncHandler(async (req, res) => {
 
         res.status(201).json(new ApiResponse(201, "Product created successfully", product));
 });
-const get_product = asyncHandler(async (req, res) => {});
+const get_products = asyncHandler(async (req, res) => {
+        const id = req._id;
+        const { perPage, page, searchValue } = req.query;
+        let products;
+        let totalProduct;
 
-export default { add_product, get_product };
+        // search and pagination
+        if (searchValue?.trim() != "" && page != "" && perPage != "") {
+                const skipPage = parseInt(perPage) * parseInt(page - 1);
+                products = await Product.find({
+                        $text: { $search: searchValue, $option: "i" },
+                        sellerId: id,
+                })
+                        .skip(skipPage)
+                        .limit(parseInt(perPage));
+                totalProduct = await Product.countDocuments({
+                        $text: { $search: searchValue, $option: "i" },
+                        sellerId: id,
+                });
+                // pagination
+        } else if (searchValue.trim() == "" && page && perPage) {
+                const skipPage = parseInt(perPage) * parseInt(page - 1);
+                products = await Product.find({ sellerId: id }).skip(skipPage).limit(parseInt(perPage));
+                totalProduct = await Product.countDocuments({ sellerId: id });
+                // All
+        } else {
+                products = await Product.find({ sellerId: id });
+                totalProduct = await Product.countDocuments({ sellerId: id });
+        }
+
+        if (!products) throw new ApiError(404, "No products found");
+        res.status(200).json(new ApiResponse(200, "Products fetched successfully", { products, totalProduct }));
+});
+
+export default { add_product, get_products };

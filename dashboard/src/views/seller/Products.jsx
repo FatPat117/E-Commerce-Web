@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { get_products } from "../../store/Reducers/productReducer";
 import Search from "../components/Search";
 import Pagination from "../Pagination";
-
 const Products = () => {
+        const dispatch = useDispatch();
+        const { products, totalProduct } = useSelector((state) => state.product);
+
         const [perPage, setPerPage] = useState(5);
         const [searchValue, setSearchValue] = useState("");
         const [currentPage, setCurrentPage] = useState(1);
+
+        useEffect(() => {
+                const obj = {
+                        perPage: parseInt(perPage),
+                        searchValue: searchValue,
+                        page: parseInt(currentPage),
+                };
+                dispatch(get_products(obj));
+        }, [dispatch, perPage, searchValue, currentPage]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <h1 className="text-[#000000] text-xl font-bold">All Products</h1>
