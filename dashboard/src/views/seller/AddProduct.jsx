@@ -221,6 +221,7 @@ const AddProduct = () => {
                                                         <div className="flex flex-col w-full gap-1">
                                                                 <label htmlFor="stock">Product Stock</label>
                                                                 <input
+                                                                        min={0}
                                                                         type="number"
                                                                         id="stock"
                                                                         name="stock"
@@ -235,6 +236,7 @@ const AddProduct = () => {
                                                         <div className="flex flex-col w-full gap-1">
                                                                 <label htmlFor="price">Product Price</label>
                                                                 <input
+                                                                        min={0}
                                                                         type="number"
                                                                         id="price"
                                                                         name="price"
@@ -249,6 +251,7 @@ const AddProduct = () => {
                                                         <div className="flex flex-col w-full gap-1">
                                                                 <label htmlFor="discount">Product Discount</label>
                                                                 <input
+                                                                        min={0}
                                                                         type="number"
                                                                         id="discount"
                                                                         name="discount"

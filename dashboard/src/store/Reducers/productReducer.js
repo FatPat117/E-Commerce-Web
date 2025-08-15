@@ -12,7 +12,7 @@ export const add_product = createAsyncThunk(
                                         "Content-Type": "multipart/form-data",
                                 },
                         });
-                        // console.log(response.data);
+                        console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -62,7 +62,7 @@ const productReducer = createSlice({
                 builder.addCase(add_product.fulfilled, (state, action) => {
                         state.loader = false;
                         state.successMessage = action.payload.message;
-                        state.products.push(action.payload.data.product);
+                        state.products = action.payload.data.product;
                 });
                 builder.addCase(add_product.rejected, (state, action) => {
                         state.loader = false;
