@@ -4,7 +4,7 @@ import { FaEdit, FaImage, FaTimes, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
-import { categoryAdd, categoryGet, messageClear } from "../../store/Reducers/categoryReducer";
+import { add_category, get_category, messageClear } from "../../store/Reducers/categoryReducer";
 import { overrideStyle } from "../../utils/utils";
 import Pagination from "../Pagination";
 import Search from "../components/Search";
@@ -40,7 +40,7 @@ const Category = () => {
         };
         const AddCategory = (e) => {
                 e.preventDefault();
-                dispatch(categoryAdd(state));
+                dispatch(add_category(state));
         };
 
         useEffect(() => {
@@ -65,7 +65,7 @@ const Category = () => {
                         page: parseInt(currentPage),
                         searchValue,
                 };
-                dispatch(categoryGet(obj));
+                dispatch(get_category(obj));
         }, [perPage, currentPage, searchValue]);
 
         return (
