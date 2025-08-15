@@ -1,42 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { get_category } from "../../store/Reducers/categoryReducer";
 
 const AddProduct = () => {
-        const categories = [
-                {
-                        id: 1,
-                        name: "Sports",
-                },
-                {
-                        id: 2,
-                        name: "Electronics",
-                },
-                {
-                        id: 3,
-                        name: "Fashion",
-                },
-                {
-                        id: 4,
-                        name: "Computers",
-                },
-                {
-                        id: 5,
-                        name: "Books",
-                },
-                {
-                        id: 6,
-                        name: "Toys",
-                },
-                {
-                        id: 7,
-                        name: "Watch",
-                },
-        ];
+        const dispatch = useDispatch();
+        useEffect(() => {
+                dispatch(get_category({ page: "", searchValue: "", perPage: "" }));
+        }, [dispatch]);
+
+        const { categories, loader } = useSelector((state) => state.category);
+
         const [cateShow, setCateShow] = useState(false);
-        const [allCategory, setAllCategory] = useState(categories);
+        const [allCategory, setAllCategory] = useState([]);
         const [searchValue, setSearchValue] = useState("");
-        const [category, setCategory] = useState(categories[0].name);
+        const [category, setCategory] = useState("");
         const [images, setImages] = useState([]);
         const [imageShow, setImageShow] = useState([]);
 
@@ -49,6 +28,10 @@ const AddProduct = () => {
                 stock: "",
                 category: "",
         });
+
+        useEffect(() => {
+                setAllCategory(categories);
+        }, [categories]);
 
         const inputHandle = (e) => {
                 setState({ ...state, [e.target.name]: e.target.value });
@@ -100,10 +83,18 @@ const AddProduct = () => {
                                         cate.name.toLowerCase().includes(value.toLowerCase())
                                 );
                                 setAllCategory(filteredCategory);
-                        }, 1000);
+                        }, 500);
                 }
         };
 
+        const AddProduct = (e) => {
+                e.preventDefault();
+                // dispatch(add_product(state));
+        };
+
+        if (loader) {
+                return <div>Loading...</div>;
+        }
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
@@ -120,7 +111,7 @@ const AddProduct = () => {
 
                                 {/* Second Part: Add Product Form */}
                                 <div>
-                                        <form action="">
+                                        <form onSubmit={AddProduct}>
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full text-[#d0d2d6]">
                                                         {/* Product Name */}
                                                         <div className="flex flex-col w-full gap-1">
@@ -182,7 +173,7 @@ const AddProduct = () => {
 
                                                                         {/* Select */}
                                                                         <div className="pt-14"></div>
-                                                                        <div className="flex justify-start items-start flex-col h-[200px] overflow-x-scroll">
+                                                                        <div className="flex justify-start items-start flex-col h-[200px] overflow-y-scroll">
                                                                                 {allCategory.map((cate, idx) => (
                                                                                         <span
                                                                                                 onClick={() => {
@@ -190,7 +181,7 @@ const AddProduct = () => {
                                                                                                                 false
                                                                                                         );
                                                                                                         setCategory(
-                                                                                                                cate.name
+                                                                                                                cate?.name
                                                                                                         );
                                                                                                         setSearchValue(
                                                                                                                 ""

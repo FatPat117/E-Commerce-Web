@@ -43,7 +43,7 @@ const get_category = asyncHandler(async (req, res) => {
         let category;
         let totalCategory;
 
-        if (searchValue && perPage && page) {
+        if (searchValue !== "" && perPage !== "" && page !== "") {
                 category = await Category.find({
                         name: { $regex: searchValue, $options: "i" },
                 })
@@ -54,7 +54,7 @@ const get_category = asyncHandler(async (req, res) => {
                 totalCategory = await Category.countDocuments({
                         name: { $regex: searchValue, $options: "i" },
                 });
-        } else if (searchValue === "" && perPage && page) {
+        } else if (searchValue === "" && perPage !== "" && page !== "") {
                 category = await Category.find().skip(skipPage).limit(parseInt(perPage)).sort({ createdAt: -1 });
 
                 totalCategory = await Category.countDocuments();
