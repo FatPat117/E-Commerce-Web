@@ -7,6 +7,28 @@ const Category = () => {
         const [searchValue, setSearchValue] = useState("");
         const [perPage, setPerPage] = useState(5);
         const [showAddCategory, setShowAddCategory] = useState(false);
+        const [imageShow, setImageShow] = useState("");
+
+        const [state, setState] = useState({
+                name: "",
+                image: "",
+        });
+
+        const handleInput = (e) => {
+                const value = e.target.value;
+                setState({ ...state, [e.target.name]: value });
+        };
+
+        const handleImage = (e) => {
+                const files = e.target.files;
+                if (files.length > 0) {
+                        setImageShow(URL.createObjectURL(files[0]));
+                        setState({ ...state, image: files[0] });
+                }
+        };
+        const handleSubmit = (e) => {
+                e.preventDefault();
+        };
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         {/* Mobile view */}
@@ -21,7 +43,7 @@ const Category = () => {
                         </div>
 
                         <div className="flex flex-wrap w-full">
-                                {/* Right part */}
+                                {/* Left part */}
                                 <div className="w-full lg:w-7/12 ">
                                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
                                                 {/* Select and Search field */}
@@ -41,6 +63,8 @@ const Category = () => {
                                                         <input
                                                                 type="text"
                                                                 placeholder="search"
+                                                                value={searchValue}
+                                                                onChange={(e) => setSearchValue(e.target.value)}
                                                                 className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                                         />
                                                 </div>
@@ -127,7 +151,7 @@ const Category = () => {
                                         </div>
                                 </div>
 
-                                {/* Left part : Add category*/}
+                                {/* Right part : Add category*/}
                                 <div
                                         className={`w-[320px] lg:w-5/12 lg:relative lg:right-0 fixed  z-50 transition-all duration-500 ${
                                                 showAddCategory ? "right-0 top-0" : "-right-[340px] top-0 "
@@ -153,15 +177,17 @@ const Category = () => {
                                                                 </div>
                                                         </div>
 
-                                                        <form>
+                                                        <form onSubmit={handleSubmit}>
                                                                 {/* Search Input */}
                                                                 <div className="flex flex-col w-full gap-1 mb-3">
                                                                         <label htmlFor="name">Category Name</label>
                                                                         <input
                                                                                 type="text"
                                                                                 id="name"
-                                                                                name="category_name"
+                                                                                name="name"
                                                                                 placeholder="Category Name"
+                                                                                value={state.name}
+                                                                                onChange={handleInput}
                                                                                 className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                                                         />
                                                                 </div>
@@ -172,10 +198,22 @@ const Category = () => {
                                                                                 className="flex justify-center items-center flex-col h-[238px] cursor-pointer border-2 border-dashed hover:border-white w-full border-slate-900"
                                                                                 htmlFor="image"
                                                                         >
-                                                                                <span>
-                                                                                        <FaImage />
-                                                                                </span>
-                                                                                <span>Select Image</span>
+                                                                                {imageShow ? (
+                                                                                        <img
+                                                                                                src={imageShow}
+                                                                                                alt="image"
+                                                                                                className="w-full h-full object-cover"
+                                                                                        />
+                                                                                ) : (
+                                                                                        <>
+                                                                                                <span>
+                                                                                                        <FaImage />
+                                                                                                </span>
+                                                                                                <span>
+                                                                                                        Select Image
+                                                                                                </span>
+                                                                                        </>
+                                                                                )}
                                                                         </label>
 
                                                                         <input
@@ -183,6 +221,7 @@ const Category = () => {
                                                                                 type="file"
                                                                                 id="image"
                                                                                 name="image"
+                                                                                onChange={handleImage}
                                                                         />
 
                                                                         <div className=" text-center rounded-lg px-7 py-3 mt-2 bg-red-500 w-full hover:shadow-red-500/50 hover:shadow-md hover:bg-red-400 transition-colors duration-300 text-white cursor-pointer ">
