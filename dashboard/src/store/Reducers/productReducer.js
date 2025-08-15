@@ -62,7 +62,7 @@ const productReducer = createSlice({
                 builder.addCase(add_product.fulfilled, (state, action) => {
                         state.loader = false;
                         state.successMessage = action.payload.message;
-                        state.products = action.payload.data.product;
+                        state.products.push(action.payload.data.product);
                 });
                 builder.addCase(add_product.rejected, (state, action) => {
                         state.loader = false;

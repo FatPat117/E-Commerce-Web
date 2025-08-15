@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { PropagateLoader } from "react-spinners";
 import { get_category } from "../../store/Reducers/categoryReducer";
-import { add_product } from "../../store/Reducers/productReducer";
-
+import { add_product, messageClear } from "../../store/Reducers/productReducer";
+import { overrideStyle } from "../../utils/utils";
 const AddProduct = () => {
         const dispatch = useDispatch();
         useEffect(() => {
                 dispatch(get_category({ page: "", searchValue: "", perPage: "" }));
         }, [dispatch]);
-
-        const { categories, loader } = useSelector((state) => state.category);
+        const { categories } = useSelector((state) => state.category);
+        const { loader, successMessage, errorMessage } = useSelector((state) => state.product);
 
         const [cateShow, setCateShow] = useState(false);
         const [allCategory, setAllCategory] = useState([]);
@@ -104,9 +106,31 @@ const AddProduct = () => {
                 dispatch(add_product(formData));
         };
 
-        if (loader) {
-                return <div>Loading...</div>;
-        }
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                        setState({
+                                name: "",
+                                brand: "",
+                                stock: "",
+                                price: "",
+                                discount: "",
+                                description: "",
+                        });
+                        setImages([]);
+                        setImageShow([]);
+                        setCategory("");
+                        setSearchValue("");
+                        setAllCategory(categories);
+                        setCateShow(false);
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
+
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
@@ -337,9 +361,20 @@ const AddProduct = () => {
 
                                                 {/* button */}
                                                 <div className="flex">
-                                                        <div className=" text-center rounded-lg px-7 py-3 mt-2 bg-red-500  hover:shadow-red-500/50 hover:shadow-md hover:bg-red-400 transition-colors duration-300 text-white cursor-pointer ">
-                                                                <button className="cursor-pointer">Add Product</button>
-                                                        </div>
+                                                        <button
+                                                                type="submit"
+                                                                className=" h-[40px] bg-red-600  w-full cursor-pointer hover:bg-red-600/50 hover:shadow-red-600 hover:shadow-md text-white py-2 px-7 mb-1 rounded-md "
+                                                                disabled={loader}
+                                                        >
+                                                                {loader ? (
+                                                                        <PropagateLoader
+                                                                                color="#fff"
+                                                                                cssOverride={overrideStyle}
+                                                                        />
+                                                                ) : (
+                                                                        "Add Product"
+                                                                )}
+                                                        </button>
                                                 </div>
                                         </form>
                                 </div>
