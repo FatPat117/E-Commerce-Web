@@ -39,6 +39,37 @@ const add_category = asyncHandler(async (req, res) => {
 
 const get_category = asyncHandler(async (req, res) => {
         const { page, perPage, searchValue } = req.query;
+
+        const skipPage = parseInt(perPage) * (parseInt(page) - 1);
+
+        if (searchValue) {
+                const category = await Category.find({
+                        name: { $regex: searchValue, $options: "i" },
+                })
+                        .skip(skipPage)
+                        .limit(parseInt(perPage))
+                        .sort({ createAt: -1 });
+
+                const totalCategory = await Category.countDocuments({
+                        name: { $regex: searchValue, $options: "i" },
+                });
+
+                res.status(200).json(
+                        new ApiResponse(200, "", {
+                                category,
+                                totalCategory,
+                        })
+                );
+        } else {
+                const category = await Category.find();
+                const totalCategory = await Category.countDocuments();
+                res.status(200).json(
+                        new ApiResponse(200, "Categories fetched successfully", {
+                                category,
+                                totalCategory,
+                        })
+                );
+        }
 });
 
 export default { add_category, get_category };
