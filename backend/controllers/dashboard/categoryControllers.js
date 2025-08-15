@@ -1,7 +1,18 @@
+import formidable from "formidable";
+import ApiError from "../../utils/ApiError.js";
 import asyncHandler from "../../utils/asyncHandler.js";
+
 const add_category = asyncHandler(async (req, res) => {
-        console.log("hek");
-        res.send("hello");
+        const form = formidable();
+        form.parse(req, async (err, fields, files) => {
+                if (err) {
+                        throw new ApiError(404, "Something went wrong");
+                }
+                let { name } = fields;
+                const { image } = files;
+                name = name.trim();
+                const slug = name.split(" ").joib("-");
+        });
 });
 
 const get_category = asyncHandler(async (req, res) => {

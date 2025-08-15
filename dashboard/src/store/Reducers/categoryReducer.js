@@ -8,7 +8,12 @@ export const categoryAdd = createAsyncThunk(
                         const formData = new FormData();
                         formData.append("name", name);
                         formData.append("image", image);
-                        const response = await api.post("/category", formData, { withCredentials: true });
+                        const response = await api.post("/category", formData, {
+                                withCredentials: true,
+                                headers: {
+                                        "Content-Type": "multipart/form-data",
+                                },
+                        });
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
