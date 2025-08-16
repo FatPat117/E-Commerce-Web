@@ -187,4 +187,27 @@ const profile_image_upload = asyncHandler(async (req, res, next) => {
         });
 });
 
-export default { admin_login, getUser, seller_register, seller_login, profile_image_upload };
+const profile_info_update = asyncHandler(async (req, res, next) => {
+        const id = req._id;
+        // check if id valid
+        const existedSeller = await Seller.findById(id);
+        if (!existedSeller) throw new ApiError(400, "User not found");
+
+        const { division, district, sub_district, shopName } = req.body;
+        const seller = await Seller.findByIdAndUpdate(
+                id,
+                {
+                        shopInfo: {
+                                division,
+                                district,
+                                sub_district,
+                                shopName,
+                        },
+                },
+                { new: true }
+        );
+        if (!seller) throw new ApiError(400, "Failed to update seller profile info");
+
+        res.status(200).json(new ApiResponse(200, "User profile info updated successfully", { seller }));
+});
+export default { admin_login, getUser, seller_register, seller_login, profile_image_upload, profile_info_update };

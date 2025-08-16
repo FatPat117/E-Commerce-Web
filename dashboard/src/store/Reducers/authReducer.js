@@ -105,7 +105,7 @@ export const profile_info_update = createAsyncThunk(
                         const response = await api.patch("/auth/profile-info-update", data, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data); // trả về data
                 } catch (err) {
                         // console.log(err.response.data.message);
@@ -222,6 +222,20 @@ export const authReducer = createSlice({
                         state.successMessage = action.payload.message;
                 });
                 builder.addCase(profile_image_upload.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Profile Info update
+                builder.addCase(profile_info_update.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(profile_info_update.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.userInfo = action.payload.data.seller;
+                });
+                builder.addCase(profile_info_update.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

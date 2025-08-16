@@ -3,8 +3,14 @@ import { toast } from "react-hot-toast";
 import { FaEdit, FaEye, FaEyeSlash, FaImage } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { FadeLoader, PropagateLoader } from "react-spinners";
-import { get_user_info, messageClear, profile_image_upload } from "../../store/Reducers/authReducer";
+import {
+        get_user_info,
+        messageClear,
+        profile_image_upload,
+        profile_info_update,
+} from "../../store/Reducers/authReducer";
 import { overrideStyle } from "../../utils/utils";
+
 const Profile = () => {
         const dispatch = useDispatch();
         const { userInfo, successMessage, errorMessage, loader } = useSelector((state) => state.auth);

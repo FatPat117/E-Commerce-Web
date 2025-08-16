@@ -38,7 +38,7 @@ const sellerSchema = new mongoose.Schema(
                         type: String,
                         default: "",
                 },
-                showInfo: {
+                shopInfo: {
                         type: Object,
                         default: {},
                 },
