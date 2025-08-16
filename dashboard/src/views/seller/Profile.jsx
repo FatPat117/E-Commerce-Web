@@ -2,12 +2,19 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { FaEdit, FaEye, FaEyeSlash, FaImage } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { FadeLoader } from "react-spinners";
+import { FadeLoader, PropagateLoader } from "react-spinners";
 import { get_user_info, messageClear, profile_image_upload } from "../../store/Reducers/authReducer";
+import { overrideStyle } from "../../utils/utils";
 const Profile = () => {
         const dispatch = useDispatch();
         const { userInfo, successMessage, errorMessage, loader } = useSelector((state) => state.auth);
 
+        const [state, setState] = useState({
+                division: "",
+                district: "",
+                sub_district: "",
+                shopName: "",
+        });
         const [hideOldPassword, setHideOldPassword] = useState(true);
         const [hideNewPassword, setHideNewPassword] = useState(true);
 
@@ -38,6 +45,15 @@ const Profile = () => {
                         dispatch(messageClear());
                 }
         }, [successMessage, errorMessage]);
+
+        const inputHandle = (e) => {
+                setState({ ...state, [e.target.name]: e.target.value });
+        };
+
+        const UpdateProfile = (e) => {
+                e.preventDefault();
+                dispatch(profile_info_update(state));
+        };
 
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -138,7 +154,7 @@ const Profile = () => {
                                                 {/* Edit Form */}
                                                 <div className="px-0 md:px-5 py-2">
                                                         {!userInfo.shopInfo ? (
-                                                                <form>
+                                                                <form onSubmit={UpdateProfile}>
                                                                         {/* Shop Name */}
                                                                         <div className="flex flex-col w-full gap-1 mb-2">
                                                                                 <label htmlFor="shopName">
@@ -149,6 +165,8 @@ const Profile = () => {
                                                                                         id="shopName"
                                                                                         name="shopName"
                                                                                         placeholder="Shop Name"
+                                                                                        value={state.shopName}
+                                                                                        onChange={inputHandle}
                                                                                         className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                                                                 />
                                                                         </div>
@@ -163,6 +181,8 @@ const Profile = () => {
                                                                                         id="division"
                                                                                         name="division"
                                                                                         placeholder="Division Name"
+                                                                                        value={state.division}
+                                                                                        onChange={inputHandle}
                                                                                         className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                                                                 />
                                                                         </div>
@@ -177,6 +197,8 @@ const Profile = () => {
                                                                                         id="district"
                                                                                         name="district"
                                                                                         placeholder="District Name"
+                                                                                        value={state.district}
+                                                                                        onChange={inputHandle}
                                                                                         className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                                                                 />
                                                                         </div>
@@ -189,19 +211,32 @@ const Profile = () => {
                                                                                 <input
                                                                                         type="text"
                                                                                         id="subdis"
-                                                                                        name="subdis"
+                                                                                        name="sub_district"
                                                                                         placeholder="Sub District Name"
+                                                                                        value={state.sub_district}
+                                                                                        onChange={inputHandle}
                                                                                         className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                                                                 />
                                                                         </div>
 
                                                                         {/* button */}
-                                                                        <div className="flex">
-                                                                                <div className=" text-center rounded-lg px-7 py-3 mt-2 bg-red-500  hover:shadow-red-500/50 hover:shadow-md hover:bg-red-400 transition-colors duration-300 text-white cursor-pointer ">
-                                                                                        <button className="cursor-pointer">
-                                                                                                Update Profile
-                                                                                        </button>
-                                                                                </div>
+                                                                        <div className="flex mt-4">
+                                                                                <button
+                                                                                        type="submit"
+                                                                                        className=" h-[40px] bg-red-600  w-full cursor-pointer hover:bg-red-600/50 hover:shadow-red-600 hover:shadow-md text-white py-2 px-7 mb-1 rounded-md "
+                                                                                        disabled={loader}
+                                                                                >
+                                                                                        {loader ? (
+                                                                                                <PropagateLoader
+                                                                                                        color="#fff"
+                                                                                                        cssOverride={
+                                                                                                                overrideStyle
+                                                                                                        }
+                                                                                                />
+                                                                                        ) : (
+                                                                                                "Update Profile"
+                                                                                        )}
+                                                                                </button>
                                                                         </div>
                                                                 </form>
                                                         ) : (
@@ -213,25 +248,36 @@ const Profile = () => {
                                                                                 <span className="font-bold text-md">
                                                                                         Shop Name:{" "}
                                                                                 </span>
-                                                                                <span>Pitachiti Shop</span>
+                                                                                <span>
+                                                                                        {userInfo.shopInfo?.shopName}
+                                                                                </span>
                                                                         </div>
                                                                         <div className="flex gap-2">
                                                                                 <span className="font-bold text-md">
                                                                                         Division Name:{" "}
                                                                                 </span>
-                                                                                <span>Dhaka</span>
+                                                                                <span>
+                                                                                        {userInfo.shopInfo?.division}
+                                                                                </span>
                                                                         </div>
                                                                         <div className="flex gap-2">
                                                                                 <span className="font-bold text-md">
                                                                                         District Name:{" "}
                                                                                 </span>
-                                                                                <span>Dhaka</span>
+                                                                                <span>
+                                                                                        {userInfo.shopInfo?.district}
+                                                                                </span>
                                                                         </div>
                                                                         <div className="flex gap-2">
                                                                                 <span className="font-bold text-md">
                                                                                         Sub District Name:{" "}
                                                                                 </span>
-                                                                                <span>Dhaka</span>
+                                                                                <span>
+                                                                                        {
+                                                                                                userInfo.shopInfo
+                                                                                                        ?.sub_district
+                                                                                        }
+                                                                                </span>
                                                                         </div>
                                                                 </div>
                                                         )}

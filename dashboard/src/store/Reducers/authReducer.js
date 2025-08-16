@@ -78,7 +78,6 @@ export const get_user_info = createAsyncThunk(
 );
 
 // Profile image upload
-
 export const profile_image_upload = createAsyncThunk(
         "auth/profile_image_upload",
         async (formData, { rejectWithValue, fulfillWithValue }) => {
@@ -88,6 +87,23 @@ export const profile_image_upload = createAsyncThunk(
                                 headers: {
                                         "Content-Type": "multipart/form-data",
                                 },
+                        });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data); // trả về data
+                } catch (err) {
+                        // console.log(err.response.data.message);
+                        return rejectWithValue(err.response.data.message); // trả về message
+                }
+        }
+);
+
+// Profile Info update
+export const profile_info_update = createAsyncThunk(
+        "auth/profile_info_update",
+        async (data, { rejectWithValue, fulfillWithValue }) => {
+                try {
+                        const response = await api.patch("/auth/profile-info-update", data, {
+                                withCredentials: true,
                         });
                         console.log(response.data);
                         return fulfillWithValue(response.data); // trả về data
