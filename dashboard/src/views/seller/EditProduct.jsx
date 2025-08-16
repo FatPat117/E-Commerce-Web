@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { PropagateLoader } from "react-spinners";
 import { get_category } from "../../store/Reducers/categoryReducer";
-import { get_product } from "../../store/Reducers/productReducer";
+import { get_product, messageClear, update_product } from "../../store/Reducers/productReducer";
+import { overrideStyle } from "../../utils/utils";
 
 const EditProduct = () => {
         const { productId } = useParams();
         const dispatch = useDispatch();
         const { categories } = useSelector((state) => state.category);
-        const { product } = useSelector((state) => state.product);
+        const { product, loader, successMessage, errorMessage } = useSelector((state) => state.product);
+
+        // States
         const [cateShow, setCateShow] = useState(false);
         const [allCategory, setAllCategory] = useState([]);
         const [searchValue, setSearchValue] = useState("");
@@ -37,7 +42,7 @@ const EditProduct = () => {
 
         const changeImage = (img, files) => {
                 if (files.length > 0) {
-                        console.log(img, files);
+                        setImages(files);
                 }
         };
 
@@ -70,6 +75,47 @@ const EditProduct = () => {
                 setImageShow(product?.images);
         }, [categories, product]);
 
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                        setState({
+                                name: "",
+                                brand: "",
+                                stock: "",
+                                price: "",
+                                discount: "",
+                                description: "",
+                        });
+                        setImages([]);
+                        setImageShow([]);
+                        setCategory("");
+                        setSearchValue("");
+                        setAllCategory(categories);
+                        setCateShow(false);
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
+
+        const UpdateProduct = (e) => {
+                e.preventDefault();
+                const obj = {
+                        name: state.name,
+                        brand: state.brand,
+                        stock: state.stock,
+                        price: state.price,
+                        discount: state.discount,
+                        description: state.description,
+                        category: state.category,
+                        productId: productId,
+                        images: images,
+                };
+                dispatch(update_product(obj));
+        };
+
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
@@ -86,7 +132,7 @@ const EditProduct = () => {
 
                                 {/* Second Part: Add Product Form */}
                                 <div>
-                                        <form action="" onSubmit={EditProduct}>
+                                        <form action="" onSubmit={UpdateProduct}>
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full text-[#d0d2d6]">
                                                         {/* Product Name */}
                                                         <div className="flex flex-col w-full gap-1">
@@ -269,9 +315,20 @@ const EditProduct = () => {
 
                                                 {/* button */}
                                                 <div className="flex">
-                                                        <div className=" text-center rounded-lg px-7 py-3 mt-2 bg-red-500  hover:shadow-red-500/50 hover:shadow-md hover:bg-red-400 transition-colors duration-300 text-white cursor-pointer ">
-                                                                <button className="cursor-pointer">Save changes</button>
-                                                        </div>
+                                                        <button
+                                                                type="submit"
+                                                                className=" h-[40px] bg-red-600  w-full cursor-pointer hover:bg-red-600/50 hover:shadow-red-600 hover:shadow-md text-white py-2 px-7 mb-1 rounded-md "
+                                                                disabled={loader}
+                                                        >
+                                                                {loader ? (
+                                                                        <PropagateLoader
+                                                                                color="#fff"
+                                                                                cssOverride={overrideStyle}
+                                                                        />
+                                                                ) : (
+                                                                        "Save changes"
+                                                                )}
+                                                        </button>
                                                 </div>
                                         </form>
                                 </div>

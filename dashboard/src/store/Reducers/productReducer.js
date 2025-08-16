@@ -55,6 +55,22 @@ export const get_product = createAsyncThunk(
         }
 );
 
+// update product by id
+export const update_product = createAsyncThunk(
+        "product/update_product",
+        async (product, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.patch(`/product/${product.productId}`, product, {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const productReducer = createSlice({
         name: "product",
         initialState: {
