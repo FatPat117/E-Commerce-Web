@@ -12,7 +12,7 @@ export const get_seller_request = createAsyncThunk(
                                         withCredentials: true,
                                 }
                         );
-                        // console.log(response.data);
+                        console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);

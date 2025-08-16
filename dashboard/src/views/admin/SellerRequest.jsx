@@ -62,39 +62,39 @@ const SellerRequest = () => {
                                                 </thead>
                                                 {/* <tbody className="text-center"> */}
                                                 <tbody className="">
-                                                        {[1, 2, 3, 4, 5].map((data, idx) => {
+                                                        {sellers?.map((data, idx) => {
                                                                 return (
                                                                         <tr key={idx} className="border-b">
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        {data}
+                                                                                        {idx + 1}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Pitachiti
+                                                                                        {data.name}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Email
+                                                                                        {data.email}
                                                                                 </td>
 
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Payment Status
+                                                                                        {data.payment}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Status
+                                                                                        {data.status}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
@@ -102,7 +102,7 @@ const SellerRequest = () => {
                                                                                 >
                                                                                         <div className="flex items-center justify-start gap-4">
                                                                                                 <Link
-                                                                                                        to="/admin/dashboard/seller/details/1"
+                                                                                                        to={`/admin/dashboard/seller/details/${data._id}`}
                                                                                                         className="p-[8px]  bg-green-500 rounded-md hover:shadow-lg hover:shadow-green-500/50"
                                                                                                 >
                                                                                                         <FaEye />
@@ -117,15 +117,17 @@ const SellerRequest = () => {
                                 </div>
 
                                 {/* Pagination */}
-                                <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
-                                        <Pagination
-                                                pageNumber={currentPage}
-                                                setPageNumber={setCurrentPage}
-                                                totalItem={50}
-                                                perPage={perPage}
-                                                showPage={3}
-                                        />
-                                </div>
+                                {sellers.length > perPage && (
+                                        <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
+                                                <Pagination
+                                                        pageNumber={currentPage}
+                                                        setPageNumber={setCurrentPage}
+                                                        totalItem={50}
+                                                        perPage={perPage}
+                                                        showPage={3}
+                                                />
+                                        </div>
+                                )}
                         </div>
                 </div>
         );
