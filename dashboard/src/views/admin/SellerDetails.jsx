@@ -1,15 +1,45 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { get_seller } from "../../store/Reducers/sellerReducer";
+
+import { get_seller, messageClear, seller_status_update } from "../../store/Reducers/sellerReducer";
 const SellerDetails = () => {
         const { sellerId } = useParams();
         const dispatch = useDispatch();
-        const { seller } = useSelector((state) => state.seller);
+        const { seller, successMessage, errorMessage } = useSelector((state) => state.seller);
 
         useEffect(() => {
                 dispatch(get_seller(sellerId));
         }, [sellerId]);
+        const [status, setStatus] = useState("");
+
+        const changeStatus = (e) => {
+                e.preventDefault();
+                dispatch(
+                        seller_status_update({
+                                sellerId,
+                                status,
+                        })
+                );
+        };
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
+
+        useEffect(() => {
+                if (seller) {
+                        setStatus(seller?.status);
+                }
+        }, [seller]);
 
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -18,13 +48,21 @@ const SellerDetails = () => {
                                 {/* Basic info and address */}
                                 <div className="w-full flex flex-wrap items-start text-[#d0d2d6">
                                         {/* Avatar */}
-                                        <div className="w-3/12 flex items-center justify-center pt-3">
+                                        <div className="w-3/12 h-full flex items-center justify-center pt-3">
                                                 <div>
-                                                        <img
-                                                                src="/images/admin.jpg"
-                                                                alt="Avatar"
-                                                                className="w-full h-[230px]  object-cover"
-                                                        />
+                                                        {seller?.image ? (
+                                                                <img
+                                                                        src={seller?.image}
+                                                                        alt="Avatar"
+                                                                        className="w-full h-[230px]  object-cover"
+                                                                />
+                                                        ) : (
+                                                                <img
+                                                                        src="/images/admin.jpg"
+                                                                        alt="Avatar"
+                                                                        className="w-full h-[230px]  object-cover"
+                                                                />
+                                                        )}
                                                 </div>
                                         </div>
 
@@ -38,27 +76,27 @@ const SellerDetails = () => {
                                                         <div className="flex flex-col justify-between text-sm gap-2 gap-y-3 p-4 bg-[#9e97e9] rounded-md">
                                                                 <div className="flex gap-2 font-bold text-[#000000]">
                                                                         <span>Name: </span>
-                                                                        <span>Pitachiti</span>
+                                                                        <span>{seller?.name}</span>
                                                                 </div>
 
                                                                 <div className="flex gap-2 font-bold text-[#000000]">
                                                                         <span>Email: </span>
-                                                                        <span>pitachiti@gmail.com</span>
+                                                                        <span>{seller?.email}</span>
                                                                 </div>
 
                                                                 <div className="flex gap-2 font-bold text-[#000000]">
                                                                         <span>Role: </span>
-                                                                        <span>Seller</span>
+                                                                        <span>{seller?.role}</span>
                                                                 </div>
 
                                                                 <div className="flex gap-2 font-bold text-[#000000]">
                                                                         <span>Status: </span>
-                                                                        <span>Active</span>
+                                                                        <span>{seller?.status}</span>
                                                                 </div>
 
                                                                 <div className="flex gap-2 font-bold text-[#000000]">
                                                                         <span>Payment Status: </span>
-                                                                        <span>Pending</span>
+                                                                        <span>{seller?.payment}</span>
                                                                 </div>
                                                         </div>
                                                 </div>
@@ -74,22 +112,22 @@ const SellerDetails = () => {
                                                         <div className="flex flex-col justify-between text-sm gap-2 gap-y-3 p-4 bg-[#9e97e9] rounded-md">
                                                                 <div className="flex gap-2 font-bold text-[#000000]">
                                                                         <span>Shop Name: </span>
-                                                                        <span>Pitachiti</span>
+                                                                        <span>{seller?.shopInfo?.shopName}</span>
                                                                 </div>
 
                                                                 <div className="flex gap-2 font-bold text-[#000000]">
                                                                         <span>Division: </span>
-                                                                        <span>Dhaka</span>
+                                                                        <span>{seller?.shopInfo?.division}</span>
                                                                 </div>
 
                                                                 <div className="flex gap-2 font-bold text-[#000000]">
                                                                         <span>District: </span>
-                                                                        <span>Dhaka</span>
+                                                                        <span>{seller?.shopInfo?.district}</span>
                                                                 </div>
 
                                                                 <div className="flex gap-2 font-bold text-[#000000]">
-                                                                        <span>State: </span>
-                                                                        <span>Dhaka</span>
+                                                                        <span>Sub District: </span>
+                                                                        <span>{seller?.shopInfo?.sub_district}</span>
                                                                 </div>
                                                         </div>
                                                 </div>
@@ -98,12 +136,17 @@ const SellerDetails = () => {
 
                                 {/* BTN */}
                                 <div className="mt-3 pl-5">
-                                        <form>
+                                        <form onSubmit={changeStatus}>
                                                 <div className="flex gap-4 py-3">
                                                         <select
                                                                 name=""
                                                                 id=""
                                                                 className="px-4 py-2 focus:border-indigo-500 hover:border-indigo-500 outline-none bg-[#6a5fdf] border-2 border-slate-700 rounded-lg text-[#d0d2d6] overflow-hidden cursor-pointer font-semibold"
+                                                                required
+                                                                value={status}
+                                                                onChange={(e) => {
+                                                                        setStatus(e.target.value);
+                                                                }}
                                                         >
                                                                 <option value="">-- Select Status --</option>
                                                                 <option value="active">Active</option>

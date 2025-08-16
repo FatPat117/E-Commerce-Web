@@ -21,12 +21,28 @@ export const get_seller_request = createAsyncThunk(
 );
 
 // Get seller
-// Get seller requests
 export const get_seller = createAsyncThunk(
         "seller/get_seller",
         async (sellerId, { fulfillWithValue, rejectWithValue }) => {
                 try {
                         const response = await api.get(`/seller/${sellerId}`, {
+                                withCredentials: true,
+                        });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Update seller status
+export const seller_status_update = createAsyncThunk(
+        "seller/seller_status_update",
+        async (data, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.patch(`/seller/status-update/${data.sellerId}`, {
+                                data,
                                 withCredentials: true,
                         });
                         console.log(response.data);
@@ -79,6 +95,20 @@ const sellerReducer = createSlice({
                         state.seller = action.payload.data.seller;
                 });
                 builder.addCase(get_seller.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Update seller status
+                builder.addCase(seller_status_update.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(seller_status_update.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.seller = action.payload.data.seller;
+                });
+                builder.addCase(seller_status_update.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

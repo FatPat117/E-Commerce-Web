@@ -55,4 +55,17 @@ const get_seller = asyncHandler(async (req, res, next) => {
 
         res.status(200).json(new ApiResponse(200, "", { seller }));
 });
-export default { get_seller_request, get_seller };
+
+const seller_status_update = asyncHandler(async (req, res, next) => {
+        const { sellerId } = req.params;
+        const { status } = req.body.data;
+
+        //check if sellerID is vaild
+        const existedSeller = await Seller.findById(sellerId);
+        if (!existedSeller) throw new ApiError(404, "Seller not found");
+
+        const seller = await Seller.findByIdAndUpdate(sellerId, { status }, { new: true });
+
+        res.status(200).json(new ApiResponse(200, "Seller status updated successfully", { seller }));
+});
+export default { get_seller_request, get_seller, seller_status_update };
