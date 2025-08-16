@@ -42,6 +42,13 @@ const EditProduct = () => {
 
         const changeImage = (img, files) => {
                 if (files.length > 0) {
+                        const index = imageShow.indexOf(img);
+                        if (index !== -1) {
+                                const newImages = [...imageShow];
+                                newImages[index] = URL.createObjectURL(files[0]);
+                                setImageShow(newImages);
+                        }
+
                         dispatch(
                                 product_image_update({
                                         oldImage: img,

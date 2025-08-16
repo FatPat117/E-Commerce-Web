@@ -146,7 +146,27 @@ const product_image_update = asyncHandler(async (req, res, next) => {
                 });
         });
 
-        console.log(files);
-        console.log(fields);
+        const oldImage = fields.oldImage[0];
+        const newImage = files.newImage[0];
+
+        if (!oldImage || !newImage) throw new ApiError(400, "Old image and new image are required");
+
+        cloudinary.config({
+                cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+                api_key: process.env.CLOUDINARY_API_KEY,
+                api_secret: process.env.CLOUDINARY_API_SECRET,
+                secure: true,
+        });
+
+        const result = await cloudinary.uploader.upload(newImage.filepath, { folder: "products" });
+
+        if (!result) throw new ApiError(400, "Failed to upload image");
+
+        let { images } = existingProduct;
+        images[images.indexOf(oldImage)] = result.secure_url;
+
+        const product = await Product.findByIdAndUpdate(productId, { images }, { new: true });
+
+        res.status(200).json(new ApiResponse(200, "Product image updated successfully", { product }));
 });
 export default { add_product, get_products, get_product, update_product, product_image_update };

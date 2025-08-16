@@ -169,6 +169,20 @@ const productReducer = createSlice({
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
+
+                // upload image by Id
+                builder.addCase(product_image_update.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(product_image_update.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.product = action.payload.data.product;
+                });
+                builder.addCase(product_image_update.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
         },
 });
 
