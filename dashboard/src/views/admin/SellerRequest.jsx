@@ -1,12 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEye } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { get_seller_request } from "../../store/Reducers/sellerReducer";
 import Pagination from "../Pagination";
-
+import Search from "../components/Search";
 const SellerRequest = () => {
+        const dispatch = useDispatch();
+        const { loader, sellers, totalSeller } = useSelector((state) => state.seller);
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
         const [perPage, setPerPage] = useState(5);
+
+        useEffect(() => {
+                const obj = {
+                        perPage: parseInt(perPage),
+                        page: parseInt(currentPage),
+                        searchValue,
+                };
+                dispatch(get_seller_request(obj));
+        }, [perPage, currentPage, searchValue]);
 
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -14,27 +27,12 @@ const SellerRequest = () => {
 
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
                                 {/* Select and Search field */}
-                                <div className="flex justify-between items-center">
-                                        <select
-                                                onChange={(e) => setPerPage(parseInt(e.target.value))}
-                                                name=""
-                                                id=""
-                                                value={perPage}
-                                                className="px-4 py-2 focus:border-indigo-500 hover:border-indigo-500 outline-none bg-[#6a5fdf] border-2 border-slate-700 rounded-lg text-[#d0d2d6] overflow-hidden cursor-pointer"
-                                        >
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="20">20</option>
-                                        </select>
-                                        <input
-                                                type="text"
-                                                placeholder="search"
-                                                value={searchValue}
-                                                onChange={(e) => setSearchValue(e.target.value)}
-                                                className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
-                                        />
-                                </div>
+                                <Search
+                                        setPerPage={setPerPage}
+                                        perPage={perPage}
+                                        setSearchValue={setSearchValue}
+                                        searchValue={searchValue}
+                                />
 
                                 {/* Table */}
                                 <div className="relative overflow-x-auto">
