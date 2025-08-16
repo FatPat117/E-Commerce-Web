@@ -1,41 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { get_category } from "../../store/Reducers/categoryReducer";
+import { get_product } from "../../store/Reducers/productReducer";
 
 const EditProduct = () => {
-        const categories = [
-                {
-                        id: 1,
-                        name: "Sports",
-                },
-                {
-                        id: 2,
-                        name: "Electronics",
-                },
-                {
-                        id: 3,
-                        name: "Fashion",
-                },
-                {
-                        id: 4,
-                        name: "Computers",
-                },
-                {
-                        id: 5,
-                        name: "Books",
-                },
-                {
-                        id: 6,
-                        name: "Toys",
-                },
-                {
-                        id: 7,
-                        name: "Watch",
-                },
-        ];
+        const { productId } = useParams();
+        const dispatch = useDispatch();
+        const { categories } = useSelector((state) => state.category);
+
         const [cateShow, setCateShow] = useState(false);
-        const [allCategory, setAllCategory] = useState(categories);
+        const [allCategory, setAllCategory] = useState([]);
         const [searchValue, setSearchValue] = useState("");
-        const [category, setCategory] = useState(categories[0].name);
+        const [category, setCategory] = useState("");
         const [images, setImages] = useState([]);
         const [imageShow, setImageShow] = useState([]);
 
@@ -48,6 +25,16 @@ const EditProduct = () => {
                 stock: "",
                 category: "",
         });
+
+        useEffect(() => {
+                dispatch(get_category({ searchValue: "", page: "", perPage: "" }));
+                dispatch(get_product({ productId }));
+        }, [dispatch, productId]);
+
+        useEffect(() => {
+                setAllCategory(categories);
+                setCategory(categories[0]?.name);
+        }, [categories]);
 
         const inputHandle = (e) => {
                 setState({ ...state, [e.target.name]: e.target.value });
@@ -84,9 +71,9 @@ const EditProduct = () => {
                         category: "Category Name",
                 });
 
-                setCategory("Tshirt");
                 setImageShow(["http://localhost:5173/images/admin.jpg"]);
         }, []);
+
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
@@ -166,14 +153,14 @@ const EditProduct = () => {
                                                                         {/* Select */}
                                                                         <div className="pt-14"></div>
                                                                         <div className="flex justify-start items-start flex-col h-[200px] overflow-x-scroll">
-                                                                                {allCategory.map((cate, idx) => (
+                                                                                {allCategory?.map((cate, idx) => (
                                                                                         <span
                                                                                                 onClick={() => {
                                                                                                         setCateShow(
                                                                                                                 false
                                                                                                         );
                                                                                                         setCategory(
-                                                                                                                cate.name
+                                                                                                                cate?.name
                                                                                                         );
                                                                                                         setSearchValue(
                                                                                                                 ""
@@ -184,13 +171,13 @@ const EditProduct = () => {
                                                                                                 }}
                                                                                                 className={`px-4 py-2 hover:bg-indigo-500 hover:text-white hover:shadow-md w-full cursor-pointer transition-all duration-300 ${
                                                                                                         category ==
-                                                                                                        cate.name
+                                                                                                        cate?.name
                                                                                                                 ? "bg-indigo-500 text-white"
                                                                                                                 : ""
                                                                                                 }`}
                                                                                                 key={idx}
                                                                                         >
-                                                                                                {cate.name}
+                                                                                                {cate?.name}
                                                                                         </span>
                                                                                 ))}
                                                                         </div>

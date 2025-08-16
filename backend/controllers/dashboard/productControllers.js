@@ -57,7 +57,7 @@ const add_product = asyncHandler(async (req, res) => {
                 slug,
         });
 
-        res.status(201).json(new ApiResponse(201, "Product created successfully", product));
+        res.status(201).json(new ApiResponse(201, "Product created successfully", products));
 });
 const get_products = asyncHandler(async (req, res) => {
         const id = req._id;
@@ -69,13 +69,13 @@ const get_products = asyncHandler(async (req, res) => {
         if (searchValue?.trim() != "" && page != "" && perPage != "") {
                 const skipPage = parseInt(perPage) * parseInt(page - 1);
                 products = await Product.find({
-                        $text: { $search: searchValue, $option: "i" },
+                        $text: { $search: searchValue },
                         sellerId: id,
                 })
                         .skip(skipPage)
                         .limit(parseInt(perPage));
                 totalProduct = await Product.countDocuments({
-                        $text: { $search: searchValue, $option: "i" },
+                        $text: { $search: searchValue },
                         sellerId: id,
                 });
                 // pagination
@@ -90,7 +90,7 @@ const get_products = asyncHandler(async (req, res) => {
         }
 
         if (!products) throw new ApiError(404, "No products found");
-        res.status(200).json(new ApiResponse(200, "Products fetched successfully", { products, totalProduct }));
+        res.status(200).json(new ApiResponse(200, "", { products, totalProduct }));
 });
 
 export default { add_product, get_products };

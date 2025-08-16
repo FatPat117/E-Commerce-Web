@@ -20,7 +20,7 @@ export const add_product = createAsyncThunk(
         }
 );
 
-// Get product
+// Get products
 export const get_products = createAsyncThunk(
         "product/get_products",
         async ({ perPage, page, searchValue }, { fulfillWithValue, rejectWithValue }) => {
@@ -31,6 +31,22 @@ export const get_products = createAsyncThunk(
                                         withCredentials: true,
                                 }
                         );
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// get product by id
+export const get_product = createAsyncThunk(
+        "product/get_product",
+        async (productId, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/product/${productId}`, {
+                                withCredentials: true,
+                        });
                         console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
@@ -46,6 +62,7 @@ const productReducer = createSlice({
                 errorMessage: "",
                 loader: false,
                 products: [],
+                product: {},
                 totalProduct: 0,
         },
         reducers: {
@@ -62,14 +79,14 @@ const productReducer = createSlice({
                 builder.addCase(add_product.fulfilled, (state, action) => {
                         state.loader = false;
                         state.successMessage = action.payload.message;
-                        state.products = action.payload.data.products;
+                        state.products.push(action.payload.data.products);
                 });
                 builder.addCase(add_product.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
 
-                //  get product
+                //  get products
                 builder.addCase(get_products.pending, (state) => {
                         state.loader = true;
                 });
@@ -80,6 +97,20 @@ const productReducer = createSlice({
                         state.products = action.payload.data.products;
                 });
                 builder.addCase(get_products.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Get product by id
+                builder.addCase(get_product.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_product.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.product = action.payload.data.product;
+                });
+                builder.addCase(get_product.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
