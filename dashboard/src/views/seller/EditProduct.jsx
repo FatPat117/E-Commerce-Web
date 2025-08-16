@@ -40,7 +40,7 @@ const EditProduct = () => {
                 setState({ ...state, [e.target.name]: e.target.value });
         };
 
-        const changeImage = (img, files) => {
+        const changeImage = (idx, files) => {
                 if (files.length > 0) {
                         setImages(files);
                 }
@@ -73,26 +73,13 @@ const EditProduct = () => {
                 setAllCategory(categories);
                 setCategory(categories[0]?.name);
                 setImageShow(product?.images);
+                setImages(product?.images);
         }, [categories, product]);
 
         useEffect(() => {
                 if (successMessage) {
                         toast.success(successMessage);
                         dispatch(messageClear());
-                        setState({
-                                name: "",
-                                brand: "",
-                                stock: "",
-                                price: "",
-                                discount: "",
-                                description: "",
-                        });
-                        setImages([]);
-                        setImageShow([]);
-                        setCategory("");
-                        setSearchValue("");
-                        setAllCategory(categories);
-                        setCateShow(false);
                 }
                 if (errorMessage) {
                         toast.error(errorMessage);
@@ -111,7 +98,6 @@ const EditProduct = () => {
                         description: state.description,
                         category: state.category,
                         productId: productId,
-                        images: images,
                 };
                 dispatch(update_product(obj));
         };
@@ -288,17 +274,18 @@ const EditProduct = () => {
                                                                 {imageShow?.map((img, idx) => {
                                                                         return (
                                                                                 <div>
-                                                                                        <label htmlFor={idx}>
+                                                                                        <label htmlFor={-1}>
                                                                                                 <img
                                                                                                         src={img}
                                                                                                         alt="image"
-                                                                                                        className="w-[360px] h-[360px] object-cover rounded-md cursor-pointer"
+                                                                                                        className="w-[360px] h-[360px] object-cover rounded-md "
                                                                                                 />
                                                                                         </label>
                                                                                         <input
+                                                                                                readOnly
                                                                                                 onChange={(e) =>
                                                                                                         changeImage(
-                                                                                                                img,
+                                                                                                                idx,
                                                                                                                 e.target
                                                                                                                         .files
                                                                                                         )

@@ -130,6 +130,20 @@ const productReducer = createSlice({
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
+
+                // update product by id
+                builder.addCase(update_product.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(update_product.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.product = action.payload.data.product;
+                });
+                builder.addCase(update_product.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
         },
 });
 

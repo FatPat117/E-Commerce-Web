@@ -103,4 +103,30 @@ const get_product = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "", { product }));
 });
 
-export default { add_product, get_products, get_product };
+const update_product = asyncHandler(async (req, res, next) => {
+        const { productId } = req.params;
+        const { name, brand, stock, price, discount, description, category } = req.body;
+
+        const slug = name.trim().split(" ").join("-");
+        // check product id
+        const existingProduct = await Product.findById(productId);
+        if (!existingProduct) throw new ApiError(404, "Product not found");
+
+        const product = await Product.findByIdAndUpdate(
+                productId,
+                {
+                        name,
+                        brand,
+                        stock,
+                        price,
+                        discount,
+                        description,
+                        category,
+                        slug,
+                },
+                { new: true }
+        );
+
+        res.status(200).json(new ApiResponse(200, "Product Update Successfully", { product }));
+});
+export default { add_product, get_products, get_product, update_product };
