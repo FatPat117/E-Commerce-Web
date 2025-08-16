@@ -8,7 +8,7 @@ const EditProduct = () => {
         const { productId } = useParams();
         const dispatch = useDispatch();
         const { categories } = useSelector((state) => state.category);
-
+        const { product } = useSelector((state) => state.product);
         const [cateShow, setCateShow] = useState(false);
         const [allCategory, setAllCategory] = useState([]);
         const [searchValue, setSearchValue] = useState("");
@@ -19,22 +19,17 @@ const EditProduct = () => {
         const [state, setState] = useState({
                 name: "",
                 description: "",
-                discount: "",
-                price: "",
+                discount: 0,
+                price: 0,
                 brand: "",
-                stock: "",
+                stock: 0,
                 category: "",
         });
 
         useEffect(() => {
                 dispatch(get_category({ searchValue: "", page: "", perPage: "" }));
-                dispatch(get_product({ productId }));
+                dispatch(get_product(productId));
         }, [dispatch, productId]);
-
-        useEffect(() => {
-                setAllCategory(categories);
-                setCategory(categories[0]?.name);
-        }, [categories]);
 
         const inputHandle = (e) => {
                 setState({ ...state, [e.target.name]: e.target.value });
@@ -62,17 +57,18 @@ const EditProduct = () => {
 
         useEffect(() => {
                 setState({
-                        name: "Product Name",
-                        description: "Product Description",
-                        discount: 10,
-                        price: 100,
-                        brand: "Brand Name",
-                        stock: 10,
-                        category: "Category Name",
+                        name: product?.name,
+                        description: product?.description,
+                        discount: product?.discount,
+                        price: product?.price,
+                        brand: product?.brand,
+                        stock: product?.stock,
+                        category: product?.category,
                 });
-
-                setImageShow(["http://localhost:5173/images/admin.jpg"]);
-        }, []);
+                setAllCategory(categories);
+                setCategory(categories[0]?.name);
+                setImageShow(product?.images);
+        }, [categories, product]);
 
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -90,7 +86,7 @@ const EditProduct = () => {
 
                                 {/* Second Part: Add Product Form */}
                                 <div>
-                                        <form action="">
+                                        <form action="" onSubmit={EditProduct}>
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full text-[#d0d2d6]">
                                                         {/* Product Name */}
                                                         <div className="flex flex-col w-full gap-1">
@@ -243,13 +239,14 @@ const EditProduct = () => {
 
                                                         {/* Image upload */}
                                                         <div className="grid col-span-2 lg:grid-cols-4 grid-cols-1  sm:grid-cols-2 md:grid-cols-3 sm:gap-4 gap-3 w-full text-[#d0d2d6] mb-4 mt-4">
-                                                                {imageShow.map((img, idx) => {
+                                                                {imageShow?.map((img, idx) => {
                                                                         return (
                                                                                 <div>
                                                                                         <label htmlFor={idx}>
                                                                                                 <img
                                                                                                         src={img}
                                                                                                         alt="image"
+                                                                                                        className="w-[360px] h-[360px] object-cover rounded-md cursor-pointer"
                                                                                                 />
                                                                                         </label>
                                                                                         <input

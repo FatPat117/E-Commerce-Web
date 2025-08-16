@@ -93,4 +93,14 @@ const get_products = asyncHandler(async (req, res) => {
         res.status(200).json(new ApiResponse(200, "", { products, totalProduct }));
 });
 
-export default { add_product, get_products };
+const get_product = asyncHandler(async (req, res, next) => {
+        const { productId } = req.params;
+
+        // check product id
+        const product = await Product.findById(productId);
+        if (!product) throw new ApiError(404, "Product not found");
+
+        res.status(200).json(new ApiResponse(200, "", { product }));
+});
+
+export default { add_product, get_products, get_product };
