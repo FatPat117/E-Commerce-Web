@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { FaEdit, FaEye, FaEyeSlash, FaImage } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { FadeLoader } from "react-spinners";
+import { get_user_info, messageClear, profile_image_upload } from "../../store/Reducers/authReducer";
 const Profile = () => {
         const dispatch = useDispatch();
-        const { userInfo } = useSelector((state) => state.auth);
+        const { userInfo, successMessage, errorMessage, loader } = useSelector((state) => state.auth);
 
         const [hideOldPassword, setHideOldPassword] = useState(true);
         const [hideNewPassword, setHideNewPassword] = useState(true);
-
-        const image = false;
-        const loader = true;
-        const status = "";
 
         const toggleOldPassword = () => {
                 setHideOldPassword(!hideOldPassword);
@@ -23,9 +21,24 @@ const Profile = () => {
 
         const AddImage = (e) => {
                 if (e.target.files.length > 0) {
-                        console.log(e.target.files);
+                        const formData = new FormData();
+                        formData.append("image", e.target.files[0]);
+                        dispatch(profile_image_upload(formData)).then(() => {
+                                dispatch(get_user_info()); // gọi lại API lấy thông tin user mới
+                        });
                 }
         };
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
+
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full flex flex-wrap">
@@ -33,12 +46,12 @@ const Profile = () => {
                                 <div className="w-full md:w-6/12">
                                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md text-[#d0d2d6]">
                                                 <div className="flex justify-center items-center py-3">
-                                                        {image ? (
+                                                        {userInfo.image ? (
                                                                 <label
                                                                         htmlFor="img"
                                                                         className="h-[200px] w-[250px] relative p-3 cursor-pointer overflow-hidden"
                                                                 >
-                                                                        <img src="/images/admin.jpg" alt="avatar" />
+                                                                        <img src={userInfo.image} alt="avatar" />
                                                                         {loader && (
                                                                                 <div className="bg-slate-600 absolute left-0 top-0 w-full h-full opacity-70 flex justify-center items-center z-20">
                                                                                         <span>

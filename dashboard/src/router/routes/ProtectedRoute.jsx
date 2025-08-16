@@ -1,12 +1,19 @@
-import React, { Suspense } from "react";
-import { useSelector } from "react-redux";
+import React, { Suspense, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-
+import { get_user_info } from "../../store/Reducers/authReducer";
 const ProtectedRoute = ({ route, children }) => {
-        const { role, userInfo, loader } = useSelector((state) => state.auth);
+        const dispatch = useDispatch();
+        const { role, userInfo, token, loader } = useSelector((state) => state.auth);
+
+        useEffect(() => {
+                if (token && !userInfo) {
+                        dispatch(get_user_info());
+                }
+        }, [token, userInfo, dispatch]);
 
         if (loader) {
-                return <div>Loading...</div>;
+                return children; //  giữ nguyên UI cũ, không hiện loading
         }
 
         // --- 1. Chưa đăng nhập ---

@@ -1,4 +1,6 @@
 import bcrypt from "bcrypt";
+import { v2 as cloudinary } from "cloudinary";
+import formidable from "formidable";
 import Admin from "../models/adminModel.js";
 import sellerCustomer from "../models/chat/sellerCustomerModel.js";
 import Seller from "../models/sellerModel.js";
@@ -6,7 +8,6 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import createToken from "../utils/tokenCreate.js";
-
 const admin_login = asyncHandler(async (req, res) => {
         const { email, password } = req.body;
 
@@ -148,4 +149,42 @@ const seller_login = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "Seller login successful", { token: accessToken }));
 });
 
-export default { admin_login, getUser, seller_register, seller_login };
+const profile_image_upload = asyncHandler(async (req, res, next) => {
+        const id = req._id;
+        const seller = await Seller.findById(id);
+        if (!seller) throw new ApiError(400, "Seller not found");
+
+        const form = formidable({ multiples: false });
+        form.parse(req, async (err, fields, files) => {
+                if (err) {
+                        throw new ApiError(400, "Failed to parse form data");
+                }
+                const image = files.image[0];
+
+                cloudinary.config({
+                        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+                        api_key: process.env.CLOUDINARY_API_KEY,
+                        api_secret: process.env.CLOUDINARY_API_SECRET,
+                        secure: true,
+                });
+
+                // upload to cloudinary
+                const result = await cloudinary.uploader.upload(image.filepath, {
+                        folder: "profile",
+                });
+                if (!result) throw new ApiError(400, "Failed to upload image");
+
+                // update seller profile image
+                const seller = await Seller.findByIdAndUpdate(
+                        id,
+                        {
+                                image: result.secure_url,
+                        },
+                        { new: true }
+                );
+                if (!seller) throw new ApiError(400, "Failed to update seller profile image");
+                res.status(200).json(new ApiResponse(200, "Profile image updated successfully", { seller }));
+        });
+});
+
+export default { admin_login, getUser, seller_register, seller_login, profile_image_upload };

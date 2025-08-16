@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
 import api from "../../api/api";
 
+// Admin login
 export const admin_login = createAsyncThunk("auth/admin_login", async (data, { rejectWithValue, fulfillWithValue }) => {
         try {
                 const response = await api.post("/auth/admin-login", data, {
@@ -18,6 +19,7 @@ export const admin_login = createAsyncThunk("auth/admin_login", async (data, { r
         }
 });
 
+// Seller register
 export const seller_register = createAsyncThunk(
         "auth/seller_register",
         async (data, { rejectWithValue, fulfillWithValue }) => {
@@ -38,6 +40,7 @@ export const seller_register = createAsyncThunk(
         }
 );
 
+// Seller login
 export const seller_login = createAsyncThunk(
         "auth/seller_login",
         async (data, { rejectWithValue, fulfillWithValue }) => {
@@ -57,6 +60,7 @@ export const seller_login = createAsyncThunk(
         }
 );
 
+// Get user info
 export const get_user_info = createAsyncThunk(
         "auth/get_user_info",
         async (data, { rejectWithValue, fulfillWithValue }) => {
@@ -65,6 +69,27 @@ export const get_user_info = createAsyncThunk(
                                 withCredentials: true,
                         });
 
+                        return fulfillWithValue(response.data); // trả về data
+                } catch (err) {
+                        // console.log(err.response.data.message);
+                        return rejectWithValue(err.response.data.message); // trả về message
+                }
+        }
+);
+
+// Profile image upload
+
+export const profile_image_upload = createAsyncThunk(
+        "auth/profile_image_upload",
+        async (formData, { rejectWithValue, fulfillWithValue }) => {
+                try {
+                        const response = await api.patch("/auth/profile-image-upload", formData, {
+                                withCredentials: true,
+                                headers: {
+                                        "Content-Type": "multipart/form-data",
+                                },
+                        });
+                        console.log(response.data);
                         return fulfillWithValue(response.data); // trả về data
                 } catch (err) {
                         // console.log(err.response.data.message);
@@ -167,6 +192,20 @@ export const authReducer = createSlice({
                         state.errorMessage = "";
                 });
                 builder.addCase(get_user_info.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Profile image upload
+                builder.addCase(profile_image_upload.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(profile_image_upload.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.userInfo.image = action.payload.data.seller;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(profile_image_upload.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
