@@ -7,7 +7,7 @@ import Pagination from "../Pagination";
 import Search from "../components/Search";
 const SellerRequest = () => {
         const dispatch = useDispatch();
-        const { loader, sellers, totalSeller } = useSelector((state) => state.seller);
+        const { sellers, totalSeller } = useSelector((state) => state.seller);
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
         const [perPage, setPerPage] = useState(5);
@@ -117,12 +117,12 @@ const SellerRequest = () => {
                                 </div>
 
                                 {/* Pagination */}
-                                {sellers.length > perPage && (
+                                {totalSeller > perPage && (
                                         <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
                                                 <Pagination
                                                         pageNumber={currentPage}
                                                         setPageNumber={setCurrentPage}
-                                                        totalItem={50}
+                                                        totalItem={totalSeller}
                                                         perPage={perPage}
                                                         showPage={3}
                                                 />

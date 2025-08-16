@@ -46,4 +46,13 @@ const get_seller_request = asyncHandler(async (req, res) => {
         );
 });
 
-export default { get_seller_request };
+const get_seller = asyncHandler(async (req, res, next) => {
+        const { sellerId } = req.params;
+
+        //check if sellerID is vaild
+        const seller = await Seller.findById(sellerId);
+        if (!seller) throw new ApiError(404, "Seller not found");
+
+        res.status(200).json(new ApiResponse(200, "", { seller }));
+});
+export default { get_seller_request, get_seller };

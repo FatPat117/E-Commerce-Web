@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
-// Add category
+// Get seller requests
 export const get_seller_request = createAsyncThunk(
         "seller/get_seller_request",
         async ({ perPage, page, searchValue }, { fulfillWithValue, rejectWithValue }) => {
@@ -20,6 +20,23 @@ export const get_seller_request = createAsyncThunk(
         }
 );
 
+// Get seller
+// Get seller requests
+export const get_seller = createAsyncThunk(
+        "seller/get_seller",
+        async (sellerId, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/seller/${sellerId}`, {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const sellerReducer = createSlice({
         name: "category",
         initialState: {
@@ -28,6 +45,7 @@ const sellerReducer = createSlice({
                 loader: false,
                 sellers: [],
                 totalSeller: 0,
+                seller: null,
         },
         reducers: {
                 messageClear: (state) => {
@@ -36,7 +54,7 @@ const sellerReducer = createSlice({
                 },
         },
         extraReducers: (builder) => {
-                // Add category
+                // Get seller requests
                 builder.addCase(get_seller_request.pending, (state) => {
                         state.loader = true;
                 });
@@ -47,6 +65,20 @@ const sellerReducer = createSlice({
                         state.totalSeller = action.payload.data.totalSeller;
                 });
                 builder.addCase(get_seller_request.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Get seller
+                builder.addCase(get_seller.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_seller.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.seller = action.payload.data.seller;
+                });
+                builder.addCase(get_seller.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
