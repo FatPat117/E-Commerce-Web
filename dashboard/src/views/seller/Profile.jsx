@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { FaEdit, FaEye, FaEyeSlash, FaImage } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { FadeLoader } from "react-spinners";
 const Profile = () => {
+        const dispatch = useDispatch();
+        const { userInfo } = useSelector((state) => state.auth);
+
         const [hideOldPassword, setHideOldPassword] = useState(true);
         const [hideNewPassword, setHideNewPassword] = useState(true);
 
-        const image = true;
-        const loader = false;
+        const image = false;
+        const loader = true;
         const status = "";
-        const userInfo = true;
+
         const toggleOldPassword = () => {
                 setHideOldPassword(!hideOldPassword);
         };
@@ -17,6 +21,11 @@ const Profile = () => {
                 setHideNewPassword(!hideNewPassword);
         };
 
+        const AddImage = (e) => {
+                if (e.target.files.length > 0) {
+                        console.log(e.target.files);
+                }
+        };
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full flex flex-wrap">
@@ -56,7 +65,12 @@ const Profile = () => {
                                                                         )}
                                                                 </label>
                                                         )}
-                                                        <input type="file" className="hidden" id="img" />
+                                                        <input
+                                                                type="file"
+                                                                className="hidden"
+                                                                id="img"
+                                                                onChange={AddImage}
+                                                        />
                                                 </div>
 
                                                 {/* User profile */}
@@ -69,38 +83,38 @@ const Profile = () => {
                                                                         <span className="font-bold text-md">
                                                                                 Name:{" "}
                                                                         </span>
-                                                                        <span>Pitachiti</span>
+                                                                        <span>{userInfo.name}</span>
                                                                 </div>
                                                                 <div className="flex gap-2">
                                                                         <span className="font-bold text-md">
                                                                                 Email:{" "}
                                                                         </span>
-                                                                        <span>Pitachiti@gmail.com</span>
+                                                                        <span>{userInfo.email}</span>
                                                                 </div>
-                                                                <div className="flex gap-2">
+                                                                <div className="flex gap-2 capitalize">
                                                                         <span className="font-bold text-md">
                                                                                 Role:{" "}
                                                                         </span>
-                                                                        <span>Seller</span>
+                                                                        <span>{userInfo.role}</span>
                                                                 </div>
-                                                                <div className="flex gap-2">
+                                                                <div className="flex gap-2 capitalize">
                                                                         <span className="font-bold text-md">
                                                                                 Status:{" "}
                                                                         </span>
-                                                                        <span>Active</span>
+                                                                        <span>{userInfo.status}</span>
                                                                 </div>
                                                                 <div className="flex gap-2">
                                                                         <span className="font-bold text-md">
                                                                                 Payment Account:{" "}
                                                                         </span>
                                                                         <p>
-                                                                                {status === "active" ? (
-                                                                                        <span className="bg-green-500 text-white px-2 py-1 rounded-lg font-normal ml-2">
-                                                                                                Pending
+                                                                                {userInfo.payment === "active" ? (
+                                                                                        <span className="bg-green-500 text-white px-2 py-1 rounded-lg font-normal ml-2 capitalize">
+                                                                                                {userInfo.payment}
                                                                                         </span>
                                                                                 ) : (
                                                                                         <span className="bg-red-500 text-white px-2 py-1 rounded-lg cursor-pointer">
-                                                                                                Click activate
+                                                                                                {userInfo.payment}
                                                                                         </span>
                                                                                 )}
                                                                         </p>
@@ -110,7 +124,7 @@ const Profile = () => {
 
                                                 {/* Edit Form */}
                                                 <div className="px-0 md:px-5 py-2">
-                                                        {!userInfo ? (
+                                                        {!userInfo.shopInfo ? (
                                                                 <form>
                                                                         {/* Shop Name */}
                                                                         <div className="flex flex-col w-full gap-1 mb-2">
