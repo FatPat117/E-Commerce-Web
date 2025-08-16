@@ -7,5 +7,6 @@ router.post("/", authMiddleware, productControllers.add_product);
 router.get("/", authMiddleware, productControllers.get_products);
 router.get("/:productId", authMiddleware, productControllers.get_product);
 router.patch("/:productId", authMiddleware, productControllers.update_product);
+router.patch("/product-image-update/:productId", authMiddleware, productControllers.product_image_update);
 
 export default router;

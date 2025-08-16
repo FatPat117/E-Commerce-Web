@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
 import { get_category } from "../../store/Reducers/categoryReducer";
-import { get_product, messageClear, update_product } from "../../store/Reducers/productReducer";
+import { get_product, messageClear, product_image_update, update_product } from "../../store/Reducers/productReducer";
 import { overrideStyle } from "../../utils/utils";
 
 const EditProduct = () => {
@@ -40,9 +40,15 @@ const EditProduct = () => {
                 setState({ ...state, [e.target.name]: e.target.value });
         };
 
-        const changeImage = (idx, files) => {
+        const changeImage = (img, files) => {
                 if (files.length > 0) {
-                        setImages(files);
+                        dispatch(
+                                product_image_update({
+                                        oldImage: img,
+                                        newImage: files[0],
+                                        productId: productId,
+                                })
+                        );
                 }
         };
 
@@ -274,7 +280,7 @@ const EditProduct = () => {
                                                                 {imageShow?.map((img, idx) => {
                                                                         return (
                                                                                 <div>
-                                                                                        <label htmlFor={-1}>
+                                                                                        <label htmlFor={idx}>
                                                                                                 <img
                                                                                                         src={img}
                                                                                                         alt="image"
@@ -285,7 +291,7 @@ const EditProduct = () => {
                                                                                                 readOnly
                                                                                                 onChange={(e) =>
                                                                                                         changeImage(
-                                                                                                                idx,
+                                                                                                                img,
                                                                                                                 e.target
                                                                                                                         .files
                                                                                                         )

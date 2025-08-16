@@ -129,4 +129,24 @@ const update_product = asyncHandler(async (req, res, next) => {
 
         res.status(200).json(new ApiResponse(200, "Product Update Successfully", { product }));
 });
-export default { add_product, get_products, get_product, update_product };
+
+const product_image_update = asyncHandler(async (req, res, next) => {
+        const { productId } = req.params;
+
+        // check product id
+        const existingProduct = await Product.findById(productId);
+        if (!existingProduct) throw new ApiError(404, "Product not found");
+
+        const form = formidable({ multiples: true });
+
+        const { fields, files } = await new Promise((resolve, reject) => {
+                form.parse(req, (err, fields, files) => {
+                        if (err) reject(err);
+                        else resolve({ fields, files });
+                });
+        });
+
+        console.log(files);
+        console.log(fields);
+});
+export default { add_product, get_products, get_product, update_product, product_image_update };

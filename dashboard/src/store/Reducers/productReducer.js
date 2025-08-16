@@ -71,6 +71,31 @@ export const update_product = createAsyncThunk(
         }
 );
 
+// update product image by id
+export const product_image_update = createAsyncThunk(
+        "product/product_image_update",
+        async (product, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const formData = new FormData();
+                        formData.append("oldImage", product.oldImage);
+                        formData.append("newImage", product.newImage);
+                        formData.append("productId", product.productId);
+
+                        const response = await api.patch(
+                                `/product/product-image-update/${product.productId}`,
+                                formData,
+                                {
+                                        withCredentials: true,
+                                }
+                        );
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const productReducer = createSlice({
         name: "product",
         initialState: {
