@@ -37,15 +37,16 @@ const sellerReducer = createSlice({
         },
         extraReducers: (builder) => {
                 // Add category
-                builder.addCase(add_category.pending, (state) => {
+                builder.addCase(get_seller_request.pending, (state) => {
                         state.loader = true;
                 });
-                builder.addCase(add_category.fulfilled, (state, action) => {
+                builder.addCase(get_seller_request.fulfilled, (state, action) => {
                         state.loader = false;
                         state.successMessage = action.payload.message;
-                        state.categories.push(action.payload.data.category);
+                        state.sellers = action.payload.data.sellers;
+                        state.totalSeller = action.payload.data.totalSeller;
                 });
-                builder.addCase(add_category.rejected, (state, action) => {
+                builder.addCase(get_seller_request.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

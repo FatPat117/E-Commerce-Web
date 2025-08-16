@@ -6,6 +6,7 @@ import globalErrorHandler, { notFound } from "./middlewares/error.js";
 import authRoutes from "./routes/authRoutes.js";
 import categoryRoutes from "./routes/dashboard/categoryRoutes.js";
 import productRoutes from "./routes/dashboard/productRoutes.js";
+import sellerRoutes from "./routes/dashboard/sellerRoutes.js";
 import connectDB from "./utils/db.js";
 
 dotenv.config();
@@ -31,6 +32,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/product", productRoutes);
+app.use("/api/seller", sellerRoutes);
 app.use(notFound);
 app.use(globalErrorHandler);
 
