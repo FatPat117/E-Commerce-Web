@@ -9,8 +9,25 @@ const Header = () => {
         const { pathname } = useLocation();
         const [showSidebar, setShowSidebar] = useState(false);
         const [categoryShow, setCategoryShow] = useState(false);
+        const [searchValue, setSearchValue] = useState("");
+        const [category, setCategory] = useState("All Category");
         const user = true;
         const wishlist_count = 3;
+        const categories = [
+                "Mobiles",
+                "Speakers",
+                "Footwear",
+                "Watches",
+                "Smart Watches",
+                "Home Deco",
+                "Laptops",
+                "Smart Home",
+                "Smart TV",
+                "Smart Watch",
+                "Smart Home",
+                "Smart TV",
+                "Smart Watch",
+        ];
 
         return (
                 <header className="w-full bg-white">
@@ -397,7 +414,7 @@ const Header = () => {
 
                         {/* Search Category */}
                         <div className="w-[85%] lg:w-[90%] mx-auto ">
-                                <div className="flex w-full flex-wrap md-lg:gap-8">
+                                <div className="flex w-full flex-wrap md-lg:gap-6 md-lg:flex-nowrap">
                                         {/* Category */}
                                         <div className=" w-full md-lg:w-3/12">
                                                 <div className="bg-white relative">
@@ -422,7 +439,68 @@ const Header = () => {
                                                                 className={`${
                                                                         categoryShow ? "h-[400px]" : "h-0"
                                                                 } overflow-hidden transition-all md-lg:relative duration-500 absolute z-[9999] bg-[#dbf3ed] w-full border border-x`}
-                                                        ></div>
+                                                        >
+                                                                <ul className="p-3 text-slate-700 font-medium">
+                                                                        {categories.map((cate, idx) => {
+                                                                                return (
+                                                                                        <li
+                                                                                                key={idx}
+                                                                                                className="flex justify-start items-center gap-2 px-[24px] py-[6px]"
+                                                                                        >
+                                                                                                <Link className="text-md block">
+                                                                                                        {cate}
+                                                                                                </Link>
+                                                                                        </li>
+                                                                                );
+                                                                        })}
+                                                                </ul>
+                                                        </div>
+                                                </div>
+                                        </div>
+
+                                        {/* Search */}
+                                        <div className="w-full md-lg:w-9/12">
+                                                <div className="flex flex-wrap w-full justify-between items-center md-lg:gap-6">
+                                                        <div className="w-full md-lg:w-8/12 ">
+                                                                {/* Select category */}
+                                                                <div className="flex border-1 h-[50px] items-center relative gap-6 p-2">
+                                                                        <div className="relative after:absolute after:h-[25px] after:w-[2px] after:bg-[#afafaf] after:-right-[15px] ">
+                                                                                <select
+                                                                                        name=""
+                                                                                        id=""
+                                                                                        value={category}
+                                                                                        onChange={(e) =>
+                                                                                                setCategory(
+                                                                                                        e.target.value
+                                                                                                )
+                                                                                        }
+                                                                                        className="w-[150px] text-slate-600 font-semibold bg-transparent px-2 h-full outline-none border-none"
+                                                                                >
+                                                                                        {categories.map((cate, idx) => (
+                                                                                                <option
+                                                                                                        value={cate}
+                                                                                                        key={idx}
+                                                                                                >
+                                                                                                        {cate}
+                                                                                                </option>
+                                                                                        ))}
+                                                                                </select>
+                                                                        </div>
+
+                                                                        {/* Search input */}
+                                                                        <input
+                                                                                type="text"
+                                                                                name=""
+                                                                                id=""
+                                                                                value={searchValue}
+                                                                                onChange={(e) =>
+                                                                                        setSearchValue(e.target.value)
+                                                                                }
+                                                                                placeholder="What do you need"
+                                                                                className="w-full h-full px-2 text-slate-600 font-semibold bg-transparent outline-none border-none relative"
+                                                                        />
+                                                                </div>
+                                                        </div>
                                                 </div>
                                         </div>
                                 </div>
