@@ -144,7 +144,7 @@ const Header = () => {
                                                                 <ul className=" justify-start items-start gap-8 text-sm font-bold uppercase hidden md-lg:flex">
                                                                         <li>
                                                                                 <Link
-                                                                                        className={`p-2 block ${
+                                                                                        className={`p-2 block text-lg ${
                                                                                                 pathname === "/"
                                                                                                         ? "text-[#059473]"
                                                                                                         : "text-slate-600"
@@ -156,7 +156,7 @@ const Header = () => {
                                                                         </li>
                                                                         <li>
                                                                                 <Link
-                                                                                        className={`p-2 block ${
+                                                                                        className={`p-2 block text-lg ${
                                                                                                 pathname === "/shop"
                                                                                                         ? "text-[#059473]"
                                                                                                         : "text-slate-600"
@@ -168,7 +168,7 @@ const Header = () => {
                                                                         </li>
                                                                         <li>
                                                                                 <Link
-                                                                                        className={`p-2 block ${
+                                                                                        className={`p-2 block text-lg ${
                                                                                                 pathname === "/blog"
                                                                                                         ? "text-[#059473]"
                                                                                                         : "text-slate-600"
@@ -180,7 +180,7 @@ const Header = () => {
                                                                         </li>
                                                                         <li>
                                                                                 <Link
-                                                                                        className={`p-2 block ${
+                                                                                        className={`p-2 block text-lg ${
                                                                                                 pathname === "/about"
                                                                                                         ? "text-[#059473]"
                                                                                                         : "text-slate-600"
@@ -192,7 +192,7 @@ const Header = () => {
                                                                         </li>
                                                                         <li>
                                                                                 <Link
-                                                                                        className={`p-2 block ${
+                                                                                        className={`p-2 block text-lg ${
                                                                                                 pathname === "/contact"
                                                                                                         ? "text-[#059473]"
                                                                                                         : "text-slate-600"
@@ -413,10 +413,10 @@ const Header = () => {
                         </div>
 
                         {/* Search Category */}
-                        <div className="w-[85%] lg:w-[90%] mx-auto ">
-                                <div className="flex w-full flex-wrap md-lg:gap-6 md-lg:flex-nowrap">
+                        <div className="w-[85%] lg:w-[90%] mx-auto py-1">
+                                <div className="flex w-full flex-wrap md-lg:gap-6 md-lg:flex-nowrap items-center">
                                         {/* Category */}
-                                        <div className=" w-full md-lg:w-3/12">
+                                        <div className={` w-full md-lg:w-3/12  `}>
                                                 <div className="bg-white relative">
                                                         {/* Search category */}
                                                         <div
@@ -438,7 +438,7 @@ const Header = () => {
                                                         <div
                                                                 className={`${
                                                                         categoryShow ? "h-[400px]" : "h-0"
-                                                                } overflow-hidden transition-all md-lg:relative duration-500 absolute z-[9999] bg-[#dbf3ed] w-full border border-x`}
+                                                                } overflow-hidden transition-all md-lg:relative duration-500  z-[9999] bg-[#dbf3ed] w-full `}
                                                         >
                                                                 <ul className="p-3 text-slate-700 font-medium">
                                                                         {categories.map((cate, idx) => {
@@ -460,9 +460,9 @@ const Header = () => {
 
                                         {/* Search */}
                                         <div className="w-full md-lg:w-9/12">
-                                                <div className="flex flex-wrap w-full justify-between items-center md-lg:gap-6">
-                                                        <div className="w-full md-lg:w-8/12 ">
-                                                                {/* Select category */}
+                                                <div className="flex flex-wrap w-full justify-between items-center md-lg:gap-6 md-lg:flex-nowrap">
+                                                        {/* Select category */}
+                                                        <div className="w-full md-lg:w-9/12 ">
                                                                 <div className="flex border-1 h-[50px] items-center relative gap-6 p-2">
                                                                         <div className="relative after:absolute after:h-[25px] after:w-[2px] after:bg-[#afafaf] after:-right-[15px] ">
                                                                                 <select
@@ -499,6 +499,30 @@ const Header = () => {
                                                                                 placeholder="What do you need"
                                                                                 className="w-full h-full px-2 text-slate-600 font-semibold bg-transparent outline-none border-none relative"
                                                                         />
+
+                                                                        <button className="bg-[#059473] hover:bg-[#059473]/50 transition-all rounded-md duration-300 cursor-pointer absolute right-0 px-8 h-full font-semibold flex justify-center items-center uppercase text-white">
+                                                                                Search
+                                                                        </button>
+                                                                </div>
+                                                        </div>
+
+                                                        {/* Info and contact */}
+                                                        <div className="hidden w-full md-lg:w-4/12 md-lg:block gap-4">
+                                                                <div className="w-full flex justify-start md-lg:justify-end items-center">
+                                                                        <div className="w-[48px] h-[48px] rounded-full flex items-center justify-center bg-[#f5f5f5]">
+                                                                                <span>
+                                                                                        <FaPhoneAlt />
+                                                                                </span>
+                                                                        </div>
+
+                                                                        <div className="flex justify-end flex-col gap-2 pl-3">
+                                                                                <h2 className="text-lg font-semibold text-slate-700">
+                                                                                        +12312312312
+                                                                                </h2>
+                                                                                <span className="text-slate-700 text-sm">
+                                                                                        Support 24/7
+                                                                                </span>
+                                                                        </div>
                                                                 </div>
                                                         </div>
                                                 </div>
