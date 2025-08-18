@@ -8,6 +8,7 @@ import { Link, useLocation } from "react-router-dom";
 const Header = () => {
         const { pathname } = useLocation();
         const [showSidebar, setShowSidebar] = useState(false);
+        const [categoryShow, setCategoryShow] = useState(false);
         const user = true;
         const wishlist_count = 3;
 
@@ -222,12 +223,15 @@ const Header = () => {
 
                         {/* Side bar */}
                         <div className="block md-lg:hidden">
+                                {/* Overlay */}
                                 <div
                                         className={`fixed duration-200 transition-all ${
                                                 showSidebar ? "visible" : "invisible"
                                         } block md-lg:hidden w-screen h-screen bg-[rgba(0,0,0,0.5)] top-0 left-0 z-200`}
                                         onClick={() => setShowSidebar(false)}
                                 ></div>
+
+                                {/* Side bar */}
                                 <div
                                         className={`w-[320px] z-999 transition-all duration-200 fixed ${
                                                 showSidebar ? "left-0 top-0" : "-left-[300px]"
@@ -387,6 +391,39 @@ const Header = () => {
                                                                 <span>support@gmail.com</span>
                                                         </li>
                                                 </ul>
+                                        </div>
+                                </div>
+                        </div>
+
+                        {/* Search Category */}
+                        <div className="w-[85%] lg:w-[90%] mx-auto ">
+                                <div className="flex w-full flex-wrap md-lg:gap-8">
+                                        {/* Category */}
+                                        <div className=" w-full md-lg:w-3/12">
+                                                <div className="bg-white relative">
+                                                        {/* Search category */}
+                                                        <div
+                                                                className="h-[50px] bg-[#059473] text-white text-lg flex justify-between md-lg:justify-center md-lg:px-6 items-center gap-3 font-bold cursor-pointer"
+                                                                onClick={() => setCategoryShow(!categoryShow)}
+                                                        >
+                                                                <div className="flex justify-center items-center gap-2">
+                                                                        <span>
+                                                                                <FaList />
+                                                                        </span>
+                                                                        <span>All Category</span>
+                                                                        <span>
+                                                                                <IoIosArrowDown />
+                                                                        </span>
+                                                                </div>
+                                                        </div>
+
+                                                        {/* Dropdown */}
+                                                        <div
+                                                                className={`${
+                                                                        categoryShow ? "h-[400px]" : "h-0"
+                                                                } overflow-hidden transition-all md-lg:relative duration-500 absolute z-[9999] bg-[#dbf3ed] w-full border border-x`}
+                                                        ></div>
+                                                </div>
                                         </div>
                                 </div>
                         </div>
