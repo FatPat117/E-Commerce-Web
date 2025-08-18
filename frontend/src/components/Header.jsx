@@ -219,6 +219,137 @@ const Header = () => {
                                         </div>
                                 </div>
                         </div>
+
+                        {/* Side bar */}
+                        <div className="block md-lg:hidden">
+                                <div
+                                        className={`fixed duration-200 transition-all ${
+                                                showSidebar ? "visible" : "invisible"
+                                        } block md-lg:hidden w-screen h-screen bg-[rgba(0,0,0,0.5)] top-0 left-0 z-200`}
+                                        onClick={() => setShowSidebar(false)}
+                                ></div>
+                                <div
+                                        className={`w-[320px] z-999 transition-all duration-200 fixed ${
+                                                showSidebar ? "left-0 top-0" : "-left-[300px]"
+                                        } overflow-y-auto bg-white h-screen py-6 px-8`}
+                                >
+                                        <div className="flex justify-start flex-col gap-6">
+                                                {/* Logo */}
+                                                <Link to="/">
+                                                        <img src="/images/logo.png" alt="logo" />
+                                                </Link>
+
+                                                {/* Language and user info */}
+                                                <div className="flex justify-start items-center gap-5">
+                                                        {/* Language */}
+                                                        <div className="flex group cursor-pointer text-slate-800 text-sm justify-center items-center gap-2 relative after:absolute after:h-[18px] after:w-[2px] after:bg-[#afafaf] after:-right-[16px] after:top-[1px] before:absolute before:h-[18px] before:w-[2px] before:bg-[#afafaf] before:-left-[20px] before:top-[1px]">
+                                                                <img src="/images/language.png" alt="language" />
+                                                                <span>
+                                                                        <IoIosArrowDown />
+                                                                </span>
+                                                                <ul className="absolute invisible transition-all top-12 rounded-sm duration-300 text-white p-2 w-[100px] flex flex-col gap-3 group-hover:visible group-hover:top-6 group-hover:bg-black z-10">
+                                                                        <li>English</li>
+                                                                        <li>Hindi</li>
+                                                                        <li>Marathi</li>
+                                                                        <li>Kannada</li>
+                                                                        <li>Telugu</li>
+                                                                        <li>Tamil</li>
+                                                                        <li>Urdu</li>
+                                                                </ul>
+                                                        </div>
+
+                                                        {/* User info */}
+                                                        <div className="pl-2">
+                                                                {user ? (
+                                                                        <Link
+                                                                                to="/dashboard"
+                                                                                className="flex cursor-pointer justify-center items-center gap-2 text-sm  text-black"
+                                                                        >
+                                                                                <span>
+                                                                                        <FaUser />
+                                                                                </span>
+                                                                                <span>Pita Pitachiti</span>
+                                                                        </Link>
+                                                                ) : (
+                                                                        <Link
+                                                                                to="/login"
+                                                                                className="flex cursor-pointer justify-center items-center gap-2 text-sm  text-black"
+                                                                        >
+                                                                                <span>
+                                                                                        <FaLock />
+                                                                                </span>
+                                                                                <span>Login</span>
+                                                                        </Link>
+                                                                )}
+                                                        </div>
+                                                </div>
+
+                                                {/* Menu */}
+                                                <ul className=" justify-start items-start gap-4 text-sm font-bold uppercase flex flex-col">
+                                                        <li>
+                                                                <Link
+                                                                        className={`py-2 block ${
+                                                                                pathname === "/"
+                                                                                        ? "text-[#059473]"
+                                                                                        : "text-slate-600"
+                                                                        }`}
+                                                                        to="/"
+                                                                >
+                                                                        Home
+                                                                </Link>
+                                                        </li>
+                                                        <li>
+                                                                <Link
+                                                                        className={`py-2 block ${
+                                                                                pathname === "/shop"
+                                                                                        ? "text-[#059473]"
+                                                                                        : "text-slate-600"
+                                                                        }`}
+                                                                        to="/shop"
+                                                                >
+                                                                        Shop
+                                                                </Link>
+                                                        </li>
+                                                        <li>
+                                                                <Link
+                                                                        className={`py-2 block ${
+                                                                                pathname === "/blog"
+                                                                                        ? "text-[#059473]"
+                                                                                        : "text-slate-600"
+                                                                        }`}
+                                                                        to="/blog"
+                                                                >
+                                                                        Blog
+                                                                </Link>
+                                                        </li>
+                                                        <li>
+                                                                <Link
+                                                                        className={`py-2 block ${
+                                                                                pathname === "/about"
+                                                                                        ? "text-[#059473]"
+                                                                                        : "text-slate-600"
+                                                                        }`}
+                                                                        to="/shop"
+                                                                >
+                                                                        About Us
+                                                                </Link>
+                                                        </li>
+                                                        <li>
+                                                                <Link
+                                                                        className={`py-2 block ${
+                                                                                pathname === "/contact"
+                                                                                        ? "text-[#059473]"
+                                                                                        : "text-slate-600"
+                                                                        }`}
+                                                                        to="/shop"
+                                                                >
+                                                                        Contact us
+                                                                </Link>
+                                                        </li>
+                                                </ul>
+                                        </div>
+                                </div>
+                        </div>
                 </header>
         );
 };
