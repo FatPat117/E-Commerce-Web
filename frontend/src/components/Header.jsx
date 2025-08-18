@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
-import { FaFacebookF, FaLinkedin, FaList, FaLock, FaShoppingCart } from "react-icons/fa";
+import { FaFacebookF, FaLinkedin, FaList, FaLock, FaPhoneAlt, FaShoppingCart } from "react-icons/fa";
 import { FaInstagram, FaUser } from "react-icons/fa6";
 import { IoIosArrowDown, IoMdPhonePortrait } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
@@ -345,6 +345,46 @@ const Header = () => {
                                                                 >
                                                                         Contact us
                                                                 </Link>
+                                                        </li>
+                                                </ul>
+
+                                                {/* Facebook,Instagram, Linkedin */}
+                                                <div className="flex justify-start items-center gap-4 text-black">
+                                                        <a href="#">
+                                                                <FaFacebookF />
+                                                        </a>
+                                                        <a href="#">
+                                                                <FaLinkedin />
+                                                        </a>
+                                                        <a href="#">
+                                                                <FaInstagram />
+                                                        </a>
+                                                </div>
+
+                                                {/* Support */}
+                                                <div className="w-full flex justify-start md-lg:justify-end items-center">
+                                                        <div className="w-[48px] h-[48px] rounded-full flex items-center justify-center bg-[#f5f5f5]">
+                                                                <span>
+                                                                        <FaPhoneAlt />
+                                                                </span>
+                                                        </div>
+
+                                                        <div className="flex justify-end flex-col gap-2 pl-3">
+                                                                <h2 className="text-lg font-semibold text-slate-700">
+                                                                        +12312312312
+                                                                </h2>
+                                                                <span className="text-slate-700 text-sm">
+                                                                        Support 24/7
+                                                                </span>
+                                                        </div>
+                                                </div>
+
+                                                <ul className="flex flex-col justify-start items-start gap-3 text-[#1c1c1c]">
+                                                        <li className="flex justify-start items-center gap-2 text-md">
+                                                                <span>
+                                                                        <MdEmail />
+                                                                </span>
+                                                                <span>support@gmail.com</span>
                                                         </li>
                                                 </ul>
                                         </div>
