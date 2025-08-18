@@ -1,9 +1,12 @@
 import React from "react";
-import { FaFacebookF, FaLinkedin } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa6";
+import { FaFacebookF, FaLinkedin, FaLock } from "react-icons/fa";
+import { FaInstagram, FaUser } from "react-icons/fa6";
 import { IoIosArrowDown, IoMdPhonePortrait } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
+import { Link } from "react-router-dom";
 const Header = () => {
+        const user = true;
+
         return (
                 <header className="w-full bg-white">
                         <div className="header-top bg-[#caddff] md-lg:block hidden ">
@@ -60,6 +63,29 @@ const Header = () => {
                                                                                 <li>Urdu</li>
                                                                         </ul>
                                                                 </div>
+
+                                                                {/* User info */}
+                                                                {user ? (
+                                                                        <Link
+                                                                                to="/dashboard"
+                                                                                className="flex cursor-pointer justify-center items-center gap-2 text-sm  text-black"
+                                                                        >
+                                                                                <span>
+                                                                                        <FaUser />
+                                                                                </span>
+                                                                                <span>Pita Pitachiti</span>
+                                                                        </Link>
+                                                                ) : (
+                                                                        <Link
+                                                                                to="/login"
+                                                                                className="flex cursor-pointer justify-center items-center gap-2 text-sm  text-black"
+                                                                        >
+                                                                                <span>
+                                                                                        <FaLock />
+                                                                                </span>
+                                                                                <span>Login</span>
+                                                                        </Link>
+                                                                )}
                                                         </div>
                                                 </div>
                                         </div>
