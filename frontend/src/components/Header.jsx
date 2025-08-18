@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { FaFacebookF, FaLinkedin, FaList, FaLock } from "react-icons/fa";
+import { AiFillHeart } from "react-icons/ai";
+import { FaFacebookF, FaLinkedin, FaList, FaLock, FaShoppingCart } from "react-icons/fa";
 import { FaInstagram, FaUser } from "react-icons/fa6";
 import { IoIosArrowDown, IoMdPhonePortrait } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
@@ -8,6 +9,7 @@ const Header = () => {
         const { pathname } = useLocation();
         const [showSidebar, setShowSidebar] = useState(false);
         const user = true;
+        const wishlist_count = 3;
 
         return (
                 <header className="w-full bg-white">
@@ -183,6 +185,35 @@ const Header = () => {
                                                                                 </Link>
                                                                         </li>
                                                                 </ul>
+
+                                                                <div className="hidden md-lg:flex justify-center items-center gap-5">
+                                                                        <div className="flex justify-center gap-5">
+                                                                                {/* Loved items */}
+                                                                                <div className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]">
+                                                                                        <span className="text-xl text-green-500">
+                                                                                                <AiFillHeart />
+                                                                                        </span>
+                                                                                        <div
+                                                                                                className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex items-center 
+                                                                                        justify-center -top-[3px] -right-[5px]"
+                                                                                        >
+                                                                                                {wishlist_count}
+                                                                                        </div>
+                                                                                </div>
+                                                                                {/* Cart items */}
+                                                                                <div className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]">
+                                                                                        <span className="text-xl text-green-500">
+                                                                                                <FaShoppingCart />
+                                                                                        </span>
+                                                                                        <div
+                                                                                                className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex items-center 
+                                                                                        justify-center -top-[3px] -right-[5px]"
+                                                                                        >
+                                                                                                {wishlist_count}
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
                                                         </div>
                                                 </nav>
                                         </div>
