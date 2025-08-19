@@ -28,7 +28,7 @@ const FeatureProducts = () => {
                                                                 <img
                                                                         src={`/images/products/${idx + 1}.webp`}
                                                                         alt="products"
-                                                                        className="w-full h-[280px] md-lg:w-full "
+                                                                        className="w-full h-[300px] md-lg:w-full "
                                                                 />
 
                                                                 <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
