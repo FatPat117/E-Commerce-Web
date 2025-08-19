@@ -15,18 +15,13 @@ const Header = () => {
         const wishlist_count = 3;
         const categories = [
                 "Mobiles",
+                "Laptops",
                 "Speakers",
+                "Top Wear",
                 "Footwear",
                 "Watches",
+                "Home Decor",
                 "Smart Watches",
-                "Home Deco",
-                "Laptops",
-                "Smart Home",
-                "Smart TV",
-                "Smart Watch",
-                "Smart Home",
-                "Smart TV",
-                "Smart Watch",
         ];
 
         return (
