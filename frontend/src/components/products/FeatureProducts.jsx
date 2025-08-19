@@ -1,4 +1,6 @@
 import React from "react";
+import { FaEye, FaRegHeart } from "react-icons/fa";
+import { RiShoppingCartLine } from "react-icons/ri";
 
 const FeatureProducts = () => {
         return (
@@ -17,6 +19,7 @@ const FeatureProducts = () => {
                                                         key={idx}
                                                         className="border group transition-all duration-500 hover:shadow-md hover:-mt-3"
                                                 >
+                                                        {/* Product  Image */}
                                                         <div className="relative overflow-hidden">
                                                                 {/* Discount part */}
                                                                 <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2">
@@ -25,8 +28,30 @@ const FeatureProducts = () => {
                                                                 <img
                                                                         src={`/images/products/${idx + 1}.webp`}
                                                                         alt="products"
-                                                                        className="w-full h-[240px] md-lg:w-full md-lg:h-full object-cover"
+                                                                        className="w-full h-[280px] md-lg:w-full "
                                                                 />
+
+                                                                <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
+                                                                        <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
+                                                                                <FaRegHeart />
+                                                                        </li>
+                                                                        <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
+                                                                                <FaEye />
+                                                                        </li>
+                                                                        <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
+                                                                                <RiShoppingCartLine />
+                                                                        </li>
+                                                                </ul>
+                                                        </div>
+
+                                                        {/* Product Details*/}
+                                                        <div className="py-3 text-slate-600 px-2">
+                                                                <h2 className="font-bold">Product Name</h2>
+                                                                <div className="flex justify-start items-center gap-3">
+                                                                        <span className="text-md font-semibold">
+                                                                                $500
+                                                                        </span>
+                                                                </div>
                                                         </div>
                                                 </div>
                                         );
