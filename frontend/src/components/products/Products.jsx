@@ -1,12 +1,12 @@
 import React from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
-const Products = () => {
+const Products = ({ title }) => {
         const products = [
                 [1, 2, 3],
                 [4, 5, 6],
-                [7, 8, 9],
         ];
 
         const responsive = {
@@ -28,9 +28,23 @@ const Products = () => {
                 },
         };
 
-        const ButtonGroup = () => {};
+        const ButtonGroup = ({ next, previous }) => {
+                return (
+                        <div className="absolute top-0 left-0 w-full flex  items-center px-2 gap-5">
+                                <div className="text-xl font-bold text-slate-600">{title}</div>
+                                <div className="flex gap-3 text-slate-600">
+                                        <button onClick={previous} className="p-1 bg-slate-300 rounded">
+                                                <IoIosArrowBack />
+                                        </button>
+                                        <button onClick={next} className="p-1 bg-slate-300 rounded">
+                                                <IoIosArrowForward />
+                                        </button>
+                                </div>
+                        </div>
+                );
+        };
         return (
-                <div className="flex gap-7">
+                <div className="w-full flex flex-col relative">
                         <Carousel
                                 autoPlay={false}
                                 infinite={false}
@@ -40,16 +54,35 @@ const Products = () => {
                                 transitionDuration={500}
                                 renderButtonGroupOutside={true}
                                 customButtonGroup={<ButtonGroup />}
+                                containerClass="pt-14"
                         >
-                                <div className="flex flex-col justify-start gap-2">
-                                        <Link to="#">
-                                                <img src="" alt="" />
-                                                <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600 ">
-                                                        <h2>Product Name</h2>
-                                                        <span>$434</span>
+                                {products.map((pro, idx) => {
+                                        return (
+                                                <div key={idx} className="flex flex-col justify-start gap-2">
+                                                        {pro.map((item, idx) => {
+                                                                return (
+                                                                        <Link
+                                                                                key={idx}
+                                                                                to="#"
+                                                                                className="flex justify-start items-start"
+                                                                        >
+                                                                                <img
+                                                                                        src={`/images/products/${item}.webp`}
+                                                                                        alt="Product Images"
+                                                                                        className="w-[110px] h-[110px] "
+                                                                                />
+                                                                                <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600 ">
+                                                                                        <h2>Product Name</h2>
+                                                                                        <span className="text-lg font-bold">
+                                                                                                $434
+                                                                                        </span>
+                                                                                </div>
+                                                                        </Link>
+                                                                );
+                                                        })}
                                                 </div>
-                                        </Link>
-                                </div>
+                                        );
+                                })}
                         </Carousel>
                 </div>
         );

@@ -22,13 +22,13 @@ const Home = () => {
                                 <div className="w-[85%] flex flex-wrap mx-auto">
                                         <div className="grid w-full  md-lg:grid-cols-3 grid-cols-1 md:grid-cols-2">
                                                 <div className="overflow-hidden">
-                                                        <Products />
+                                                        <Products title={"Latest Products"} />
                                                 </div>
                                                 <div className="overflow-hidden">
-                                                        <Products />
+                                                        <Products title={"Top Rated Products"} />
                                                 </div>
                                                 <div className="overflow-hidden">
-                                                        <Products />
+                                                        <Products title={"Discount Products"} />
                                                 </div>
                                         </div>
                                 </div>
