@@ -225,7 +225,7 @@ const Cart = () => {
 
                                                         {/* Right Order Summary */}
                                                         <div className="w-full md-lg:w-[33%]">
-                                                                <div className="pl-0 md-lg:pl-3 pt-5">
+                                                                <div className="pl-0 md-lg:pl-3 pt-5 md:pt-0">
                                                                         {cartProducts.length > 0 && (
                                                                                 <div className="bg-white p-3 text-slate-600 flex flex-col gap-3">
                                                                                         <h2 className="text-xl font-bold">
