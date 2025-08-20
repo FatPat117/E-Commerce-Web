@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
+import { BsFillGridFill } from "react-icons/bs";
 import { CiStar } from "react-icons/ci";
+import { FaThList } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { Range } from "react-range";
 import { Link } from "react-router-dom";
@@ -12,6 +14,7 @@ const Shops = () => {
                 values: [50, 1500],
         });
         const [rating, setRating] = useState("");
+        const [style, setStyle] = useState("grid");
         const categories = [
                 "Mobiles",
                 "Laptops",
@@ -58,7 +61,7 @@ const Shops = () => {
                                                 </button>
                                         </div>
 
-                                        {/* Category Search And Price And Ratings*/}
+                                        {/* Shop Page*/}
                                         <div className="w-full flex flex-wrap">
                                                 {/* Category search */}
                                                 <div
@@ -283,6 +286,62 @@ const Shops = () => {
                                                         {/* Lated Products */}
                                                         <div className="py-5  flex-col gap-4 hidden md:flex">
                                                                 <Products title={"Latest Product"} />
+                                                        </div>
+                                                </div>
+
+                                                {/* Product  */}
+                                                <div className="w-full md:w-8/12 md-lg:w-9/12 ">
+                                                        <div className="pl-0 md:pl-8 ">
+                                                                {/* Top */}
+                                                                <div className="py-4 bg-white mb-10 px-3 rounded-md flex justify-between items-start border-[1px] border-slate-300">
+                                                                        <h2 className="text-lg font-medium text-slate-600">
+                                                                                20 Products
+                                                                        </h2>
+                                                                        <div className="flex justify-center items-center gap-3">
+                                                                                <select
+                                                                                        className="p-1 border outline-none text-lg text-slate-600 font-semibold"
+                                                                                        name=""
+                                                                                        id=""
+                                                                                >
+                                                                                        <option value="">
+                                                                                                Sort By
+                                                                                        </option>
+                                                                                        <option value="low-to-high">
+                                                                                                Low to High Price
+                                                                                        </option>
+                                                                                        <option value="high-to-low">
+                                                                                                High to Low Price
+                                                                                        </option>
+                                                                                </select>
+                                                                                <div className="justify-center items-center hidden md-lg:flex gap-4">
+                                                                                        <div
+                                                                                                onClick={() =>
+                                                                                                        setStyle("grid")
+                                                                                                }
+                                                                                                className={`p-2 ${
+                                                                                                        style == "grid"
+                                                                                                                ? "bg-slate-300"
+                                                                                                                : ""
+                                                                                                } text-slate-600 hover:bg-slate-300 transition-all duration-300 cursor-pointer rounded-sm`}
+                                                                                        >
+                                                                                                <BsFillGridFill />
+                                                                                        </div>
+
+                                                                                        <div
+                                                                                                onClick={() =>
+                                                                                                        setStyle("list")
+                                                                                                }
+                                                                                                className={`p-2 ${
+                                                                                                        style == "list"
+                                                                                                                ? "bg-slate-300"
+                                                                                                                : ""
+                                                                                                } text-slate-600 hover:bg-slate-300 transition-all duration-300 cursor-pointer rounded-sm`}
+                                                                                        >
+                                                                                                <FaThList />
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
                                                         </div>
                                                 </div>
                                         </div>
