@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { URL } from "../utils/utils";
 const Details = () => {
         const images = [1, 2, 3, 4, 5, 6];
+        const [image, setImage] = useState("");
         const responsive = {
                 superLargeDesktop: {
                         breakpoint: { max: 4000, min: 3000 },
@@ -82,7 +83,11 @@ const Details = () => {
                                                         <div className="p-5 border border-slate-300 flex justify-center items-center">
                                                                 <div className="h-full w-full flex justify-center items-center">
                                                                         <img
-                                                                                src="/images/products/1.webp"
+                                                                                src={
+                                                                                        image
+                                                                                                ? `/images/products/${image}.webp`
+                                                                                                : `/images/products/${images[2]}.webp`
+                                                                                }
                                                                                 alt="product"
                                                                                 className="h-[450px] w-[50%]"
                                                                         />
@@ -100,14 +105,23 @@ const Details = () => {
                                                                                 >
                                                                                         {images.map((data, idx) => {
                                                                                                 return (
-                                                                                                        <img
-                                                                                                                src={`/images/products/${data}.webp`}
-                                                                                                                alt="Product image"
+                                                                                                        <div
                                                                                                                 key={
                                                                                                                         idx
                                                                                                                 }
-                                                                                                                className="h-[120px] cursor-pointer"
-                                                                                                        />
+                                                                                                                onClick={() =>
+                                                                                                                        setImage(
+                                                                                                                                data
+                                                                                                                        )
+                                                                                                                }
+                                                                                                        >
+                                                                                                                <img
+                                                                                                                        src={`/images/products/${data}.webp`}
+                                                                                                                        alt="Product image"
+                                                                                                                        s
+                                                                                                                        className="h-[120px] cursor-pointer"
+                                                                                                                />
+                                                                                                        </div>
                                                                                                 );
                                                                                         })}
                                                                                 </Carousel>
