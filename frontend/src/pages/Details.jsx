@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaHeart } from "react-icons/fa";
+import { FaFacebookF, FaGithub, FaHeart, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -189,7 +189,7 @@ const Details = () => {
                                                         </div>
 
                                                         {/* Action */}
-                                                        <div className="flex gap-3 pb-10  border-slate-300">
+                                                        <div className="flex gap-3 pb-10  border-slate-300 border-b">
                                                                 {stock ? (
                                                                         <>
                                                                                 <div className="flex bg-slate-200 h-[50px] justify-center items-center text-xl">
@@ -225,7 +225,77 @@ const Details = () => {
                                                                 )}
                                                         </div>
 
-                                                        {/* Wishlist */}
+                                                        {/* Social Links */}
+                                                        <div className="flex py-5 gap-5">
+                                                                <div className="w-[150px] text-black font-bold text-xl flex flex-col gap-5 ">
+                                                                        <span>Availibility</span>
+                                                                        <span>Share On</span>
+                                                                </div>
+                                                                <div className="flex flex-col gap-5">
+                                                                        <span
+                                                                                className={`text-${
+                                                                                        stock ? "green" : "red"
+                                                                                }-500 ${stock ? "" : "line-through"}`}
+                                                                        >
+                                                                                {stock
+                                                                                        ? `In Stock (${stock})`
+                                                                                        : "Out of Stock"}
+                                                                        </span>
+
+                                                                        <ul className="flex justify-start items-center gap-3">
+                                                                                <li>
+                                                                                        <a
+                                                                                                href="#"
+                                                                                                className="w-[38px] h-[38px] rounded-full hover:bg-[#059473] hover:text-white flex justify-center items-center bg-indigo-500 text-white transition-all duration-400"
+                                                                                        >
+                                                                                                <FaFacebookF />
+                                                                                        </a>
+                                                                                </li>
+
+                                                                                <li>
+                                                                                        <a
+                                                                                                href="#"
+                                                                                                className="w-[38px] h-[38px] rounded-full hover:bg-[#059473] hover:text-white flex justify-center items-center bg-pink-300 text-white transition-all duration-400"
+                                                                                        >
+                                                                                                <FaInstagram />
+                                                                                        </a>
+                                                                                </li>
+
+                                                                                <li>
+                                                                                        <a
+                                                                                                href="#"
+                                                                                                className="w-[38px] h-[38px] rounded-full hover:bg-[#059473] hover:text-white flex justify-center items-center bg-blue-600 text-white transition-all duration-400"
+                                                                                        >
+                                                                                                <FaLinkedin />
+                                                                                        </a>
+                                                                                </li>
+
+                                                                                <li>
+                                                                                        <a
+                                                                                                href="#"
+                                                                                                className="w-[38px] h-[38px] rounded-full hover:bg-[#059473] hover:text-white flex justify-center items-center bg-black text-white transition-all duration-400"
+                                                                                        >
+                                                                                                <FaGithub />
+                                                                                        </a>
+                                                                                </li>
+                                                                        </ul>
+                                                                </div>
+                                                        </div>
+
+                                                        {/* Actions*/}
+                                                        <div className="flex justify-start items-center gap-3">
+                                                                {stock ? (
+                                                                        <button className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-green-500/40 bg-[#059473] text-white capitalize font-bold">
+                                                                                Buy now
+                                                                        </button>
+                                                                ) : null}
+                                                                <Link
+                                                                        to="#"
+                                                                        className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-red-500/40 bg-red-500 text-white capitalize font-bold"
+                                                                >
+                                                                        Chat Seller
+                                                                </Link>
+                                                        </div>
                                                 </div>
                                         </div>
                                 </div>
