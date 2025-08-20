@@ -491,11 +491,11 @@ const Header = () => {
                                                                                 onChange={(e) =>
                                                                                         setSearchValue(e.target.value)
                                                                                 }
-                                                                                placeholder="What do you need"
-                                                                                className="w-full h-full px-2 text-slate-600 font-semibold bg-transparent outline-none border-none relative"
+                                                                                placeholder="Search..."
+                                                                                className=" md:w-full h-full px-2 text-slate-600 font-semibold bg-transparent outline-none border-none relative"
                                                                         />
 
-                                                                        <button className="bg-[#059473] hover:bg-[#059473]/50 transition-all rounded-md duration-300 cursor-pointer absolute right-0 px-8 h-full font-semibold flex justify-center items-center uppercase text-white">
+                                                                        <button className="bg-[#059473] hover:bg-[#059473]/50 transition-all rounded-md duration-300 cursor-pointer absolute right-0  px-2  md:px-8 h-full font-semibold flex justify-center items-center text-capitalize text-white">
                                                                                 Search
                                                                         </button>
                                                                 </div>

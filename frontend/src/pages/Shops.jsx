@@ -4,6 +4,7 @@ import { CiStar } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { Range } from "react-range";
 import { Link } from "react-router-dom";
+import Products from "../components/products/Products";
 import { URL } from "../utils/utils";
 const Shops = () => {
         const [filter, setFilter] = useState(true);
@@ -57,7 +58,7 @@ const Shops = () => {
                                                 </button>
                                         </div>
 
-                                        {/* Category Search And Price*/}
+                                        {/* Category Search And Price And Ratings*/}
                                         <div className="w-full flex flex-wrap">
                                                 {/* Category search */}
                                                 <div
@@ -126,155 +127,162 @@ const Shops = () => {
                                                                 ${Math.floor(state.values[0])} - $
                                                                 {Math.floor(state.values[1])}
                                                         </span>
-                                                </div>
-                                        </div>
 
-                                        {/* Ratings */}
-                                        <div className="py-3 flex flex-col gap-4">
-                                                <h2 className="text-3xl font-bold mb-3 text-slate-600">Rating</h2>
-                                                <div className="flex flex-col gap-3">
-                                                        {/* 5 star*/}
-                                                        <div
-                                                                onClick={() => {
-                                                                        setRating(5);
-                                                                }}
-                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
-                                                        >
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
+                                                        {/* Ratings */}
+                                                        <div className="py-3 flex flex-col gap-4">
+                                                                <h2 className="text-3xl font-bold mb-3 text-slate-600">
+                                                                        Rating
+                                                                </h2>
+                                                                <div className="flex flex-col gap-3">
+                                                                        {/* 5 star*/}
+                                                                        <div
+                                                                                onClick={() => {
+                                                                                        setRating(5);
+                                                                                }}
+                                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
+                                                                        >
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                        </div>
+
+                                                                        {/* 4 star*/}
+                                                                        <div
+                                                                                onClick={() => {
+                                                                                        setRating(4);
+                                                                                }}
+                                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
+                                                                        >
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                        </div>
+
+                                                                        {/* 3 star */}
+                                                                        <div
+                                                                                onClick={() => {
+                                                                                        setRating(3);
+                                                                                }}
+                                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
+                                                                        >
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                        </div>
+
+                                                                        {/* 2 star */}
+                                                                        <div
+                                                                                onClick={() => {
+                                                                                        setRating(3);
+                                                                                }}
+                                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
+                                                                        >
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                        </div>
+
+                                                                        {/* 1 star */}
+                                                                        <div
+                                                                                onClick={() => {
+                                                                                        setRating(3);
+                                                                                }}
+                                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
+                                                                        >
+                                                                                <span>
+                                                                                        <AiFillStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                        </div>
+
+                                                                        {/* 0 star */}
+                                                                        <div
+                                                                                onClick={() => {
+                                                                                        setRating(3);
+                                                                                }}
+                                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
+                                                                        >
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                                <span>
+                                                                                        <CiStar />
+                                                                                </span>
+                                                                        </div>
+                                                                </div>
                                                         </div>
 
-                                                        {/* 4 star*/}
-                                                        <div
-                                                                onClick={() => {
-                                                                        setRating(4);
-                                                                }}
-                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
-                                                        >
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                        </div>
-
-                                                        {/* 3 star */}
-                                                        <div
-                                                                onClick={() => {
-                                                                        setRating(3);
-                                                                }}
-                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
-                                                        >
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                        </div>
-
-                                                        {/* 2 star */}
-                                                        <div
-                                                                onClick={() => {
-                                                                        setRating(3);
-                                                                }}
-                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
-                                                        >
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                        </div>
-
-                                                        {/* 1 star */}
-                                                        <div
-                                                                onClick={() => {
-                                                                        setRating(3);
-                                                                }}
-                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
-                                                        >
-                                                                <span>
-                                                                        <AiFillStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                        </div>
-
-                                                        {/* 0 star */}
-                                                        <div
-                                                                onClick={() => {
-                                                                        setRating(3);
-                                                                }}
-                                                                className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
-                                                        >
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
-                                                                <span>
-                                                                        <CiStar />
-                                                                </span>
+                                                        {/* Lated Products */}
+                                                        <div className="py-5  flex-col gap-4 hidden md:flex">
+                                                                <Products title={"Latest Product"} />
                                                         </div>
                                                 </div>
                                         </div>
