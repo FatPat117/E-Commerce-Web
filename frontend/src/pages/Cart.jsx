@@ -1,9 +1,10 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { URL } from "../utils/utils.js";
 
 const Cart = () => {
+        const navigate = useNavigate();
         const cartProducts = [1, 2];
         const outOfStockProducts = [1, 2];
 
@@ -273,7 +274,22 @@ const Cart = () => {
                                                                                                 </span>
                                                                                         </div>
 
-                                                                                        <button className="cursor-pointer px-5 py-[8px] rounded-sm hover:shadow-red-500/50 hover:shadow-md font-semibold bg-red-500 text-md text-white uppercase">
+                                                                                        <button
+                                                                                                onClick={() =>
+                                                                                                        navigate(
+                                                                                                                "/shipping",
+                                                                                                                {
+                                                                                                                        state: {
+                                                                                                                                products: [],
+                                                                                                                                price: 500,
+                                                                                                                                shipping_fee: 40,
+                                                                                                                                items: 2,
+                                                                                                                        },
+                                                                                                                }
+                                                                                                        )
+                                                                                                }
+                                                                                                className="cursor-pointer px-5 py-[8px] rounded-sm hover:shadow-red-500/50 hover:shadow-md font-semibold bg-red-500 text-md text-white uppercase"
+                                                                                        >
                                                                                                 Process to Checkout
                                                                                         </button>
                                                                                 </div>
