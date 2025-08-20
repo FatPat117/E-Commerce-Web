@@ -152,11 +152,11 @@ const Header = () => {
                                                                         <li>
                                                                                 <Link
                                                                                         className={`p-2 block text-lg ${
-                                                                                                pathname === "/shop"
+                                                                                                pathname === "/shops"
                                                                                                         ? "text-[#059473]"
                                                                                                         : "text-slate-600"
                                                                                         }`}
-                                                                                        to="/shop"
+                                                                                        to="/shops"
                                                                                 >
                                                                                         Shop
                                                                                 </Link>
@@ -317,11 +317,11 @@ const Header = () => {
                                                         <li>
                                                                 <Link
                                                                         className={`py-2 block ${
-                                                                                pathname === "/shop"
+                                                                                pathname == "/shops"
                                                                                         ? "text-[#059473]"
                                                                                         : "text-slate-600"
                                                                         }`}
-                                                                        to="/shop"
+                                                                        to="/shops"
                                                                 >
                                                                         Shop
                                                                 </Link>

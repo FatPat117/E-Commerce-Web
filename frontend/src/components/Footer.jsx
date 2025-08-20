@@ -112,7 +112,7 @@ const Footer = () => {
                         </div>
 
                         {/* Copy right */}
-                        <div className="text-center text-sm text-slate-700 p-3 font-normal">
+                        <div className="w-[90%] flex flex-wrap justify-center items-center mx-auto text-center text-sm text-slate-700 p-3 font-normal">
                                 <p>Copy right @2025: All rights reserved </p>
                         </div>
                 </footer>
