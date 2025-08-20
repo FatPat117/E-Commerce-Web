@@ -1,12 +1,16 @@
 import React, { useState } from "react";
+import { FaHeart } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
+import Rating from "../components/Rating";
 import { URL } from "../utils/utils";
 const Details = () => {
         const images = [1, 2, 3, 4, 5, 6];
         const [image, setImage] = useState("");
+        const discount = 5;
+        const stock = 100;
         const responsive = {
                 superLargeDesktop: {
                         breakpoint: { max: 4000, min: 3000 },
@@ -77,7 +81,8 @@ const Details = () => {
                         {/* Product details */}
                         <section>
                                 <div className="w-[85%] md-lg:w-[90%] mx-auto h-full">
-                                        <div className="grid grid-cols-1 md-lg:grid-cols-2 gap-6">
+                                        <div className="grid grid-cols-1 md-lg:grid-cols-2 gap-6 gap-x-10">
+                                                {/* Image and carousel */}
                                                 <div className="flex flex-col gap-y-5">
                                                         {/* Image */}
                                                         <div className="p-5 border border-slate-300 flex justify-center items-center">
@@ -128,6 +133,99 @@ const Details = () => {
                                                                         )}
                                                                 </div>
                                                         </div>
+                                                </div>
+
+                                                {/* Product Info */}
+                                                <div className="flex flex-col gap-5">
+                                                        {/* Product Name */}
+                                                        <div className="text-3xl text-slate-600 font-bold">
+                                                                <h3>Product Name</h3>
+                                                        </div>
+
+                                                        {/* Rating */}
+                                                        <div className="flex justify-start items-center gap-4">
+                                                                <div className="flex text-xl">
+                                                                        <Rating ratings={4.5} />
+                                                                </div>
+                                                                <span className="text-green-500">(24 reviews)</span>
+                                                        </div>
+
+                                                        {/* Price */}
+                                                        <div className="flex justify-start items-center text-2xl text-red-500 font-bold gap-3">
+                                                                {discount !== 0 ? (
+                                                                        <>
+                                                                                <h2 className="line-through">$500</h2>
+                                                                                <h2 className="">
+                                                                                        $
+                                                                                        {500 -
+                                                                                                Math.floor(
+                                                                                                        (500 *
+                                                                                                                discount) /
+                                                                                                                100
+                                                                                                )}
+                                                                                </h2>
+                                                                                <h2>(-{discount}%)</h2>
+                                                                        </>
+                                                                ) : (
+                                                                        <>
+                                                                                <h2>Price: $600</h2>
+                                                                        </>
+                                                                )}
+                                                        </div>
+
+                                                        {/* Description */}
+                                                        <div className="text-slate-600 max-w-[700px]">
+                                                                <p>
+                                                                        Lorem ipsum dolor sit amet consectetur
+                                                                        adipisicing elit. Quis ipsam natus amet, aut
+                                                                        voluptas beatae veniam dolorum ex. Odit
+                                                                        molestias suscipit impedit ducimus doloribus
+                                                                        sint explicabo accusamus laborum. Laboriosam
+                                                                        quisquam molestias laudantium ipsa quasi saepe
+                                                                        commodi beatae similique delectus, iste ratione
+                                                                        illum molestiae repudiandae cupiditate
+                                                                        reprehenderit fugit, nisi blanditiis tempore.
+                                                                </p>
+                                                        </div>
+
+                                                        {/* Action */}
+                                                        <div className="flex gap-3 pb-10  border-slate-300">
+                                                                {stock ? (
+                                                                        <>
+                                                                                <div className="flex bg-slate-200 h-[50px] justify-center items-center text-xl">
+                                                                                        <div className="flex justify-center items-center px-6 cursor-pointer">
+                                                                                                -
+                                                                                        </div>
+                                                                                        <div className="flex justify-center items-center px-6 ">
+                                                                                                2
+                                                                                        </div>
+                                                                                        <div className="flex justify-center items-center px-6 cursor-pointer">
+                                                                                                +
+                                                                                        </div>
+                                                                                </div>
+                                                                                <div>
+                                                                                        <button className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-green-500/40 bg-[#059473] text-white capitalize font-bold">
+                                                                                                Add to cart
+                                                                                        </button>
+                                                                                </div>
+                                                                                <div>
+                                                                                        <div className="h-[50px] w-[50px] flex justify-center items-center cursor-pointer hover:shadow-lg hover:shadow-cyan-500/40 bg-cyan-500 text-white">
+                                                                                                <FaHeart />
+                                                                                        </div>
+                                                                                </div>
+                                                                        </>
+                                                                ) : (
+                                                                        <>
+                                                                                <div>
+                                                                                        <div className="h-[50px] w-[50px] flex justify-center items-center cursor-pointer hover:shadow-lg hover:shadow-cyan-500/40 bg-cyan-500 text-white">
+                                                                                                <FaHeart />
+                                                                                        </div>
+                                                                                </div>
+                                                                        </>
+                                                                )}
+                                                        </div>
+
+                                                        {/* Wishlist */}
                                                 </div>
                                         </div>
                                 </div>
