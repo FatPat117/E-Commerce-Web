@@ -6,7 +6,9 @@ import { FaThList } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { Range } from "react-range";
 import { Link } from "react-router-dom";
+import Pagination from "../components/Pagination";
 import Products from "../components/products/Products";
+import ShopProduct from "../components/products/ShopProduct";
 import { URL } from "../utils/utils";
 const Shops = () => {
         const [filter, setFilter] = useState(true);
@@ -15,6 +17,11 @@ const Shops = () => {
         });
         const [rating, setRating] = useState("");
         const [style, setStyle] = useState("grid");
+
+        const [currentPage, setCurrentPage] = useState(1);
+
+        const [perPage, setPerPage] = useState(5);
+
         const categories = [
                 "Mobiles",
                 "Laptops",
@@ -31,7 +38,7 @@ const Shops = () => {
                         {/* Banner */}
                         <section
                                 style={{ backgroundImage: `url(${URL}/images/banner/shop.png)` }}
-                                className={` h-[220px] bg-cover bg-no-repeat relative bg-left`}
+                                className={` h-[240px] bg-cover bg-no-repeat relative bg-left md-lg:mt-10`}
                         >
                                 <div className="absolute left-0 top-0 w-full h-full bg-[#2422228a]">
                                         <div className=" w-[80%] md-lg:w-[85%] lg:w-[90%] h-full mx-auto">
@@ -341,6 +348,22 @@ const Shops = () => {
                                                                                         </div>
                                                                                 </div>
                                                                         </div>
+                                                                </div>
+
+                                                                {/* Product show  */}
+                                                                <div className="pb-8">
+                                                                        <ShopProduct style={style} />
+                                                                </div>
+
+                                                                {/* Pagination */}
+                                                                <div>
+                                                                        <Pagination
+                                                                                pageNumber={currentPage}
+                                                                                setPageNumber={setCurrentPage}
+                                                                                totalItem={50}
+                                                                                perPage={perPage}
+                                                                                showPage={3}
+                                                                        />
                                                                 </div>
                                                         </div>
                                                 </div>

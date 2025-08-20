@@ -6,7 +6,7 @@ import Products from "../components/products/Products";
 
 const Home = () => {
         return (
-                <div className="w-full h-screen bg-white">
+                <div className="w-full h-full bg-white">
                         <Banner />
                         <Categories />
 
