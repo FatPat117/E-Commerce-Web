@@ -1,8 +1,11 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { URL } from "../utils/utils.js";
 const Shipping = () => {
+        const { state } = useLocation();
+        console.log(state);
+
         return (
                 <div>
                         {/* Banner */}
@@ -40,10 +43,15 @@ const Shipping = () => {
                                                                                 Shipping Information
                                                                         </h2>
 
+                                                                        {/* Form */}
                                                                         <form action="">
-                                                                                <div className="flex-col md:flex-row md:gap-2 w-full gap-5 text-slate-600 flex">
+                                                                                <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 w-full gap-5  text-slate-600 ">
+                                                                                        {/* Name */}
                                                                                         <div className="flex flex-col gap-1 mb-2 w-full">
-                                                                                                <label htmlFor="name">
+                                                                                                <label
+                                                                                                        htmlFor="name"
+                                                                                                        className="text-lg"
+                                                                                                >
                                                                                                         Name
                                                                                                 </label>
                                                                                                 <input
@@ -55,8 +63,12 @@ const Shipping = () => {
                                                                                                 />
                                                                                         </div>
 
+                                                                                        {/* Address */}
                                                                                         <div className="flex flex-col gap-1 mb-2 w-full">
-                                                                                                <label htmlFor="address">
+                                                                                                <label
+                                                                                                        htmlFor="address"
+                                                                                                        className="text-lg"
+                                                                                                >
                                                                                                         Address
                                                                                                 </label>
                                                                                                 <input
@@ -67,8 +79,124 @@ const Shipping = () => {
                                                                                                         className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
                                                                                                 />
                                                                                         </div>
+
+                                                                                        {/* Phone */}
+                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                <label
+                                                                                                        htmlFor="phone"
+                                                                                                        className="text-lg"
+                                                                                                >
+                                                                                                        Phone
+                                                                                                </label>
+                                                                                                <input
+                                                                                                        type="text"
+                                                                                                        name="phone"
+                                                                                                        id="phone"
+                                                                                                        placeholder="Phone..."
+                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                />
+                                                                                        </div>
+
+                                                                                        {/* Post */}
+                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                <label
+                                                                                                        htmlFor="post"
+                                                                                                        className="text-lg"
+                                                                                                >
+                                                                                                        Post
+                                                                                                </label>
+                                                                                                <input
+                                                                                                        type="text"
+                                                                                                        name="post"
+                                                                                                        id="post"
+                                                                                                        placeholder="Post..."
+                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                />
+                                                                                        </div>
+
+                                                                                        {/* Province */}
+                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                <label
+                                                                                                        htmlFor="province"
+                                                                                                        className="text-lg"
+                                                                                                >
+                                                                                                        Province
+                                                                                                </label>
+                                                                                                <input
+                                                                                                        type="text"
+                                                                                                        name="province"
+                                                                                                        id="province"
+                                                                                                        placeholder="Province..."
+                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                />
+                                                                                        </div>
+
+                                                                                        {/* City */}
+                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                <label
+                                                                                                        htmlFor="city"
+                                                                                                        className="text-lg"
+                                                                                                >
+                                                                                                        City
+                                                                                                </label>
+                                                                                                <input
+                                                                                                        type="text"
+                                                                                                        name="city"
+                                                                                                        id="city"
+                                                                                                        placeholder="City..."
+                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                />
+                                                                                        </div>
+
+                                                                                        {/* Area*/}
+                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                <label
+                                                                                                        htmlFor="area"
+                                                                                                        className="text-lg"
+                                                                                                >
+                                                                                                        Area
+                                                                                                </label>
+                                                                                                <input
+                                                                                                        type="text"
+                                                                                                        name="area"
+                                                                                                        id="area"
+                                                                                                        placeholder="Area..."
+                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                />
+                                                                                        </div>
+
+                                                                                        {/* Button */}
+
+                                                                                        {/* Post */}
+                                                                                        <div className="flex flex-col gap-1 mb-2 w-full mt-8">
+                                                                                                <button className="px-3 py-[10px] rounded-md hover:shadow-md hover:shadow-green-500/50 bg-green-500 text-white capitalize cursor-pointer">
+                                                                                                        Save Changes
+                                                                                                </button>
+                                                                                        </div>
                                                                                 </div>
                                                                         </form>
+
+                                                                        <div className="flex flex-col gap-1">
+                                                                                <h2 className="text-slate-600 font-semibold pb-2">
+                                                                                        Deliver To
+                                                                                </h2>
+                                                                                <p>
+                                                                                        <span className="bg-blue-200 text-blue-800 text-sm font-medium mr-2 px-2 py-1 rounded">
+                                                                                                Home
+                                                                                        </span>
+                                                                                        <span>
+                                                                                                Address,Province, City
+                                                                                        </span>
+                                                                                        <span className="text-indigo-500 cursor-pointer">
+                                                                                                {" "}
+                                                                                                Change
+                                                                                        </span>
+                                                                                </p>
+
+                                                                                <p className="text-slate-600 text-sm">
+                                                                                        Email To ntphat110705@gmail.com
+                                                                                </p>
+                                                                        </div>
                                                                 </div>
                                                         </div>
                                                 </div>
