@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { URL } from "../utils/utils.js";
 const Shipping = () => {
-        const { state } = useLocation();
-        console.log(state);
+        const [state, setState] = useState({
+                name: "",
+                address: "",
+                phone: "",
+                post: "",
+                province: "",
+                city: "",
+                area: "",
+        });
+        const [res, setRes] = useState(false);
+
+        const inputHandle = (e) => {
+                setState({ ...state, [e.target.name]: e.target.value });
+        };
+
+        const handleSubmit = (e) => {
+                e.preventDefault();
+                const { name, address, phone, post, province, city, area } = state;
+
+                if (name && address && phone && post && province && city && area) {
+                        setRes(true);
+                }
+        };
 
         return (
                 <div>
@@ -44,159 +65,216 @@ const Shipping = () => {
                                                                         </h2>
 
                                                                         {/* Form */}
-                                                                        <form action="">
-                                                                                <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 w-full gap-5  text-slate-600 ">
-                                                                                        {/* Name */}
-                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
-                                                                                                <label
-                                                                                                        htmlFor="name"
-                                                                                                        className="text-lg"
-                                                                                                >
-                                                                                                        Name
-                                                                                                </label>
-                                                                                                <input
-                                                                                                        type="text"
-                                                                                                        name="name"
-                                                                                                        id="name"
-                                                                                                        placeholder="Name..."
-                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
-                                                                                                />
-                                                                                        </div>
+                                                                        {!res && (
+                                                                                <form action="" onSubmit={handleSubmit}>
+                                                                                        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 w-full gap-5  text-slate-600 ">
+                                                                                                {/* Name */}
+                                                                                                <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                        <label
+                                                                                                                htmlFor="name"
+                                                                                                                className="text-lg"
+                                                                                                        >
+                                                                                                                Name
+                                                                                                        </label>
+                                                                                                        <input
+                                                                                                                type="text"
+                                                                                                                name="name"
+                                                                                                                id="name"
+                                                                                                                value={
+                                                                                                                        state.name
+                                                                                                                }
+                                                                                                                onChange={
+                                                                                                                        inputHandle
+                                                                                                                }
+                                                                                                                placeholder="Name..."
+                                                                                                                className="w-full px-3 
+                                                                                                        py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                        />
+                                                                                                </div>
 
-                                                                                        {/* Address */}
-                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
-                                                                                                <label
-                                                                                                        htmlFor="address"
-                                                                                                        className="text-lg"
-                                                                                                >
-                                                                                                        Address
-                                                                                                </label>
-                                                                                                <input
-                                                                                                        type="text"
-                                                                                                        name="address"
-                                                                                                        id="address"
-                                                                                                        placeholder="Address..."
-                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
-                                                                                                />
-                                                                                        </div>
+                                                                                                {/* Address */}
+                                                                                                <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                        <label
+                                                                                                                htmlFor="address"
+                                                                                                                className="text-lg"
+                                                                                                        >
+                                                                                                                Address
+                                                                                                        </label>
+                                                                                                        <input
+                                                                                                                type="text"
+                                                                                                                name="address"
+                                                                                                                id="address"
+                                                                                                                value={
+                                                                                                                        state.address
+                                                                                                                }
+                                                                                                                onChange={
+                                                                                                                        inputHandle
+                                                                                                                }
+                                                                                                                placeholder="Address..."
+                                                                                                                className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                        />
+                                                                                                </div>
 
-                                                                                        {/* Phone */}
-                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
-                                                                                                <label
-                                                                                                        htmlFor="phone"
-                                                                                                        className="text-lg"
-                                                                                                >
-                                                                                                        Phone
-                                                                                                </label>
-                                                                                                <input
-                                                                                                        type="text"
-                                                                                                        name="phone"
-                                                                                                        id="phone"
-                                                                                                        placeholder="Phone..."
-                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
-                                                                                                />
-                                                                                        </div>
+                                                                                                {/* Phone */}
+                                                                                                <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                        <label
+                                                                                                                htmlFor="phone"
+                                                                                                                className="text-lg"
+                                                                                                        >
+                                                                                                                Phone
+                                                                                                        </label>
+                                                                                                        <input
+                                                                                                                type="text"
+                                                                                                                name="phone"
+                                                                                                                id="phone"
+                                                                                                                value={
+                                                                                                                        state.phone
+                                                                                                                }
+                                                                                                                onChange={
+                                                                                                                        inputHandle
+                                                                                                                }
+                                                                                                                placeholder="Phone..."
+                                                                                                                className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                        />
+                                                                                                </div>
 
-                                                                                        {/* Post */}
-                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
-                                                                                                <label
-                                                                                                        htmlFor="post"
-                                                                                                        className="text-lg"
-                                                                                                >
-                                                                                                        Post
-                                                                                                </label>
-                                                                                                <input
-                                                                                                        type="text"
-                                                                                                        name="post"
-                                                                                                        id="post"
-                                                                                                        placeholder="Post..."
-                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
-                                                                                                />
-                                                                                        </div>
+                                                                                                {/* Post */}
+                                                                                                <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                        <label
+                                                                                                                htmlFor="post"
+                                                                                                                className="text-lg"
+                                                                                                        >
+                                                                                                                Post
+                                                                                                        </label>
+                                                                                                        <input
+                                                                                                                type="text"
+                                                                                                                name="post"
+                                                                                                                id="post"
+                                                                                                                value={
+                                                                                                                        state.post
+                                                                                                                }
+                                                                                                                onChange={
+                                                                                                                        inputHandle
+                                                                                                                }
+                                                                                                                placeholder="Post..."
+                                                                                                                className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                        />
+                                                                                                </div>
 
-                                                                                        {/* Province */}
-                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
-                                                                                                <label
-                                                                                                        htmlFor="province"
-                                                                                                        className="text-lg"
-                                                                                                >
-                                                                                                        Province
-                                                                                                </label>
-                                                                                                <input
-                                                                                                        type="text"
-                                                                                                        name="province"
-                                                                                                        id="province"
-                                                                                                        placeholder="Province..."
-                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
-                                                                                                />
-                                                                                        </div>
+                                                                                                {/* Province */}
+                                                                                                <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                        <label
+                                                                                                                htmlFor="province"
+                                                                                                                className="text-lg"
+                                                                                                        >
+                                                                                                                Province
+                                                                                                        </label>
+                                                                                                        <input
+                                                                                                                type="text"
+                                                                                                                name="province"
+                                                                                                                id="province"
+                                                                                                                value={
+                                                                                                                        state.province
+                                                                                                                }
+                                                                                                                onChange={
+                                                                                                                        inputHandle
+                                                                                                                }
+                                                                                                                placeholder="Province..."
+                                                                                                                className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                        />
+                                                                                                </div>
 
-                                                                                        {/* City */}
-                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
-                                                                                                <label
-                                                                                                        htmlFor="city"
-                                                                                                        className="text-lg"
-                                                                                                >
+                                                                                                {/* City */}
+                                                                                                <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                        <label
+                                                                                                                htmlFor="city"
+                                                                                                                className="text-lg"
+                                                                                                        >
+                                                                                                                City
+                                                                                                        </label>
+                                                                                                        <input
+                                                                                                                type="text"
+                                                                                                                name="city"
+                                                                                                                id="city"
+                                                                                                                value={
+                                                                                                                        state.city
+                                                                                                                }
+                                                                                                                onChange={
+                                                                                                                        inputHandle
+                                                                                                                }
+                                                                                                                placeholder="City..."
+                                                                                                                className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                        />
+                                                                                                </div>
+
+                                                                                                {/* Area*/}
+                                                                                                <div className="flex flex-col gap-1 mb-2 w-full">
+                                                                                                        <label
+                                                                                                                htmlFor="area"
+                                                                                                                className="text-lg"
+                                                                                                        >
+                                                                                                                Area
+                                                                                                        </label>
+                                                                                                        <input
+                                                                                                                type="text"
+                                                                                                                name="area"
+                                                                                                                id="area"
+                                                                                                                value={
+                                                                                                                        state.area
+                                                                                                                }
+                                                                                                                onChange={
+                                                                                                                        inputHandle
+                                                                                                                }
+                                                                                                                placeholder="Area..."
+                                                                                                                className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
+                                                                                                        />
+                                                                                                </div>
+
+                                                                                                {/* Button */}
+
+                                                                                                {/* Post */}
+                                                                                                <div className="flex flex-col gap-1 mb-2 w-full mt-8">
+                                                                                                        <button className="px-3 py-[10px] rounded-md hover:shadow-md hover:shadow-green-500/50 bg-green-500 text-white capitalize cursor-pointer">
+                                                                                                                Save
+                                                                                                                Changes
+                                                                                                        </button>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </form>
+                                                                        )}
+
+                                                                        {res && (
+                                                                                <div className="flex flex-col gap-1">
+                                                                                        <h2 className="text-slate-600 font-semibold pb-2">
+                                                                                                Deliver To {state.name}
+                                                                                        </h2>
+                                                                                        <p>
+                                                                                                <span className="bg-blue-200 text-blue-800 text-sm font-medium mr-2 px-2 py-1 rounded">
+                                                                                                        Home
+                                                                                                </span>
+                                                                                                <span>
+                                                                                                        Address,Province,
                                                                                                         City
-                                                                                                </label>
-                                                                                                <input
-                                                                                                        type="text"
-                                                                                                        name="city"
-                                                                                                        id="city"
-                                                                                                        placeholder="City..."
-                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
-                                                                                                />
-                                                                                        </div>
-
-                                                                                        {/* Area*/}
-                                                                                        <div className="flex flex-col gap-1 mb-2 w-full">
-                                                                                                <label
-                                                                                                        htmlFor="area"
-                                                                                                        className="text-lg"
+                                                                                                </span>
+                                                                                                <span
+                                                                                                        className="text-indigo-500 cursor-pointer"
+                                                                                                        onClick={() =>
+                                                                                                                setRes(
+                                                                                                                        false
+                                                                                                                )
+                                                                                                        }
                                                                                                 >
-                                                                                                        Area
-                                                                                                </label>
-                                                                                                <input
-                                                                                                        type="text"
-                                                                                                        name="area"
-                                                                                                        id="area"
-                                                                                                        placeholder="Area..."
-                                                                                                        className="w-full px-3 py-2 border border-slate-200 outline-none focus:border-green-500 rounded-md"
-                                                                                                />
-                                                                                        </div>
+                                                                                                        {" "}
+                                                                                                        Change
+                                                                                                </span>
+                                                                                        </p>
 
-                                                                                        {/* Button */}
-
-                                                                                        {/* Post */}
-                                                                                        <div className="flex flex-col gap-1 mb-2 w-full mt-8">
-                                                                                                <button className="px-3 py-[10px] rounded-md hover:shadow-md hover:shadow-green-500/50 bg-green-500 text-white capitalize cursor-pointer">
-                                                                                                        Save Changes
-                                                                                                </button>
-                                                                                        </div>
+                                                                                        <p className="text-slate-600 text-sm mt-2">
+                                                                                                Email To
+                                                                                                ntphat110705@gmail.com
+                                                                                        </p>
                                                                                 </div>
-                                                                        </form>
-
-                                                                        <div className="flex flex-col gap-1">
-                                                                                <h2 className="text-slate-600 font-semibold pb-2">
-                                                                                        Deliver To
-                                                                                </h2>
-                                                                                <p>
-                                                                                        <span className="bg-blue-200 text-blue-800 text-sm font-medium mr-2 px-2 py-1 rounded">
-                                                                                                Home
-                                                                                        </span>
-                                                                                        <span>
-                                                                                                Address,Province, City
-                                                                                        </span>
-                                                                                        <span className="text-indigo-500 cursor-pointer">
-                                                                                                {" "}
-                                                                                                Change
-                                                                                        </span>
-                                                                                </p>
-
-                                                                                <p className="text-slate-600 text-sm">
-                                                                                        Email To ntphat110705@gmail.com
-                                                                                </p>
-                                                                        </div>
+                                                                        )}
                                                                 </div>
                                                         </div>
                                                 </div>
