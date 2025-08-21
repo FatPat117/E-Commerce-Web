@@ -369,6 +369,62 @@ const Details = () => {
                                                                 </div>
                                                         </div>
                                                 </div>
+
+                                                {/* Related products */}
+                                                <div className="w-full md-lg:w-[28%] md-lg:mt-5">
+                                                        <div className="pl-0 md-lg:pl-4 ">
+                                                                <div className="px-3 py-2 text-slate-600 bg-slate-200">
+                                                                        <h2 className="font-bold text-center">
+                                                                                From Easy Shop
+                                                                        </h2>
+                                                                </div>
+                                                                <div className="flex flex-col gap-5 mt-3 p-3">
+                                                                        {[1, 2, 3].map((data, idx) => {
+                                                                                return (
+                                                                                        <Link
+                                                                                                key={idx}
+                                                                                                className="block border border-slate-300 p-3"
+                                                                                        >
+                                                                                                <div className="relative h-[270px]">
+                                                                                                        <img
+                                                                                                                src={`/images/products/${data}.webp`}
+                                                                                                                alt="Product image"
+                                                                                                                className="w-full h-full object-contain"
+                                                                                                        />
+                                                                                                        {discount !==
+                                                                                                                0 && (
+                                                                                                                <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2">
+                                                                                                                        {
+                                                                                                                                discount
+                                                                                                                        }
+
+                                                                                                                        %
+                                                                                                                </div>
+                                                                                                        )}
+                                                                                                </div>
+
+                                                                                                <h2 className="text-slate-600 py-1 font-bold">
+                                                                                                        Product Name:
+                                                                                                        Pitachi
+                                                                                                </h2>
+                                                                                                <div className="flex gap-2 ">
+                                                                                                        <h2 className="text-lg font-bold text-blue-500">
+                                                                                                                $450
+                                                                                                        </h2>
+                                                                                                        <div className="flex items-center gap-2">
+                                                                                                                <Rating
+                                                                                                                        ratings={
+                                                                                                                                4.5
+                                                                                                                        }
+                                                                                                                />
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        </Link>
+                                                                                );
+                                                                        })}
+                                                                </div>
+                                                        </div>
+                                                </div>
                                         </div>
                                 </div>
                         </section>
