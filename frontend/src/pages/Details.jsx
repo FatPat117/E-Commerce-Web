@@ -438,54 +438,62 @@ const Details = () => {
 
                         {/* Related Product */}
                         <section>
-                                <div className="w-[85%] md-lg:w-[90%] mx-auto h-full">
+                                <div className="w-[85%] md-lg:w-[90%] mx-auto h-full ">
                                         <h2 className="text-2xl py-8 text-slate-600 font-semibold">Related Products</h2>
+                                        {/* Swiper */}
                                         <div>
                                                 <Swiper
                                                         slidesPerView="auto"
                                                         breakpoints={{
-                                                                1280: {
-                                                                        slidesPerView: 3,
-                                                                },
-                                                                565: {
-                                                                        slidesPerView: 2,
-                                                                },
+                                                                565: { slidesPerView: 2 },
+                                                                1280: { slidesPerView: 3 },
                                                         }}
                                                         spaceBetween={25}
                                                         loop={true}
                                                         pagination={{
                                                                 clickable: true,
-                                                                el: ".custom_bullets",
                                                         }}
                                                         modules={[Pagination]}
                                                         className="mySwiper"
                                                 >
-                                                        {[1, 2, 3, 4, 5, 6].map((data, idx) => {
-                                                                return (
-                                                                        <SwiperSlide key={idx}>
-                                                                                <Link className="block">
-                                                                                        <div className="relative h-[270px]">
-                                                                                                <div className="w-full h-full">
-                                                                                                        <img
-                                                                                                                src={`/images/products/${data}.webp`}
-                                                                                                                alt="Product-img"
-                                                                                                                className="object-contain w-full h-full"
-                                                                                                        />
-                                                                                                        <div className="absolute h-full w-full top-0 left-0 bg-[#000] opacity-25 hover:opacity-50 transition-all duration-500"></div>
-                                                                                                </div>
-                                                                                                {discount !== 0 && (
-                                                                                                        <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2">
-                                                                                                                {
-                                                                                                                        discount
-                                                                                                                }
-                                                                                                                %
-                                                                                                        </div>
-                                                                                                )}
+                                                        {[1, 2, 3, 4, 5, 6].map((data, idx) => (
+                                                                <SwiperSlide key={idx}>
+                                                                        <Link className="block">
+                                                                                <div className="relative h-[270px]">
+                                                                                        <div className="w-full h-full">
+                                                                                                <img
+                                                                                                        src={`/images/products/${data}.webp`}
+                                                                                                        alt="Product-img"
+                                                                                                        className="object-contain w-full h-full"
+                                                                                                />
+                                                                                                <div className="absolute inset-0 bg-black/25 hover:bg-black/50 transition-all duration-500 z-10" />
                                                                                         </div>
-                                                                                </Link>
-                                                                        </SwiperSlide>
-                                                                );
-                                                        })}
+                                                                                        {discount !== 0 && (
+                                                                                                <div className="absolute left-2 top-2 flex items-center justify-center w-[38px] h-[38px] rounded-full bg-red-500 text-white text-xs font-semibold">
+                                                                                                        {discount}%
+                                                                                                </div>
+                                                                                        )}
+                                                                                </div>
+                                                                                <div className="p-4 flex flex-col gap-1 relative mb-5">
+                                                                                        <h2 className="text-slate-600 py-1 font-bold">
+                                                                                                Product Name: Pitachi
+                                                                                        </h2>
+                                                                                        <div className="flex gap-2 ">
+                                                                                                <h2 className="text-lg font-bold text-blue-500">
+                                                                                                        $450
+                                                                                                </h2>
+                                                                                                <div className="flex items-center gap-2">
+                                                                                                        <Rating
+                                                                                                                ratings={
+                                                                                                                        4.5
+                                                                                                                }
+                                                                                                        />
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </Link>
+                                                                </SwiperSlide>
+                                                        ))}
                                                 </Swiper>
                                         </div>
                                 </div>
