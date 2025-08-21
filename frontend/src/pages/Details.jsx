@@ -5,12 +5,14 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
+import Reviews from "../components/Reviews";
 import { URL } from "../utils/utils";
 const Details = () => {
         const images = [1, 2, 3, 4, 5, 6];
         const [image, setImage] = useState("");
         const discount = 5;
         const stock = 100;
+        const [state, setState] = useState("reviews");
         const responsive = {
                 superLargeDesktop: {
                         breakpoint: { max: 4000, min: 3000 },
@@ -295,6 +297,76 @@ const Details = () => {
                                                                 >
                                                                         Chat Seller
                                                                 </Link>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
+                        </section>
+
+                        {/* */}
+                        <section>
+                                <div className="w-[85%] md-lg:w-[90%] mx-auto h-full pb-16">
+                                        <div className="flex flex-wrap">
+                                                {/*Reviews and Description*/}
+                                                <div className="md-lg:w-[72%] w-full mt-5 md-lg:p-0">
+                                                        <div className="pr-0 md-lg:pr-4">
+                                                                {/* Button */}
+                                                                <div className="grid grid-cols-2 gap-y-2">
+                                                                        <button
+                                                                                className={`py-2 md-lg:text-lg text-md hover:text-white px-5 hover:bg-[#059473] ${
+                                                                                        state === "reviews"
+                                                                                                ? "bg-[#059473] text-white"
+                                                                                                : "bg-slate-200 text-slate-700"
+                                                                                } cursor-pointer rounded-sm`}
+                                                                                onClick={() => {
+                                                                                        setState("reviews");
+                                                                                }}
+                                                                        >
+                                                                                Reviews
+                                                                        </button>
+                                                                        <button
+                                                                                className={`py-2 md-lg:text-lg text-md hover:text-white px-5 hover:bg-[#059473] ${
+                                                                                        state === "description"
+                                                                                                ? "bg-[#059473] text-white"
+                                                                                                : "bg-slate-200 text-slate-700"
+                                                                                } cursor-pointer rounded-sm`}
+                                                                                onClick={() => setState("description")}
+                                                                        >
+                                                                                Description
+                                                                        </button>
+                                                                </div>
+
+                                                                <div>
+                                                                        {state === "reviews" ? (
+                                                                                <Reviews />
+                                                                        ) : (
+                                                                                <p className="py-5 text-slate-500">
+                                                                                        Lorem ipsum dolor sit amet
+                                                                                        consectetur adipisicing elit.
+                                                                                        Neque, repellat tempore fugit
+                                                                                        unde asperiores numquam dicta
+                                                                                        facilis repellendus possimus
+                                                                                        quidem provident voluptate amet
+                                                                                        quaerat officia. Placeat
+                                                                                        doloremque nesciunt
+                                                                                        reprehenderit maxime quam
+                                                                                        dignissimos dolor nobis sed
+                                                                                        repellendus in, animi dicta
+                                                                                        autem doloribus facilis
+                                                                                        asperiores non! Quas et eum sit
+                                                                                        architecto, expedita
+                                                                                        exercitationem optio obcaecati
+                                                                                        incidunt illum laudantium,
+                                                                                        repellat aut quod facilis
+                                                                                        praesentium. Nobis iure,
+                                                                                        possimus qui, corrupti eum
+                                                                                        doloremque accusamus earum
+                                                                                        voluptatum natus, voluptate
+                                                                                        consectetur porro et odio id
+                                                                                        atque. Maiores!
+                                                                                </p>
+                                                                        )}
+                                                                </div>
                                                         </div>
                                                 </div>
                                         </div>
