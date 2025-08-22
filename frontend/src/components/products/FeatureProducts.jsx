@@ -3,7 +3,7 @@ import { FaEye, FaRegHeart } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import Rating from "../Rating";
-const FeatureProducts = () => {
+const FeatureProducts = ({ products }) => {
         return (
                 <div className="w-[85%] flex flex-wrap mx-auto">
                         <div className="w-full">
@@ -14,7 +14,7 @@ const FeatureProducts = () => {
                         </div>
 
                         <div className="w-full grid grid-cols-1 md:grid-cols-2  md-lg:grid-cols-4 gap-6 ">
-                                {[1, 2, 3, 4, 5, 6].map((data, idx) => {
+                                {products?.map((product, idx) => {
                                         return (
                                                 <div
                                                         key={idx}
@@ -23,11 +23,13 @@ const FeatureProducts = () => {
                                                         {/* Product  Image */}
                                                         <div className="relative overflow-hidden">
                                                                 {/* Discount part */}
-                                                                <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2">
-                                                                        10%
-                                                                </div>
+                                                                {product?.discount && (
+                                                                        <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2">
+                                                                                {product?.discount}%
+                                                                        </div>
+                                                                )}
                                                                 <img
-                                                                        src={`/images/products/${idx + 1}.webp`}
+                                                                        src={product?.images[0]}
                                                                         alt="products"
                                                                         className="w-full h-[300px] md-lg:w-full "
                                                                 />
@@ -50,13 +52,15 @@ const FeatureProducts = () => {
 
                                                         {/* Product Details*/}
                                                         <div className="py-3 text-slate-600 px-2">
-                                                                <h2 className="font-bold text-lg">Product Name</h2>
+                                                                <h2 className="font-bold text-lg">{product?.name}</h2>
                                                                 <div className="flex justify-start items-center gap-3">
                                                                         <span className="text-md font-semibold">
-                                                                                $500
+                                                                                {product?.price}
                                                                         </span>
                                                                         <div className="flex">
-                                                                                <Rating ratings={4.5}></Rating>
+                                                                                <Rating
+                                                                                        ratings={product?.rating}
+                                                                                ></Rating>
                                                                         </div>
                                                                 </div>
                                                         </div>

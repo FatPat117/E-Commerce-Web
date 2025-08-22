@@ -3,12 +3,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
-const Products = ({ title }) => {
-        const products = [
-                [1, 2, 3],
-                [4, 5, 6],
-        ];
-
+const Products = ({ title, products }) => {
         const responsive = {
                 superLargeDesktop: {
                         breakpoint: { max: 4000, min: 3000 },
@@ -56,7 +51,7 @@ const Products = ({ title }) => {
                                 customButtonGroup={<ButtonGroup />}
                                 containerClass="pt-14"
                         >
-                                {products.map((pro, idx) => {
+                                {products?.map((pro, idx) => {
                                         return (
                                                 <div key={idx} className="flex flex-col justify-start gap-2">
                                                         {pro.map((item, idx) => {
@@ -67,14 +62,14 @@ const Products = ({ title }) => {
                                                                                 className="flex justify-start items-start"
                                                                         >
                                                                                 <img
-                                                                                        src={`/images/products/${item}.webp`}
+                                                                                        src={item?.images[0]}
                                                                                         alt="Product Images"
                                                                                         className="w-[110px] h-[110px] "
                                                                                 />
                                                                                 <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600 ">
-                                                                                        <h2>Product Name</h2>
+                                                                                        <h2>{item?.name}</h2>
                                                                                         <span className="text-lg font-bold">
-                                                                                                $434
+                                                                                                ${item?.price}
                                                                                         </span>
                                                                                 </div>
                                                                         </Link>

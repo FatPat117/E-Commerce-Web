@@ -8,7 +8,9 @@ import { get_category, get_products } from "../store/reducers/homeReducer";
 
 const Home = () => {
         const dispatch = useDispatch();
-        const { categories } = useSelector((state) => state.home);
+        const { categories, products, latestProduct, ratingProduct, discountProduct } = useSelector(
+                (state) => state.home
+        );
         useEffect(() => {
                 dispatch(get_category());
                 dispatch(get_products());
@@ -20,7 +22,7 @@ const Home = () => {
 
                         {/* Feature Products */}
                         <div className="py-[45px]">
-                                <FeatureProducts />
+                                <FeatureProducts products={products} />
                         </div>
 
                         {/* Latest Product */}
@@ -28,13 +30,19 @@ const Home = () => {
                                 <div className="w-[85%] flex flex-wrap mx-auto">
                                         <div className="grid w-full  md-lg:grid-cols-3 grid-cols-1 md:grid-cols-2">
                                                 <div className="overflow-hidden">
-                                                        <Products title={"Latest Products"} />
+                                                        <Products title={"Latest Products"} products={latestProduct} />
                                                 </div>
                                                 <div className="overflow-hidden">
-                                                        <Products title={"Top Rated Products"} />
+                                                        <Products
+                                                                title={"Top Rated Products"}
+                                                                products={ratingProduct}
+                                                        />
                                                 </div>
                                                 <div className="overflow-hidden">
-                                                        <Products title={"Discount Products"} />
+                                                        <Products
+                                                                title={"Discount Products"}
+                                                                products={discountProduct}
+                                                        />
                                                 </div>
                                         </div>
                                 </div>
