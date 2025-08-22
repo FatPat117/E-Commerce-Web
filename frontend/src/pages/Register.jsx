@@ -10,7 +10,6 @@ const Register = () => {
                 password: "",
         });
         const [hidePassword, setHidePassword] = useState(true);
-        const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
 
         const inputHandle = (e) => {
                 setState({ ...state, [e.target.name]: e.target.value });
