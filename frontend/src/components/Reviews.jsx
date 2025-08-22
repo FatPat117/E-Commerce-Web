@@ -1,10 +1,17 @@
 import React, { useState } from "react";
+import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
+import RatingReact from "react-rating";
+import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
 import Pagination from "./Pagination";
 import RatingTemp from "./RatingTemp";
 const Reviews = () => {
         const [currentPage, setCurrentPage] = useState(1);
         const [perPage, setPerPage] = useState(2);
+        const userInfo = {};
+        const [rate, setRate] = useState(0);
+        const [review, setReview] = useState("");
         return (
                 <div className="mt-8">
                         {/* Star ratings */}
@@ -92,6 +99,7 @@ const Reviews = () => {
                         {/* Product reviews */}
                         <h2 className="text-xl text-slate-600 font-bold py-5">Product reviews 10</h2>
 
+                        {/* Review list and Pagination */}
                         <div className="flex flex-col gap-8 pb-10 pt-4">
                                 {[1, 2, 3, 4, 5].map((data, idx) => {
                                         return (
@@ -127,6 +135,56 @@ const Reviews = () => {
                                                 />
                                         }
                                 </div>
+                        </div>
+
+                        {/* UserInfo */}
+                        <div>
+                                {userInfo ? (
+                                        <div className="flex flex-col gap-3">
+                                                <div className="flex gap-1">
+                                                        <RatingReact
+                                                                onChange={(e) => {
+                                                                        setRate(e);
+                                                                }}
+                                                                initialRating={rate}
+                                                                emptySymbol={
+                                                                        <span className="text-slate-600 text-4xl">
+                                                                                <CiStar />
+                                                                        </span>
+                                                                }
+                                                                fullSymbol={
+                                                                        <span className="text-[#EDBB0E] text-4xl">
+                                                                                <FaStar />
+                                                                        </span>
+                                                                }
+                                                        />
+                                                </div>
+                                                <form action="">
+                                                        <textarea
+                                                                name=""
+                                                                id=""
+                                                                required
+                                                                cols={30}
+                                                                rows={5}
+                                                                className="border outline-none p-3 w-full border-[2px] border-slate-300"
+                                                        ></textarea>
+                                                        <div className="mt-2 ">
+                                                                <button className=" mb-5 md-lg:mb-0 cursor-pointer py-1 px-5 bg-indigo-500 text-white rounded-sm">
+                                                                        Submit
+                                                                </button>
+                                                        </div>
+                                                </form>
+                                        </div>
+                                ) : (
+                                        <div>
+                                                <Link
+                                                        className="py-1 px-5 bg-red-500 cursor-pointer text-white rounded-sm"
+                                                        to={"/login"}
+                                                >
+                                                        Login
+                                                </Link>
+                                        </div>
+                                )}
                         </div>
                 </div>
         );
