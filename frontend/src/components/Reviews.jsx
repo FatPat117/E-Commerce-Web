@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Rating from "../components/Rating";
+import Pagination from "./Pagination";
 import RatingTemp from "./RatingTemp";
 const Reviews = () => {
+        const [currentPage, setCurrentPage] = useState(1);
+        const [perPage, setPerPage] = useState(2);
         return (
                 <div className="mt-8">
                         {/* Star ratings */}
@@ -83,6 +86,46 @@ const Reviews = () => {
                                                 </div>
                                                 <p className="text-sm text-slate-600 w-[0%]">1</p>
                                         </div>
+                                </div>
+                        </div>
+
+                        {/* Product reviews */}
+                        <h2 className="text-xl text-slate-600 font-bold py-5">Product reviews 10</h2>
+
+                        <div className="flex flex-col gap-8 pb-10 pt-4">
+                                {[1, 2, 3, 4, 5].map((data, idx) => {
+                                        return (
+                                                <div className="flex flex-col gap-1" key={idx}>
+                                                        <div className="flex justify-between items-center">
+                                                                <div className="flex gap-1 text-xl">
+                                                                        <RatingTemp ratings={4} />
+                                                                </div>
+                                                                <span className="text-slate-600">8 Jan 2025</span>
+                                                        </div>
+                                                        <h2 className="text-md text-slate-600 md-lg:mt-4">
+                                                                Pita Pitachiti
+                                                        </h2>
+                                                        <p className="text-slate-600 text-sm">
+                                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                                                Mollitia culpa hic sed atque, iusto nam autem quos. Quas
+                                                                recusandae nisi, libero cumque voluptate quis ex
+                                                                provident, laboriosam incidunt excepturi suscipit.
+                                                        </p>
+                                                </div>
+                                        );
+                                })}
+
+                                {/* Pagination */}
+                                <div className="flex justify-end">
+                                        {
+                                                <Pagination
+                                                        pageNumber={currentPage}
+                                                        setPageNumber={setCurrentPage}
+                                                        totalItem={10}
+                                                        perPage={perPage}
+                                                        showPage={Math.floor(10 / 2)}
+                                                />
+                                        }
                                 </div>
                         </div>
                 </div>
