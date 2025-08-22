@@ -166,7 +166,11 @@ const Reviews = () => {
                                                                 required
                                                                 cols={30}
                                                                 rows={5}
-                                                                className="border outline-none p-3 w-full border-[2px] border-slate-300"
+                                                                value={review}
+                                                                onChange={(e) => {
+                                                                        setReview(e.target.value);
+                                                                }}
+                                                                className=" outline-none p-3 w-full border-[2px] border-slate-300"
                                                         ></textarea>
                                                         <div className="mt-2 ">
                                                                 <button className=" mb-5 md-lg:mb-0 cursor-pointer py-1 px-5 bg-indigo-500 text-white rounded-sm">
