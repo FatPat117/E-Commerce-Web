@@ -28,7 +28,9 @@ app.use(
 );
 
 // Routes
-
+app.use("/", (req, res) => {
+        res.send("hello world");
+});
 app.use("/api/auth", authRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/product", productRoutes);
