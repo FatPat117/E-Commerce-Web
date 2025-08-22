@@ -4,13 +4,14 @@ import Banner from "../components/Banner";
 import Categories from "../components/Categories";
 import FeatureProducts from "../components/products/FeatureProducts";
 import Products from "../components/products/Products";
-import { get_category } from "../store/reducers/homeReducer";
+import { get_category, get_products } from "../store/reducers/homeReducer";
 
 const Home = () => {
         const dispatch = useDispatch();
         const { categories } = useSelector((state) => state.home);
         useEffect(() => {
                 dispatch(get_category());
+                dispatch(get_products());
         }, []);
         return (
                 <div className="w-full h-full bg-white">

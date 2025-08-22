@@ -1,4 +1,5 @@
 import Category from "../../models/categoryModel.js";
+import Product from "../../models/productModel.js";
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
@@ -12,6 +13,24 @@ const get_categories = asyncHandler(async (req, res, next) => {
         }
 });
 
+const get_products = asyncHandler(async (req, res, next) => {
+        const products = await Product.find({}).limit(12).sort({ createdAt: -1 });
+        const allProductsLatest = await Product.find({}).limit(9).sort({ createdAt: -1 });
+        const allProductsRating = await Product.find({}).limit(9).sort({ rating: -1 });
+        const allProductsDiscount = await Product.find({}).limit(9).sort({ discount: -1 });
+
+        const latestProduct = this.formateProduct(allProductsLatest);
+        const ratingProduct = this.formateProduct(allProductsRating);
+        const discountProduct = this.formateProduct(allProductsDiscount);
+
+        if (products) {
+                res.status(200).json(new ApiResponse(200, "", products));
+        } else {
+                next(new ApiError(404, "No products found"));
+        }
+});
+
 export default {
         get_categories,
+        get_products,
 };

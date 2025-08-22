@@ -12,6 +12,18 @@ export const get_category = createAsyncThunk("home/get_category", async (_, { fu
         }
 });
 
+export const get_products = createAsyncThunk("home/get_products", async (_, { fulfillWithValue, rejectWithValue }) => {
+        try {
+                const response = await api.get("/home/get-products", {
+                        withCredentials: true,
+                });
+                console.log(response.data);
+                return fulfillWithValue(response.data);
+        } catch (error) {
+                return rejectWithValue(error.response.data.message);
+        }
+});
+
 const homeReducer = createSlice({
         name: "home",
         initialState: {
@@ -19,6 +31,7 @@ const homeReducer = createSlice({
                 errorMessage: "",
                 successMessage: "",
                 categories: [],
+                latestProducts: [],
         },
         reducers: {},
         extraReducers: (builder) => {
