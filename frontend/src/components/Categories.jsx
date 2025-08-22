@@ -3,18 +3,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 import { Link } from "react-router-dom";
-const Categories = () => {
-        const categories = [
-                "Mobiles",
-                "Laptops",
-                "Speakers",
-                "Top Wear",
-                "Footwear",
-                "Watches",
-                "Home Decor",
-                "Smart Watches",
-        ];
-
+const Categories = ({ categories }) => {
         const responsive = {
                 superLargeDesktop: {
                         breakpoint: { max: 4000, min: 3000 },
@@ -54,17 +43,18 @@ const Categories = () => {
                                 responsive={responsive}
                                 transitionDuration={500}
                         >
-                                {categories.map((data, idx) => {
+                                {categories?.map((data, idx) => {
                                         return (
                                                 <Link key={idx} to="#" className="h-[280px] border block">
                                                         <div className="w-full h-full relative p-3">
                                                                 <img
-                                                                        src={`/images/products/${idx + 1}.webp`}
-                                                                        alt={`category ${data}`}
+                                                                        src={data?.image}
+                                                                        alt={`category ${data?.name}`}
+                                                                        className="w-full h-full object-contain"
                                                                 />
                                                                 <div className="absolute bottom-6 w-full mx-auto font-bold left-0 flex justify-center items-center">
                                                                         <span className="py-[2px] px-[6px] bg-[#3330305d] text-white">
-                                                                                {data}
+                                                                                {data?.name}
                                                                         </span>
                                                                 </div>
                                                         </div>

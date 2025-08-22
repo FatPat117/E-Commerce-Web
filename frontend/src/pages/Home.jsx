@@ -15,7 +15,7 @@ const Home = () => {
         return (
                 <div className="w-full h-full bg-white">
                         <Banner />
-                        <Categories />
+                        <Categories categories={categories} />
 
                         {/* Feature Products */}
                         <div className="py-[45px]">

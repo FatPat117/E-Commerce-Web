@@ -5,7 +5,7 @@ export const get_category = createAsyncThunk("home/get_category", async (_, { fu
                 const response = await api.get("/home/get-categories", {
                         withCredentials: true,
                 });
-                console.log(response.data);
+                // console.log(response.data);
                 return fulfillWithValue(response.data);
         } catch (error) {
                 return rejectWithValue(error.response.data.message);
@@ -15,12 +15,25 @@ export const get_category = createAsyncThunk("home/get_category", async (_, { fu
 const homeReducer = createSlice({
         name: "home",
         initialState: {
+                loader: false,
+                errorMessage: "",
+                successMessage: "",
                 categories: [],
         },
         reducers: {},
         extraReducers: (builder) => {
+                builder.addCase(get_category.pending, (state) => {
+                        state.loader = true;
+                });
                 builder.addCase(get_category.fulfilled, (state, action) => {
-                        state.categories = action.payload;
+                        state.loader = false;
+                        state.categories = action.payload.data;
+                        state.successMessage = action.payload.message;
+                });
+
+                builder.addCase(get_category.rejected, (state, action) => {
+                        state.loader = false;
+                        state.error = action.payload;
                 });
         },
 });

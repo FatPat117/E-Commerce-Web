@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { FaFacebookF, FaLinkedin, FaList, FaLock, FaPhoneAlt, FaShoppingCart } from "react-icons/fa";
 import { FaInstagram, FaUser } from "react-icons/fa6";
 import { IoIosArrowDown, IoMdPhonePortrait } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import { get_category } from "../store/reducers/homeReducer";
 const Header = () => {
+        const dispatch = useDispatch();
+        const { categories } = useSelector((state) => state.home);
+        useEffect(() => {
+                dispatch(get_category());
+        }, []);
         const { pathname } = useLocation();
         const [showSidebar, setShowSidebar] = useState(false);
         const [categoryShow, setCategoryShow] = useState(false);
@@ -13,16 +20,6 @@ const Header = () => {
         const [category, setCategory] = useState("All Category");
         const user = true;
         const wishlist_count = 3;
-        const categories = [
-                "Mobiles",
-                "Laptops",
-                "Speakers",
-                "Top Wear",
-                "Footwear",
-                "Watches",
-                "Home Decor",
-                "Smart Watches",
-        ];
 
         return (
                 <header className="w-full bg-white">
@@ -439,14 +436,21 @@ const Header = () => {
                                                                 } overflow-hidden transition-all md-lg:absolute  relative duration-500  z-[9999] bg-[#dbf3ed] w-full `}
                                                         >
                                                                 <ul className="p-3 text-slate-700 font-medium">
-                                                                        {categories.map((cate, idx) => {
+                                                                        {categories?.map((cate, idx) => {
                                                                                 return (
                                                                                         <li
                                                                                                 key={idx}
-                                                                                                className="flex justify-start items-center gap-2 px-[24px] py-[6px]"
+                                                                                                className="flex justify-start items-center gap-5 md-lg:gap-8 px-[24px] py-[6px] border-b border-slate-300"
                                                                                         >
-                                                                                                <Link className="text-md block">
-                                                                                                        {cate}
+                                                                                                <img
+                                                                                                        src={
+                                                                                                                cate?.image
+                                                                                                        }
+                                                                                                        alt="Product image"
+                                                                                                        className="w-[40px] h-[40px] rounded-full overflow-hidden object-contain"
+                                                                                                />
+                                                                                                <Link className="text-md md-lg:text-lg block">
+                                                                                                        {cate?.name}
                                                                                                 </Link>
                                                                                         </li>
                                                                                 );
@@ -474,14 +478,22 @@ const Header = () => {
                                                                                         }
                                                                                         className="w-[150px] text-slate-600 font-semibold bg-transparent px-2 h-full outline-none border-none"
                                                                                 >
-                                                                                        {categories.map((cate, idx) => (
-                                                                                                <option
-                                                                                                        value={cate}
-                                                                                                        key={idx}
-                                                                                                >
-                                                                                                        {cate}
-                                                                                                </option>
-                                                                                        ))}
+                                                                                        {categories?.map(
+                                                                                                (cate, idx) => (
+                                                                                                        <option
+                                                                                                                value={
+                                                                                                                        cate
+                                                                                                                }
+                                                                                                                key={
+                                                                                                                        idx
+                                                                                                                }
+                                                                                                        >
+                                                                                                                {
+                                                                                                                        cate.name
+                                                                                                                }
+                                                                                                        </option>
+                                                                                                )
+                                                                                        )}
                                                                                 </select>
                                                                         </div>
 
