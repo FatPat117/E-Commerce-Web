@@ -4,8 +4,21 @@ import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const Register = () => {
+        const [state, setState] = useState({
+                name: "",
+                email: "",
+                password: "",
+        });
         const [hidePassword, setHidePassword] = useState(true);
         const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
+
+        const inputHandle = (e) => {
+                setState({ ...state, [e.target.name]: e.target.value });
+        };
+        const handleSubmit = (e) => {
+                e.preventDefault();
+                console.log(state);
+        };
         return (
                 <div className="bg-slate-200 mt-4">
                         <div className="w-full flex justify-center items-center p-10">
@@ -19,7 +32,10 @@ const Register = () => {
 
                                                 {/* Form */}
                                                 <div>
-                                                        <form action="" className="text-slate-600 flex flex-col gap-3">
+                                                        <form
+                                                                onSubmit={handleSubmit}
+                                                                className="text-slate-600 flex flex-col gap-3"
+                                                        >
                                                                 {/* Name */}
                                                                 <div className="flex flex-col gap-2 mb-2">
                                                                         <label htmlFor="name">Name</label>
@@ -29,6 +45,8 @@ const Register = () => {
                                                                                 id="name"
                                                                                 placeholder="Name..."
                                                                                 required
+                                                                                value={state.name}
+                                                                                onChange={inputHandle}
                                                                                 className="w-full px-3 py-2 border border-slate-300 outline-none focus:border-green-500 rounded-md"
                                                                         />
                                                                 </div>
@@ -42,6 +60,8 @@ const Register = () => {
                                                                                 id="email"
                                                                                 placeholder="Email..."
                                                                                 required
+                                                                                value={state.email}
+                                                                                onChange={inputHandle}
                                                                                 className="w-full px-3 py-2 border border-slate-300 outline-none focus:border-green-500 rounded-md"
                                                                         />
                                                                 </div>
@@ -59,6 +79,8 @@ const Register = () => {
                                                                                 id="password"
                                                                                 placeholder="Password..."
                                                                                 required
+                                                                                value={state.password}
+                                                                                onChange={inputHandle}
                                                                                 className="w-full px-3 py-2 border border-slate-300 outline-none focus:border-green-500 rounded-md"
                                                                         />
                                                                         <span
