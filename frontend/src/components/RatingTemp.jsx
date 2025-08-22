@@ -123,7 +123,26 @@ const RatingTemp = ({ ratings }) => {
                         </span>
                 </>;
         }
-        return <div>Rating Temp</div>;
+        return (
+                <>
+                        {" "}
+                        <span className="text-[#EDBB0E]">
+                                <CiStar />
+                        </span>
+                        <span className="text-[#EDBB0E]">
+                                <CiStar />
+                        </span>
+                        <span className="text-[#EDBB0E]">
+                                <CiStar />
+                        </span>
+                        <span className="text-[#EDBB0E]">
+                                <CiStar />
+                        </span>
+                        <span className="text-[#EDBB0E]">
+                                <CiStar />
+                        </span>
+                </>
+        );
 };
 
 export default RatingTemp;
