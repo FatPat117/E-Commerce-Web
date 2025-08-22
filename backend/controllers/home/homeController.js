@@ -3,6 +3,22 @@ import Product from "../../models/productModel.js";
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
+const formateProduct = (products) => {
+        const productArray = [];
+        let i = 0;
+        while (i < products.length) {
+                let tmp = [];
+                let j = i;
+                while (j < i + 3) {
+                        if (products[j]) tmp.push(products[j]);
+                        j++;
+                }
+                productArray.push(tmp);
+                i = j;
+        }
+        return productArray;
+};
+
 const get_categories = asyncHandler(async (req, res, next) => {
         const categories = await Category.find({});
 
@@ -19,12 +35,19 @@ const get_products = asyncHandler(async (req, res, next) => {
         const allProductsRating = await Product.find({}).limit(9).sort({ rating: -1 });
         const allProductsDiscount = await Product.find({}).limit(9).sort({ discount: -1 });
 
-        const latestProduct = this.formateProduct(allProductsLatest);
-        const ratingProduct = this.formateProduct(allProductsRating);
-        const discountProduct = this.formateProduct(allProductsDiscount);
+        const latestProduct = formateProduct(allProductsLatest);
+        const ratingProduct = formateProduct(allProductsRating);
+        const discountProduct = formateProduct(allProductsDiscount);
 
         if (products) {
-                res.status(200).json(new ApiResponse(200, "", products));
+                res.status(200).json(
+                        new ApiResponse(200, "", {
+                                products,
+                                latestProduct,
+                                ratingProduct,
+                                discountProduct,
+                        })
+                );
         } else {
                 next(new ApiError(404, "No products found"));
         }

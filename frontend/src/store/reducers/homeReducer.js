@@ -31,7 +31,10 @@ const homeReducer = createSlice({
                 errorMessage: "",
                 successMessage: "",
                 categories: [],
-                latestProducts: [],
+                products: [],
+                latestProduct: [],
+                ratingProduct: [],
+                discountProduct: [],
         },
         reducers: {},
         extraReducers: (builder) => {
@@ -45,6 +48,22 @@ const homeReducer = createSlice({
                 });
 
                 builder.addCase(get_category.rejected, (state, action) => {
+                        state.loader = false;
+                        state.error = action.payload;
+                });
+
+                // get products
+                builder.addCase(get_products.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_products.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.products = action.payload.data.products;
+                        state.latestProduct = action.payload.data.latestProduct;
+                        state.ratingProduct = action.payload.data.ratingProduct;
+                        state.discountProduct = action.payload.data.discountProduct;
+                });
+                builder.addCase(get_products.rejected, (state, action) => {
                         state.loader = false;
                         state.error = action.payload;
                 });
