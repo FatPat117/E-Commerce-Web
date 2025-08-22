@@ -7,6 +7,8 @@ import authRoutes from "./routes/authRoutes.js";
 import categoryRoutes from "./routes/dashboard/categoryRoutes.js";
 import productRoutes from "./routes/dashboard/productRoutes.js";
 import sellerRoutes from "./routes/dashboard/sellerRoutes.js";
+import homeRoutes from "./routes/home/homeRoutes.js";
+
 import connectDB from "./utils/db.js";
 
 dotenv.config();
@@ -28,13 +30,12 @@ app.use(
 );
 
 // Routes
-app.use("/", (req, res) => {
-        res.send("hello world");
-});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/seller", sellerRoutes);
+app.use("/api/home", homeRoutes);
 app.use(notFound);
 app.use(globalErrorHandler);
 
