@@ -17,7 +17,7 @@ export const get_products = createAsyncThunk("home/get_products", async (_, { fu
                 const response = await api.get("/home/get-products", {
                         withCredentials: true,
                 });
-                console.log(response.data);
+                // console.log(response.data);
                 return fulfillWithValue(response.data);
         } catch (error) {
                 return rejectWithValue(error.response.data.message);

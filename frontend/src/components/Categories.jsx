@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-const Categories = ({ categories }) => {
+import { get_category } from "../store/reducers/homeReducer";
+const Categories = () => {
+        const dispatch = useDispatch();
+        const { categories } = useSelector((state) => state.home);
+        useEffect(() => {
+                dispatch(get_category());
+        }, []);
         const responsive = {
                 superLargeDesktop: {
                         breakpoint: { max: 4000, min: 3000 },

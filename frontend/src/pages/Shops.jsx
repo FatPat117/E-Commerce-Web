@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { BsFillGridFill } from "react-icons/bs";
 import { CiStar } from "react-icons/ci";
 import { FaThList } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { Range } from "react-range";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import Products from "../components/products/Products";
 import ShopProduct from "../components/products/ShopProduct";
+import { get_category, get_products } from "../store/reducers/homeReducer";
 import { URL } from "../utils/utils";
 const Shops = () => {
+        const dispatch = useDispatch();
+        const { categories, products, latestProduct, ratingProduct, discountProduct } = useSelector(
+                (state) => state.home
+        );
+        useEffect(() => {
+                dispatch(get_category());
+                dispatch(get_products());
+        }, []);
         const [filter, setFilter] = useState(true);
         const [state, setState] = useState({
                 values: [50, 1500],
@@ -21,17 +31,6 @@ const Shops = () => {
         const [currentPage, setCurrentPage] = useState(1);
 
         const [perPage, setPerPage] = useState(5);
-
-        const categories = [
-                "Mobiles",
-                "Laptops",
-                "Speakers",
-                "Top Wear",
-                "Footwear",
-                "Watches",
-                "Home Decor",
-                "Smart Watches",
-        ];
 
         return (
                 <div>
@@ -93,13 +92,13 @@ const Shops = () => {
                                                                                         <input
                                                                                                 type="checkbox"
                                                                                                 name=""
-                                                                                                id={cate}
+                                                                                                id={cate?.name}
                                                                                         />
                                                                                         <label
-                                                                                                htmlFor={cate}
+                                                                                                htmlFor={cate?.name}
                                                                                                 className="text-slate-600 block cursor-pointer"
                                                                                         >
-                                                                                                {cate}
+                                                                                                {cate?.name}
                                                                                         </label>
                                                                                 </div>
                                                                         );
@@ -292,7 +291,10 @@ const Shops = () => {
 
                                                         {/* Lated Products */}
                                                         <div className="py-5  flex-col gap-4 hidden md:flex">
-                                                                <Products title={"Latest Product"} />
+                                                                <Products
+                                                                        title={"Latest Product"}
+                                                                        products={latestProduct}
+                                                                />
                                                         </div>
                                                 </div>
 
