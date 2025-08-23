@@ -88,6 +88,7 @@ const query_products = asyncHandler(async (req, res, next) => {
                 .ratingQuery()
                 .priceQuery()
                 .sortByPriceQuery()
+                .searchQuery()
                 .skipQuery()
                 .limitQuery()
                 .getProducts();
@@ -97,6 +98,7 @@ const query_products = asyncHandler(async (req, res, next) => {
                 .ratingQuery()
                 .priceQuery()
                 .sortByPriceQuery()
+                .searchQuery()
                 .getTotalProducts();
 
         res.status(200).json(new ApiResponse(200, "", { products, totalProducts, perPage: parseInt(query.perPage) }));

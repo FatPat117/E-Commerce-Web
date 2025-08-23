@@ -20,6 +20,15 @@ class QueryProducts {
                 return this;
         }
 
+        searchQuery() {
+                this.products = this.query.searchValue
+                        ? this.products.filter((product) =>
+                                  product.name.toLowerCase().includes(this.query.searchValue.toLowerCase())
+                          )
+                        : this.products;
+                return this;
+        }
+
         priceQuery() {
                 this.products = this.query.lowPrice
                         ? this.products.filter(
