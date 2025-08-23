@@ -54,7 +54,7 @@ export const query_products = createAsyncThunk(
                                         withCredentials: true,
                                 }
                         );
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);

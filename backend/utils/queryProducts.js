@@ -8,7 +8,7 @@ class QueryProducts {
 
         categoryQuery() {
                 this.products = this.query.category
-                        ? this.products.filter((product) => product.name == this.query.category)
+                        ? this.products.filter((product) => product.category == this.query.category)
                         : this.products;
                 return this;
         }
@@ -21,7 +21,7 @@ class QueryProducts {
         }
 
         priceQuery() {
-                this.products = this.query.price
+                this.products = this.query.lowPrice
                         ? this.products.filter(
                                   (product) =>
                                           product.price >= parseInt(this.query.lowPrice) &&

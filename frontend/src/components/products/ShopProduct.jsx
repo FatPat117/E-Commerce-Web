@@ -3,14 +3,14 @@ import { FaEye, FaRegHeart } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import Rating from "../Rating";
 
-const ShopProduct = ({ style }) => {
+const ShopProduct = ({ style, products }) => {
         return (
                 <div
                         className={`w-full grid ${
                                 style == "grid" ? "grid-cols-2 md-lg:grid-cols-3 " : "grid-cols-2  "
                         } gap-3`}
                 >
-                        {[1, 2, 3, 4, 5, 6].map((data, idx) => {
+                        {products?.map((data, idx) => {
                                 return (
                                         <div
                                                 key={idx}
@@ -29,7 +29,7 @@ const ShopProduct = ({ style }) => {
                                                         }`}
                                                 >
                                                         <img
-                                                                src={`/images/products/${data}.webp`}
+                                                                src={data?.images[0]}
                                                                 alt=""
                                                                 className="w-full  h-[170px] md:h-[240px] rounded-md md-lg:h-[270px] object-contain"
                                                         />
@@ -49,11 +49,13 @@ const ShopProduct = ({ style }) => {
 
                                                 {/* Product Details*/}
                                                 <div className="flex flex-col justify-start items-start gap-1">
-                                                        <h2 className="font-bold text-lg">Product Name</h2>
+                                                        <h2 className="font-bold text-lg">{data?.name}</h2>
                                                         <div className="flex justify-start items-center gap-3">
-                                                                <span className="text-md font-semibold">$500</span>
+                                                                <span className="text-md font-semibold">
+                                                                        ${data?.price}
+                                                                </span>
                                                                 <div className="flex">
-                                                                        <Rating ratings={4.5}></Rating>
+                                                                        <Rating ratings={data?.rating}></Rating>
                                                                 </div>
                                                         </div>
                                                 </div>

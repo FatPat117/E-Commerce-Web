@@ -143,8 +143,8 @@ const Shops = () => {
                                                                 </h2>
                                                                 <Range
                                                                         step={5}
-                                                                        min={state.values[0]}
-                                                                        max={state.values[1]}
+                                                                        min={priceRange.low}
+                                                                        max={priceRange.high}
                                                                         values={state.values}
                                                                         onChange={(values) => setState({ values })}
                                                                         renderTrack={({ props, children }) => (
@@ -156,7 +156,7 @@ const Shops = () => {
                                                                                 </div>
                                                                         )}
                                                                         renderThumb={({ props }) => {
-                                                                                const { key, ...rest } = props; // loại key ra
+                                                                                const { key, ...rest } = props;
                                                                                 return (
                                                                                         <div
                                                                                                 key={key}
@@ -339,7 +339,7 @@ const Shops = () => {
                                                                 {/* Top */}
                                                                 <div className="py-4 bg-white mb-10 px-3 rounded-md flex justify-between items-start border-[1px] border-slate-300">
                                                                         <h2 className="text-lg font-medium text-slate-600">
-                                                                                20 Products
+                                                                                {totalProducts} Products
                                                                         </h2>
                                                                         <div className="flex justify-center items-center gap-3">
                                                                                 <select
@@ -409,9 +409,9 @@ const Shops = () => {
                                                                                         setPageNumber={setCurrentPage}
                                                                                         totalItem={totalProducts}
                                                                                         perPage={perPage}
-                                                                                        showPage={
+                                                                                        showPage={Math.ceil(
                                                                                                 totalProducts / perPage
-                                                                                        }
+                                                                                        )}
                                                                                 />
                                                                         )}
                                                                 </div>
