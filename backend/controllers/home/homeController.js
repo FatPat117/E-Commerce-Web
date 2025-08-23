@@ -53,7 +53,28 @@ const get_products = asyncHandler(async (req, res, next) => {
         }
 });
 
-const price_range_latest_product = asyncHandler(async (req, res, next) => {});
+const price_range_latest_product = asyncHandler(async (req, res, next) => {
+        const priceRange = {
+                low: 0,
+                high: 0,
+        };
+
+        const products = await Product.find({}).limit(9).sort({ createdAt: -1 });
+        const latestProduct = formateProduct(products);
+
+        const priceProducts = await Product.find({}).sort({ price: 1 });
+
+        if (priceProducts.length > 0) {
+                priceRange.low = priceProducts[0].price;
+                priceRange.high = priceProducts[priceProducts.length - 1].price;
+        }
+
+        if (products) {
+                res.status(200).json(new ApiResponse(200, "", { priceRange, latestProduct }));
+        } else {
+                next(new ApiError(404, "No products found"));
+        }
+});
 
 export default {
         get_categories,

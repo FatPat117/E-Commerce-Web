@@ -54,6 +54,10 @@ const homeReducer = createSlice({
                 latestProduct: [],
                 ratingProduct: [],
                 discountProduct: [],
+                priceRange: {
+                        low: 0,
+                        high: 1000,
+                },
         },
         reducers: {},
         extraReducers: (builder) => {
@@ -83,6 +87,21 @@ const homeReducer = createSlice({
                         state.discountProduct = action.payload.data.discountProduct;
                 });
                 builder.addCase(get_products.rejected, (state, action) => {
+                        state.loader = false;
+                        state.error = action.payload;
+                });
+
+                // get price Range
+                builder.addCase(price_range_product.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(price_range_product.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.products = action.payload.data.products;
+                        state.latestProduct = action.payload.data.latestProduct;
+                        state.priceRange = action.payload.data.priceRange;
+                });
+                builder.addCase(price_range_product.rejected, (state, action) => {
                         state.loader = false;
                         state.error = action.payload;
                 });

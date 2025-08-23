@@ -123,12 +123,16 @@ const Shops = () => {
                                                                                         {children}
                                                                                 </div>
                                                                         )}
-                                                                        renderThumb={({ props }) => (
-                                                                                <div
-                                                                                        {...props}
-                                                                                        className="w-[15px] h-[15px] bg-[#059473] rounded-full"
-                                                                                ></div>
-                                                                        )}
+                                                                        renderThumb={({ props }) => {
+                                                                                const { key, ...rest } = props; // loại key ra
+                                                                                return (
+                                                                                        <div
+                                                                                                key={key}
+                                                                                                {...rest}
+                                                                                                className="w-[15px] h-[15px] bg-[#059473] rounded-full"
+                                                                                        />
+                                                                                );
+                                                                        }}
                                                                 />
                                                         </div>
                                                         <span className="text-slate-800 font-bold text-lg">
