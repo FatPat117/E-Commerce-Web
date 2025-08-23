@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import Products from "../components/products/Products";
 import ShopProduct from "../components/products/ShopProduct";
-import { get_category, get_products, price_range_product } from "../store/reducers/homeReducer";
+import { get_category, get_products, price_range_product, query_products } from "../store/reducers/homeReducer";
 import { URL } from "../utils/utils";
 const Shops = () => {
         const dispatch = useDispatch();
@@ -27,6 +27,7 @@ const Shops = () => {
         });
         const [rating, setRating] = useState("");
         const [category, setCategory] = useState("");
+        const [sortBy, setSortBy] = useState("");
         const [style, setStyle] = useState("grid");
         const [currentPage, setCurrentPage] = useState(1);
         const [perPage, setPerPage] = useState(5);
@@ -37,13 +38,18 @@ const Shops = () => {
                 });
         }, [priceRange.low, priceRange.high]);
 
-        const QueryCategory = (e, value) => {
-                if (e.target.checked) {
-                        setCategory(value);
-                } else {
-                        setCategory("");
-                }
-        };
+        useEffect(() => {
+                dispatch(
+                        query_products({
+                                category: category,
+                                rating: rating,
+                                sortBy: sortBy,
+                                low: state.values[0],
+                                high: state.values[1],
+                                currentPage,
+                        })
+                );
+        }, [category, rating, sortBy, state.values, currentPage, dispatch]);
         return (
                 <div>
                         {/* Banner */}
@@ -108,9 +114,11 @@ const Shops = () => {
                                                                                                 }
                                                                                                 type="checkbox"
                                                                                                 onChange={(e) =>
-                                                                                                        QueryCategory(
-                                                                                                                e,
-                                                                                                                cate?.name
+                                                                                                        setCategory(
+                                                                                                                e.target
+                                                                                                                        .checked
+                                                                                                                        ? cate.name
+                                                                                                                        : ""
                                                                                                         )
                                                                                                 }
                                                                                                 name=""
@@ -244,7 +252,7 @@ const Shops = () => {
                                                                         {/* 2 star */}
                                                                         <div
                                                                                 onClick={() => {
-                                                                                        setRating(3);
+                                                                                        setRating(2);
                                                                                 }}
                                                                                 className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
                                                                         >
@@ -268,7 +276,7 @@ const Shops = () => {
                                                                         {/* 1 star */}
                                                                         <div
                                                                                 onClick={() => {
-                                                                                        setRating(3);
+                                                                                        setRating(1);
                                                                                 }}
                                                                                 className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
                                                                         >
@@ -292,7 +300,7 @@ const Shops = () => {
                                                                         {/* 0 star */}
                                                                         <div
                                                                                 onClick={() => {
-                                                                                        setRating(3);
+                                                                                        setRating(0);
                                                                                 }}
                                                                                 className="text-orange-500 flex justify-start items-center gap-2 text-xl cursor-pointer"
                                                                         >
@@ -337,6 +345,12 @@ const Shops = () => {
                                                                                         className="p-1 border outline-none text-lg text-slate-600 font-semibold"
                                                                                         name=""
                                                                                         id=""
+                                                                                        value={sortBy}
+                                                                                        onChange={(e) =>
+                                                                                                setSortBy(
+                                                                                                        e.target.value
+                                                                                                )
+                                                                                        }
                                                                                 >
                                                                                         <option value="">
                                                                                                 Sort By

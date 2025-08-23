@@ -35,6 +35,25 @@ export const price_range_product = createAsyncThunk(
                         const response = await api.get("/home/price-range-latest-product", {
                                 withCredentials: true,
                         });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Query product
+export const query_products = createAsyncThunk(
+        "home/query_products",
+        async (query, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(
+                                `/home/query-products?category=${query.category}&rating=${query.rating}&sortByPrice=${query.sortBy}&lowPrice=${query.low}&highPrice=${query.high}&pageNumber=${query.currentPage}`,
+                                {
+                                        withCredentials: true,
+                                }
+                        );
                         console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
