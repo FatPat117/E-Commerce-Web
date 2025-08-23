@@ -24,7 +24,8 @@ class QueryProducts {
                 this.products = this.query.price
                         ? this.products.filter(
                                   (product) =>
-                                          product.price >= this.query.lowPrice && product.price <= this.query.highPrice
+                                          product.price >= parseInt(this.query.lowPrice) &&
+                                          product.price <= parseInt(this.query.highPrice)
                           )
                         : this.products;
                 return this;

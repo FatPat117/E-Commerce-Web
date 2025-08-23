@@ -3,6 +3,7 @@ import Product from "../../models/productModel.js";
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
+import QueryProducts from "../../utils/queryProducts.js";
 const formateProduct = (products) => {
         const productArray = [];
         let i = 0;
@@ -77,11 +78,27 @@ const price_range_latest_product = asyncHandler(async (req, res, next) => {
 });
 
 const query_products = asyncHandler(async (req, res, next) => {
-        req.query.perPage = req.query.perPage || 2;
-        const { category, rating, sortByPrice, lowPrice, highPrice, pageNumber } = req.query;
+        const query = { ...req.query, perPage: 2 };
+        // const { category, rating, sortByPrice, lowPrice, highPrice, pageNumber } = req.query;
 
-        const products = await Product.find({}).sort({ createdAt: -1 });
-        const totalProduct = await Product.countDocuments({});
+        const pros = await Product.find({}).sort({ createdAt: -1 });
+        const products = new QueryProducts(query, pros)
+                .categoryQuery()
+                .ratingQuery()
+                .priceQuery()
+                .sortByPriceQuery()
+                .skipQuery()
+                .limitQuery()
+                .getProducts();
+
+        const totalProducts = new QueryProducts(query, pros)
+                .categoryQuery()
+                .ratingQuery()
+                .priceQuery()
+                .sortByPriceQuery()
+                .getTotalProducts();
+
+        res.status(200).json(new ApiResponse(200, "", { products, totalProducts, perPage: parseInt(query.perPage) }));
 });
 
 export default {

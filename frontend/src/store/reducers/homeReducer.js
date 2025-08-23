@@ -73,6 +73,8 @@ const homeReducer = createSlice({
                 latestProduct: [],
                 ratingProduct: [],
                 discountProduct: [],
+                totalProducts: 0,
+                perPage: 2,
                 priceRange: {
                         low: 0,
                         high: 1000,
@@ -121,6 +123,21 @@ const homeReducer = createSlice({
                         state.priceRange = action.payload.data.priceRange;
                 });
                 builder.addCase(price_range_product.rejected, (state, action) => {
+                        state.loader = false;
+                        state.error = action.payload;
+                });
+
+                // Product query
+                builder.addCase(query_products.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(query_products.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.products = action.payload.data.products;
+                        state.totalProducts = action.payload.data.totalProducts;
+                        state.perPage = action.payload.data.perPage;
+                });
+                builder.addCase(query_products.rejected, (state, action) => {
                         state.loader = false;
                         state.error = action.payload;
                 });

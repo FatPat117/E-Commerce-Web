@@ -14,7 +14,9 @@ import { get_category, get_products, price_range_product, query_products } from 
 import { URL } from "../utils/utils";
 const Shops = () => {
         const dispatch = useDispatch();
-        const { categories, latestProduct, priceRange } = useSelector((state) => state.home);
+        const { categories, latestProduct, priceRange, totalProducts, perPage, products } = useSelector(
+                (state) => state.home
+        );
         useEffect(() => {
                 dispatch(get_category());
                 dispatch(get_products());
@@ -30,7 +32,6 @@ const Shops = () => {
         const [sortBy, setSortBy] = useState("");
         const [style, setStyle] = useState("grid");
         const [currentPage, setCurrentPage] = useState(1);
-        const [perPage, setPerPage] = useState(5);
 
         useEffect(() => {
                 setState({
@@ -394,18 +395,25 @@ const Shops = () => {
 
                                                                 {/* Product show  */}
                                                                 <div className="pb-8">
-                                                                        <ShopProduct style={style} />
+                                                                        <ShopProduct
+                                                                                style={style}
+                                                                                products={products}
+                                                                        />
                                                                 </div>
 
                                                                 {/* Pagination */}
                                                                 <div>
-                                                                        <Pagination
-                                                                                pageNumber={currentPage}
-                                                                                setPageNumber={setCurrentPage}
-                                                                                totalItem={50}
-                                                                                perPage={perPage}
-                                                                                showPage={3}
-                                                                        />
+                                                                        {totalProducts > perPage && (
+                                                                                <Pagination
+                                                                                        pageNumber={currentPage}
+                                                                                        setPageNumber={setCurrentPage}
+                                                                                        totalItem={totalProducts}
+                                                                                        perPage={perPage}
+                                                                                        showPage={
+                                                                                                totalProducts / perPage
+                                                                                        }
+                                                                                />
+                                                                        )}
                                                                 </div>
                                                         </div>
                                                 </div>
