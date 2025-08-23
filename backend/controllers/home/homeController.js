@@ -78,7 +78,10 @@ const price_range_latest_product = asyncHandler(async (req, res, next) => {
 
 const query_products = asyncHandler(async (req, res, next) => {
         const { category, rating, sortByPrice, lowPrice, highPrice, pageNumber } = req.query;
-        console.log(req.query);
+        const limit = 12;
+
+        const products = await Product.find({}).sort({ createdAt: -1 });
+        const totalProduct = await Product.countDocuments({});
 });
 
 export default {
