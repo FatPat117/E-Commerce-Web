@@ -287,7 +287,6 @@ const CategoryShop = () => {
 
                                                                         <button
                                                                                 onClick={() => {
-                                                                                        setCategory("");
                                                                                         setRating("");
                                                                                         setSortBy("");
                                                                                         setState({

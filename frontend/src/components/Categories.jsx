@@ -51,7 +51,11 @@ const Categories = () => {
                         >
                                 {categories?.map((data, idx) => {
                                         return (
-                                                <Link key={idx} to="#" className="h-[280px] border block">
+                                                <Link
+                                                        key={idx}
+                                                        to={`/products?category=${data?.name}`}
+                                                        className="h-[280px] border block"
+                                                >
                                                         <div className="w-full h-full relative p-3">
                                                                 <img
                                                                         src={data?.image}
