@@ -14,7 +14,7 @@ import { get_category, get_products, price_range_product } from "../store/reduce
 import { URL } from "../utils/utils";
 const Shops = () => {
         const dispatch = useDispatch();
-        const { categories, latestProduct } = useSelector((state) => state.home);
+        const { categories, latestProduct, priceRange } = useSelector((state) => state.home);
         useEffect(() => {
                 dispatch(get_category());
                 dispatch(get_products());
@@ -22,7 +22,7 @@ const Shops = () => {
         }, []);
         const [filter, setFilter] = useState(true);
         const [state, setState] = useState({
-                values: [50, 1500],
+                values: [priceRange.low, priceRange.high],
         });
         const [rating, setRating] = useState("");
         const [style, setStyle] = useState("grid");
@@ -31,6 +31,11 @@ const Shops = () => {
 
         const [perPage, setPerPage] = useState(5);
 
+        useEffect(() => {
+                setState({
+                        values: [priceRange.low, priceRange.high],
+                });
+        }, [priceRange.low, priceRange.high]);
         return (
                 <div>
                         {/* Banner */}
@@ -111,8 +116,8 @@ const Shops = () => {
                                                                 </h2>
                                                                 <Range
                                                                         step={5}
-                                                                        min={50}
-                                                                        max={1500}
+                                                                        min={state.values[0]}
+                                                                        max={state.values[1]}
                                                                         values={state.values}
                                                                         onChange={(values) => setState({ values })}
                                                                         renderTrack={({ props, children }) => (
