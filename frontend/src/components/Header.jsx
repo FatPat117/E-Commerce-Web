@@ -5,7 +5,7 @@ import { FaInstagram, FaUser } from "react-icons/fa6";
 import { IoIosArrowDown, IoMdPhonePortrait } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { get_category } from "../store/reducers/homeReducer";
 const Header = () => {
         const dispatch = useDispatch();
@@ -13,6 +13,7 @@ const Header = () => {
         useEffect(() => {
                 dispatch(get_category());
         }, []);
+        const navigate = useNavigate();
         const { pathname } = useLocation();
         const [showSidebar, setShowSidebar] = useState(false);
         const [categoryShow, setCategoryShow] = useState(false);
@@ -20,6 +21,10 @@ const Header = () => {
         const [category, setCategory] = useState("All Category");
         const user = true;
         const wishlist_count = 3;
+
+        const searchProduct = () => {
+                navigate(`/products/search?category=${category}&searchValue=${searchValue}`);
+        };
 
         return (
                 <header className="w-full bg-white">
@@ -477,13 +482,16 @@ const Header = () => {
                                                                                                         e.target.value
                                                                                                 )
                                                                                         }
-                                                                                        className="w-[150px] text-slate-600 font-semibold bg-transparent px-2 h-full outline-none border-none"
+                                                                                        className="w-[150px] text-slate-600 font-semibold bg-transparent px-1 h-full outline-none border-none"
                                                                                 >
+                                                                                        <option value="">
+                                                                                                Select Category
+                                                                                        </option>
                                                                                         {categories?.map(
                                                                                                 (cate, idx) => (
                                                                                                         <option
                                                                                                                 value={
-                                                                                                                        cate
+                                                                                                                        cate?.name
                                                                                                                 }
                                                                                                                 key={
                                                                                                                         idx
@@ -511,7 +519,10 @@ const Header = () => {
                                                                                 className=" md:w-full h-full px-2 text-slate-600 font-semibold bg-transparent outline-none border-none relative"
                                                                         />
 
-                                                                        <button className="bg-[#059473] hover:bg-[#059473]/50 transition-all rounded-md duration-300 cursor-pointer absolute right-0  px-2  md:px-8 h-full font-semibold flex justify-center items-center text-capitalize text-white">
+                                                                        <button
+                                                                                onClick={searchProduct}
+                                                                                className="bg-[#059473] hover:bg-[#059473]/50 transition-all rounded-md duration-300 cursor-pointer absolute right-0  px-2  md:px-8 h-full font-semibold flex justify-center items-center text-capitalize text-white"
+                                                                        >
                                                                                 Search
                                                                         </button>
                                                                 </div>

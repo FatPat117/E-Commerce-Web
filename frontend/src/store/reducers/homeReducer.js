@@ -49,7 +49,11 @@ export const query_products = createAsyncThunk(
         async (query, { fulfillWithValue, rejectWithValue }) => {
                 try {
                         const response = await api.get(
-                                `/home/query-products?category=${query.category}&rating=${query.rating}&sortByPrice=${query.sortBy}&lowPrice=${query.low}&highPrice=${query.high}&pageNumber=${query.currentPage}`,
+                                `/home/query-products?category=${query.category}&rating=${query.rating}&sortByPrice=${
+                                        query.sortBy
+                                }&lowPrice=${query.low}&highPrice=${query.high}&pageNumber=${
+                                        query.currentPage
+                                }&searchValue=${query.searchValue ? query.searchValue : ""}`,
                                 {
                                         withCredentials: true,
                                 }

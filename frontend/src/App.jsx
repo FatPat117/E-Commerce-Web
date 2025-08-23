@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import PageLayout from "./pages/PageLayout";
 import Register from "./pages/Register";
+import SearchProduct from "./pages/SearchProduct";
 import Shipping from "./pages/Shipping";
 import Shops from "./pages/Shops";
 const router = createBrowserRouter([
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
                         {
                                 path: "/products?",
                                 element: <CategoryShop />,
+                        },
+                        {
+                                path: "/products/search?",
+                                element: <SearchProduct />,
                         },
                         {
                                 path: "/product/details/:slug",
