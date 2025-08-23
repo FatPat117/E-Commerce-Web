@@ -438,7 +438,8 @@ const Header = () => {
                                                                 <ul className="p-3 text-slate-700 font-medium">
                                                                         {categories?.map((cate, idx) => {
                                                                                 return (
-                                                                                        <li
+                                                                                        <Link
+                                                                                                to={`/products?category=${cate.name}`}
                                                                                                 key={idx}
                                                                                                 className="flex justify-start items-center gap-5 md-lg:gap-8 px-[24px] py-[6px] border-b border-slate-300"
                                                                                         >
@@ -449,10 +450,10 @@ const Header = () => {
                                                                                                         alt="Product image"
                                                                                                         className="w-[40px] h-[40px] rounded-full overflow-hidden object-contain"
                                                                                                 />
-                                                                                                <Link className="text-md md-lg:text-lg block">
+                                                                                                <li className="text-md md-lg:text-lg block">
                                                                                                         {cate?.name}
-                                                                                                </Link>
-                                                                                        </li>
+                                                                                                </li>
+                                                                                        </Link>
                                                                                 );
                                                                         })}
                                                                 </ul>

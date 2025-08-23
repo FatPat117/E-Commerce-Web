@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Cart from "./pages/Cart";
+import CategoryShop from "./pages/CategoryShop";
 import Details from "./pages/Details";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
                         {
                                 path: "shipping",
                                 element: <Shipping />,
+                        },
+                        {
+                                path: "/products?",
+                                element: <CategoryShop />,
                         },
                         {
                                 path: "/product/details/:slug",
