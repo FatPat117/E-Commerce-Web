@@ -321,6 +321,23 @@ const Shops = () => {
                                                                                         <CiStar />
                                                                                 </span>
                                                                         </div>
+
+                                                                        <button
+                                                                                onClick={() => {
+                                                                                        setCategory("");
+                                                                                        setRating("");
+                                                                                        setSortBy("");
+                                                                                        setState({
+                                                                                                values: [
+                                                                                                        priceRange.low,
+                                                                                                        priceRange.high,
+                                                                                                ],
+                                                                                        });
+                                                                                }}
+                                                                                className="px-8 py-2 bg-[#059473] text-white text-md font-bold rounded-md hover:bg-[#059473]/80 transition-all duration-300 cursor-pointer"
+                                                                        >
+                                                                                Reset filter
+                                                                        </button>
                                                                 </div>
                                                         </div>
 
