@@ -53,7 +53,10 @@ const get_products = asyncHandler(async (req, res, next) => {
         }
 });
 
+const price_range_latest_product = asyncHandler(async (req, res, next) => {});
+
 export default {
         get_categories,
         get_products,
+        price_range_latest_product,
 };

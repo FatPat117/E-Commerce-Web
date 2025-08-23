@@ -10,16 +10,15 @@ import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import Products from "../components/products/Products";
 import ShopProduct from "../components/products/ShopProduct";
-import { get_category, get_products } from "../store/reducers/homeReducer";
+import { get_category, get_products, price_range_product } from "../store/reducers/homeReducer";
 import { URL } from "../utils/utils";
 const Shops = () => {
         const dispatch = useDispatch();
-        const { categories, products, latestProduct, ratingProduct, discountProduct } = useSelector(
-                (state) => state.home
-        );
+        const { categories, latestProduct } = useSelector((state) => state.home);
         useEffect(() => {
                 dispatch(get_category());
                 dispatch(get_products());
+                dispatch(price_range_product());
         }, []);
         const [filter, setFilter] = useState(true);
         const [state, setState] = useState({

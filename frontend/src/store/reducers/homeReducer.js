@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
+
+// Get categories
 export const get_category = createAsyncThunk("home/get_category", async (_, { fulfillWithValue, rejectWithValue }) => {
         try {
                 const response = await api.get("/home/get-categories", {
@@ -12,6 +14,7 @@ export const get_category = createAsyncThunk("home/get_category", async (_, { fu
         }
 });
 
+// get products
 export const get_products = createAsyncThunk("home/get_products", async (_, { fulfillWithValue, rejectWithValue }) => {
         try {
                 const response = await api.get("/home/get-products", {
@@ -23,6 +26,22 @@ export const get_products = createAsyncThunk("home/get_products", async (_, { fu
                 return rejectWithValue(error.response.data.message);
         }
 });
+
+// get price range
+export const price_range_product = createAsyncThunk(
+        "home/price_range_product",
+        async (_, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get("/home/price-range-latest-product", {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
 
 const homeReducer = createSlice({
         name: "home",
