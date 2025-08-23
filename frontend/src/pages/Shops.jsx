@@ -20,15 +20,15 @@ const Shops = () => {
                 dispatch(get_products());
                 dispatch(price_range_product());
         }, []);
+
         const [filter, setFilter] = useState(true);
         const [state, setState] = useState({
                 values: [priceRange.low, priceRange.high],
         });
         const [rating, setRating] = useState("");
+        const [category, setCategory] = useState("");
         const [style, setStyle] = useState("grid");
-
         const [currentPage, setCurrentPage] = useState(1);
-
         const [perPage, setPerPage] = useState(5);
 
         useEffect(() => {
@@ -36,6 +36,14 @@ const Shops = () => {
                         values: [priceRange.low, priceRange.high],
                 });
         }, [priceRange.low, priceRange.high]);
+
+        const QueryCategory = (e, value) => {
+                if (e.target.checked) {
+                        setCategory(value);
+                } else {
+                        setCategory("");
+                }
+        };
         return (
                 <div>
                         {/* Banner */}
@@ -94,7 +102,17 @@ const Shops = () => {
                                                                                         className="flex justify-start items-center gap-2 py-1"
                                                                                 >
                                                                                         <input
+                                                                                                checked={
+                                                                                                        category ==
+                                                                                                        cate.name
+                                                                                                }
                                                                                                 type="checkbox"
+                                                                                                onChange={(e) =>
+                                                                                                        QueryCategory(
+                                                                                                                e,
+                                                                                                                cate?.name
+                                                                                                        )
+                                                                                                }
                                                                                                 name=""
                                                                                                 id={cate?.name}
                                                                                         />
