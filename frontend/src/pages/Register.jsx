@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { custormer_register } from "../store/reducers/authReducer";
+import { FadeLoader } from "react-spinners";
+import { customer_register, messageClear } from "../store/reducers/authReducer";
 
 const Register = () => {
         const dispatch = useDispatch();
+        const { userInfo, loader, errorMessage, successMessage } = useSelector((state) => state.auth);
         const [state, setState] = useState({
                 name: "",
                 email: "",
@@ -19,10 +22,26 @@ const Register = () => {
         };
         const handleRegister = (e) => {
                 e.preventDefault();
-                dispatch(custormer_register(state));
+                dispatch(customer_register(state));
         };
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
+
         return (
                 <div className="bg-slate-200 mt-4">
+                        {loader && (
+                                <div className="flex justify-center items-center w-screen h-screen fixed top-0 left-0 bg-[#38303033] z-[9999]">
+                                        <FadeLoader color="#059473" />
+                                </div>
+                        )}
                         <div className="w-full flex justify-center items-center p-10">
                                 <div className="grid grid-cols-2 w-[60%] mx-auto bg-white rounded-sm">
                                         <div className="p-8">

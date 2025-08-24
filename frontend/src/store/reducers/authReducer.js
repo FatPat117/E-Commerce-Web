@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
-export const custormer_register = createAsyncThunk(
-        "auth/custormer_register",
+export const customer_register = createAsyncThunk(
+        "auth/customer_register",
         async (data, { fulfillWithValue, rejectWithValue }) => {
                 try {
                         const response = await api.post("/customer/customer-register", data, {
@@ -25,21 +25,21 @@ const authReducer = createSlice({
                 successMessage: "",
         },
         reducers: {
-                messageClear(state, action) {
+                messageClear(state) {
                         state.errorMessage = "";
                         state.successMessage = "";
                 },
         },
         extraReducers: (builder) => {
-                builder.addCase(custormer_register.pending, (state) => {
+                builder.addCase(customer_register.pending, (state) => {
                         state.loader = true;
                 });
-                builder.addCase(custormer_register.fulfilled, (state, action) => {
+                builder.addCase(customer_register.fulfilled, (state, action) => {
                         state.loader = false;
-                        state.userInfo = action.payload.customer;
+                        state.userInfo = action.payload.data.customer;
                         state.successMessage = action.payload.message;
                 });
-                builder.addCase(custormer_register.rejected, (state, action) => {
+                builder.addCase(customer_register.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

@@ -2,8 +2,10 @@ import bcrypt from "bcrypt";
 import SellerCustomer from "../../models/chat/sellerCustomerModel.js";
 import Customer from "../../models/customerModel.js";
 import ApiError from "../../utils/ApiError.js";
+import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import createToken from "../../utils/tokenCreate.js";
+
 const customer_register = asyncHandler(async (req, res, next) => {
         const { email, password, name } = req.body;
 
@@ -30,7 +32,7 @@ const customer_register = asyncHandler(async (req, res, next) => {
                 maxAge: 7 * 24 * 60 * 60 * 1000,
         };
         const token = createToken({
-                id: customer_id,
+                id: customer._id,
                 name: customer.name,
                 email: customer.email,
                 method: customer.method,
