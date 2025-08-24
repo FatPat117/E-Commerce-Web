@@ -3,13 +3,14 @@ import { toast } from "react-hot-toast";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FadeLoader } from "react-spinners";
 import { customer_login, messageClear } from "../store/reducers/authReducer";
 
 const Login = () => {
+        const navigate = useNavigate();
         const dispatch = useDispatch();
-        const { loader, errorMessage, successMessage } = useSelector((state) => state.auth);
+        const { loader, errorMessage, successMessage, userInfo } = useSelector((state) => state.auth);
         const [state, setState] = useState({
                 email: "",
                 password: "",
@@ -32,6 +33,10 @@ const Login = () => {
                 if (errorMessage) {
                         toast.error(errorMessage);
                         dispatch(messageClear());
+                }
+
+                if (userInfo) {
+                        navigate("/");
                 }
         }, [successMessage, errorMessage]);
         return (

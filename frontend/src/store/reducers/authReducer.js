@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 import api from "../../api/api";
 
 // customer register
@@ -10,7 +11,7 @@ export const customer_register = createAsyncThunk(
                                 withCredentials: true,
                         });
                         // console.log(response.data);
-                        localStorage.setItem("customerToken", JSON.stringify(response.data.token));
+                        localStorage.setItem("customerToken", response.data.data.token);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -27,7 +28,7 @@ export const customer_login = createAsyncThunk(
                                 withCredentials: true,
                         });
                         console.log(response.data);
-                        localStorage.setItem("customerToken", JSON.stringify(response.data.token));
+                        localStorage.setItem("customerToken", response.data.data.token);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -35,11 +36,21 @@ export const customer_login = createAsyncThunk(
         }
 );
 
+// Generate jwt token
+const decodeToken = (token) => {
+        if (token) {
+                const userInfo = jwtDecode(token);
+
+                return userInfo.data;
+        }
+        return null;
+};
+
 const authReducer = createSlice({
         name: "auth",
         initialState: {
                 loader: false,
-                userInfo: null,
+                userInfo: decodeToken(localStorage.getItem("customerToken")),
                 errorMessage: "",
                 successMessage: "",
         },

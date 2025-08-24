@@ -10,6 +10,7 @@ import { get_category } from "../store/reducers/homeReducer";
 const Header = () => {
         const dispatch = useDispatch();
         const { categories } = useSelector((state) => state.home);
+        const { userInfo } = useSelector((state) => state.auth);
         useEffect(() => {
                 dispatch(get_category());
         }, []);
@@ -19,7 +20,7 @@ const Header = () => {
         const [categoryShow, setCategoryShow] = useState(false);
         const [searchValue, setSearchValue] = useState("");
         const [category, setCategory] = useState("All Category");
-        const user = false;
+
         const wishlist_count = 3;
 
         const searchProduct = () => {
@@ -85,7 +86,7 @@ const Header = () => {
                                                                 </div>
 
                                                                 {/* User info */}
-                                                                {user ? (
+                                                                {userInfo ? (
                                                                         <Link
                                                                                 to="/dashboard"
                                                                                 className="flex cursor-pointer justify-center items-center gap-2 text-sm  text-black"
@@ -93,7 +94,7 @@ const Header = () => {
                                                                                 <span>
                                                                                         <FaUser />
                                                                                 </span>
-                                                                                <span>Pita Pitachiti</span>
+                                                                                <span>{userInfo.name}</span>
                                                                         </Link>
                                                                 ) : (
                                                                         <Link
@@ -281,7 +282,7 @@ const Header = () => {
 
                                                         {/* User info */}
                                                         <div className="pl-2">
-                                                                {user ? (
+                                                                {userInfo ? (
                                                                         <Link
                                                                                 to="/dashboard"
                                                                                 className="flex cursor-pointer justify-center items-center gap-2 text-sm  text-black"
@@ -289,7 +290,7 @@ const Header = () => {
                                                                                 <span>
                                                                                         <FaUser />
                                                                                 </span>
-                                                                                <span>Pita Pitachiti</span>
+                                                                                <span>{userInfo.name}</span>
                                                                         </Link>
                                                                 ) : (
                                                                         <Link
