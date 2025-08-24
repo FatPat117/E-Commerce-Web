@@ -510,7 +510,7 @@ const Header = () => {
                                                                         <input
                                                                                 type="text"
                                                                                 name=""
-                                                                                id=""
+                                                                                id="searchValue"
                                                                                 value={searchValue}
                                                                                 onChange={(e) =>
                                                                                         setSearchValue(e.target.value)

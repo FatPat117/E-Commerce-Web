@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { custormer_register } from "../store/reducers/authReducer";
 
 const Register = () => {
+        const dispatch = useDispatch();
         const [state, setState] = useState({
                 name: "",
                 email: "",
@@ -14,9 +17,9 @@ const Register = () => {
         const inputHandle = (e) => {
                 setState({ ...state, [e.target.name]: e.target.value });
         };
-        const handleSubmit = (e) => {
+        const handleRegister = (e) => {
                 e.preventDefault();
-                console.log(state);
+                dispatch(custormer_register(state));
         };
         return (
                 <div className="bg-slate-200 mt-4">
@@ -32,7 +35,7 @@ const Register = () => {
                                                 {/* Form */}
                                                 <div>
                                                         <form
-                                                                onSubmit={handleSubmit}
+                                                                onSubmit={handleRegister}
                                                                 className="text-slate-600 flex flex-col gap-3"
                                                         >
                                                                 {/* Name */}
@@ -96,7 +99,10 @@ const Register = () => {
                                                                         </span>
                                                                 </div>
 
-                                                                <button className="mt-5 px-8 py-2 w-full bg-[#059473] rounded-md shadow-md hover:shadow-green-500/50 transition-all duration-500 text-white cursor-pointer">
+                                                                <button
+                                                                        type="submit"
+                                                                        className="mt-5 px-8 py-2 w-full bg-[#059473] rounded-md shadow-md hover:shadow-green-500/50 transition-all duration-500 text-white cursor-pointer"
+                                                                >
                                                                         Register
                                                                 </button>
                                                         </form>
