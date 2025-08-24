@@ -19,7 +19,7 @@ const Header = () => {
         const [categoryShow, setCategoryShow] = useState(false);
         const [searchValue, setSearchValue] = useState("");
         const [category, setCategory] = useState("All Category");
-        const user = true;
+        const user = false;
         const wishlist_count = 3;
 
         const searchProduct = () => {
