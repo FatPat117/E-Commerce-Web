@@ -9,7 +9,7 @@ import { customer_register, messageClear } from "../store/reducers/authReducer";
 
 const Register = () => {
         const dispatch = useDispatch();
-        const { userInfo, loader, errorMessage, successMessage } = useSelector((state) => state.auth);
+        const { loader, errorMessage, successMessage } = useSelector((state) => state.auth);
         const [state, setState] = useState({
                 name: "",
                 email: "",

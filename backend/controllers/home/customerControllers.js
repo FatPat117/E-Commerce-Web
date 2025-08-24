@@ -40,6 +40,11 @@ const customer_register = asyncHandler(async (req, res, next) => {
         res.cookie("customerToken", token, cookieOptions);
         res.status(201).json(new ApiResponse(201, "User register successfully", { customer, token }));
 });
+
+const customer_login = asyncHandler(async (req, res, next) => {
+        const { email, password } = req.body;
+});
+
 export default {
         customer_register,
 };

@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { FadeLoader } from "react-spinners";
+import { customer_login, messageClear } from "../store/reducers/authReducer";
 
 const Login = () => {
+        const dispatch = useDispatch();
+        const { loader, errorMessage, successMessage } = useSelector((state) => state.auth);
         const [state, setState] = useState({
                 email: "",
                 password: "",
@@ -13,12 +19,28 @@ const Login = () => {
         const inputHandle = (e) => {
                 setState({ ...state, [e.target.name]: e.target.value });
         };
-        const handleSubmit = (e) => {
+        const handleLogin = (e) => {
                 e.preventDefault();
-                console.log(state);
+                dispatch(customer_login(state));
         };
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
         return (
                 <div className="bg-slate-200 mt-4">
+                        {loader && (
+                                <div className="flex justify-center items-center w-screen h-screen fixed top-0 left-0 bg-[#38303033] z-[9999]">
+                                        <FadeLoader color="#059473" />
+                                </div>
+                        )}
                         <div className="w-full flex justify-center items-center p-10">
                                 <div className="grid grid-cols-2 w-[60%] mx-auto bg-white rounded-sm">
                                         <div className="p-8">
@@ -31,7 +53,7 @@ const Login = () => {
                                                 {/* Form */}
                                                 <div>
                                                         <form
-                                                                onSubmit={handleSubmit}
+                                                                onSubmit={handleLogin}
                                                                 className="text-slate-600 flex flex-col gap-3"
                                                         >
                                                                 {/* Email */}
