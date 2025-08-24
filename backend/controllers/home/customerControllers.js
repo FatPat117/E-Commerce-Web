@@ -43,8 +43,31 @@ const customer_register = asyncHandler(async (req, res, next) => {
 
 const customer_login = asyncHandler(async (req, res, next) => {
         const { email, password } = req.body;
+
+        const existedCustomer = await Customer.findOne({ email }).select("+password");
+        if (!existedCustomer) return next(new ApiError(404, "Invalid Email"));
+
+        const isPasswordCorrect = await bcrypt.compare(password, existedCustomer.password);
+        if (!isPasswordCorrect) return next(new ApiError(404, "Password is incorrect"));
+
+        const customer = await Customer.findById(existedCustomer._id).select("-password");
+
+        const cookieOptions = {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+        };
+        const token = createToken({
+                id: customer._id,
+                name: customer.name,
+                email: customer.email,
+                method: customer.method,
+        });
+        res.cookie("customerToken", token, cookieOptions);
+        res.status(200).json(new ApiResponse(200, "User login successfully", { customer, token }));
 });
 
 export default {
         customer_register,
+        customer_login,
 };

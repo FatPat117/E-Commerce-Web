@@ -9,7 +9,7 @@ export const customer_register = createAsyncThunk(
                         const response = await api.post("/customer/customer-register", data, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         localStorage.setItem("customerToken", JSON.stringify(response.data.token));
                         return fulfillWithValue(response.data);
                 } catch (error) {
