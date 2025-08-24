@@ -14,6 +14,6 @@ const sellerCustomerSchema = new mongoose.Schema(
         { timestamps: true }
 );
 
-const Admin = mongoose.model("seller_customers", sellerCustomerSchema);
+const SellerCustomer = mongoose.model("seller_customers", sellerCustomerSchema);
 
-export default Admin;
+export default SellerCustomer;

@@ -30,7 +30,20 @@ const authReducer = createSlice({
                         state.successMessage = "";
                 },
         },
-        extraReducers: (builder) => {},
+        extraReducers: (builder) => {
+                builder.addCase(custormer_register.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(custormer_register.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.userInfo = action.payload.customer;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(custormer_register.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+        },
 });
 
 export default authReducer.reducer;

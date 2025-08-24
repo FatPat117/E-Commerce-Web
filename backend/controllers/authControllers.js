@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import formidable from "formidable";
 import Admin from "../models/adminModel.js";
-import sellerCustomer from "../models/chat/sellerCustomerModel.js";
+import SellerCustomer from "../models/chat/sellerCustomerModel.js";
 import Seller from "../models/sellerModel.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
@@ -99,7 +99,7 @@ const seller_register = asyncHandler(async (req, res, next) => {
         });
 
         // Create seller customer
-        await sellerCustomer.create({
+        await SellerCustomer.create({
                 myId: newSeller._id,
         });
 
