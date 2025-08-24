@@ -80,8 +80,9 @@ const authReducer = createSlice({
                         state.loader = true;
                 });
                 builder.addCase(customer_login.fulfilled, (state, action) => {
+                        const userInfo = decodeToken(action.payload.data.token);
                         state.loader = false;
-                        state.userInfo = action.payload.data.customer;
+                        state.userInfo = userInfo;
                         state.successMessage = action.payload.message;
                 });
                 builder.addCase(customer_login.rejected, (state, action) => {
