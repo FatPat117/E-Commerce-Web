@@ -34,7 +34,21 @@ const cartReducer = createSlice({
                         state.successMessage = "";
                 },
         },
-        extraReducers: (builder) => {},
+        extraReducers: (builder) => {
+                builder.addCase(add_to_cart.pending, (state, action) => {
+                        state.loader = true;
+                });
+                builder.addCase(add_to_cart.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.cartProducts.push(action.payload.data);
+                        state.cartProductsTotal += 1;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(add_to_cart.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+        },
 });
 
 export default cartReducer.reducer;
