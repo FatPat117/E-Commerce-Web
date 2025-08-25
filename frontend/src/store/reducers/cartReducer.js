@@ -7,6 +7,7 @@ export const add_to_cart = createAsyncThunk("cart/add_to_cart", async (data, { f
                 const response = await api.post("/cart/add-to-cart", data, {
                         withCredentials: true,
                 });
+                console.log(response.data);
                 return fulfillWithValue(response.data);
         } catch (error) {
                 return rejectWithValue(error.response.data.message);
