@@ -2,9 +2,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
 // Get categories
-export const add_to_cart = createAsyncThunk("cart/add_to_cart", async (_, { fulfillWithValue, rejectWithValue }) => {
+export const add_to_cart = createAsyncThunk("cart/add_to_cart", async (data, { fulfillWithValue, rejectWithValue }) => {
         try {
-                const response = await api.post("/home/product/add-to-cart", {
+                const response = await api.post("/cart/add-to-cart", data, {
                         withCredentials: true,
                 });
                 return fulfillWithValue(response.data);
