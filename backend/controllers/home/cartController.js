@@ -42,6 +42,7 @@ const add_to_cart = asyncHandler(async (req, res, next) => {
 const get_cart_products = asyncHandler(async (req, res, next) => {
         const { userId } = req.params;
 
+        // Get cart products
         const cartProduct = await Cart.aggregate([
                 { $match: { userId: new mongoose.Types.ObjectId(userId) } },
                 {
@@ -54,13 +55,35 @@ const get_cart_products = asyncHandler(async (req, res, next) => {
                 },
         ]);
 
+        // Calculate cart products
         let buyProductItem = 0;
         let calculatePrice = 0;
         let cartProductsTotal = 0;
+
+        // Calculate out of stock products
         const outOfStockProducts = cartProduct.filter((item) => item.products[0].stock < item.quantity);
 
+        // Calculate out of stock products total
         for (let i = 0; i < outOfStockProducts.length; i++) {
                 cartProductsTotal += outOfStockProducts[i].quantity;
+        }
+
+        // Calculate stock products
+        const stockProducts = cartProduct.filter((item) => item.products[0].stock >= item.quantity);
+
+        // Calculate stock products
+        for (let i = 0; i < stockProducts.length; i++) {
+                const { quantity } = stockProducts[i];
+                cartProductsTotal = buyProductItem + quantity;
+                buyProductItem += quantity;
+
+                const { price, discount } = stockProducts[i].products[0];
+
+                if (discount > 0) {
+                        calculatePrice += quantity * (price - Math.floor((price * discount) / 100));
+                } else {
+                        calculatePrice += quantity * price;
+                }
         }
 });
 
