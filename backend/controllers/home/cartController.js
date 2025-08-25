@@ -1,7 +1,7 @@
+import mongoose from "mongoose";
 import Cart from "../../models/cartModel.js";
 import Customer from "../../models/customerModel.js";
 import Product from "../../models/productModel.js";
-
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
@@ -39,6 +39,14 @@ const add_to_cart = asyncHandler(async (req, res, next) => {
         res.status(201).json(new ApiResponse(201, "Product added to cart", cartProduct));
 });
 
+const get_cart_products = asyncHandler(async (req, res, next) => {
+        const { userId } = req.params;
+
+        const cartProduct = await Cart.aggregate([{ $match: { userId: new mongoose.Types.ObjectId(userId) } }]);
+        console.log(cartProduct);
+});
+
 export default {
         add_to_cart,
+        get_cart_products,
 };
