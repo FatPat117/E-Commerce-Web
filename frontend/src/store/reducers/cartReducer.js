@@ -40,9 +40,10 @@ const cartReducer = createSlice({
                 wishlistProductsTotal: 0,
                 price: 0,
                 shippingFee: 0,
-                outOfStockProducts: 0,
+                outOfStockProducts: [],
                 errorMessage: "",
                 successMessage: "",
+                buyProductItem: 0,
         },
         reducers: {
                 messageClear(state) {
@@ -61,6 +62,25 @@ const cartReducer = createSlice({
                         state.successMessage = action.payload.message;
                 });
                 builder.addCase(add_to_cart.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                //  Get cart
+                builder.addCase(get_cart_products.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_cart_products.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.cartProducts = action.payload.data.cardProducts;
+                        state.price = action.payload.data.price;
+                        state.cartProductsTotal = action.payload.data.cartProductsTotal;
+                        state.shippingFee = action.payload.data.shippingFee;
+                        state.outOfStockProducts = action.payload.data.outOfStockProducts;
+                        state.buyProductItem = action.payload.data.buyProductItem;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(get_cart_products.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

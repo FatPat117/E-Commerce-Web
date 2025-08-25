@@ -131,7 +131,16 @@ const get_cart_products = asyncHandler(async (req, res, next) => {
                         };
                 }
         }
-        console.log(products);
+        res.status(200).json(
+                new ApiResponse(200, "Cart products", {
+                        cardProducts: products,
+                        price: calculatePrice,
+                        cartProductsTotal,
+                        shippingFee: 100 * products.length,
+                        outOfStockProducts,
+                        buyProductItem,
+                })
+        );
 });
 
 export default {
