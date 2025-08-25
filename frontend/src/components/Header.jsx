@@ -226,14 +226,14 @@ const Header = () => {
                                                                                 </div>
                                                                                 {/* Cart items */}
                                                                                 <div className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]">
-                                                                                        <Link
+                                                                                        <li
                                                                                                 ocClick={
                                                                                                         redirectCartPage
                                                                                                 }
-                                                                                                className="text-xl text-green-500"
+                                                                                                className="text-xl flex text-green-500"
                                                                                         >
                                                                                                 <FaShoppingCart />
-                                                                                        </Link>
+                                                                                        </li>
                                                                                         {cartProductsTotal !== 0 && (
                                                                                                 <div
                                                                                                         className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex items-center 

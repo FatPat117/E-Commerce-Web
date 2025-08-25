@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { get_cart_products } from "../store/reducers/cartReducer.js";
 import { URL } from "../utils/utils.js";
 
 const Cart = () => {
+        const dispatch = useDispatch();
+        const { userInfo } = useSelector((state) => state.auth);
         const navigate = useNavigate();
         const cartProducts = [1, 2];
         const outOfStockProducts = [1, 2];
+
+        useEffect(() => {
+                dispatch(get_cart_products(userInfo.id));
+        }, []);
 
         return (
                 <div>

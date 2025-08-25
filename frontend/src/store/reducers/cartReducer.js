@@ -1,18 +1,34 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
-// Get categories
+// Add to cart
 export const add_to_cart = createAsyncThunk("cart/add_to_cart", async (data, { fulfillWithValue, rejectWithValue }) => {
         try {
                 const response = await api.post("/cart/add-to-cart", data, {
                         withCredentials: true,
                 });
-                console.log(response.data);
+                // console.log(response.data);
                 return fulfillWithValue(response.data);
         } catch (error) {
                 return rejectWithValue(error.response.data.message);
         }
 });
+
+// Get to cart
+export const get_cart_products = createAsyncThunk(
+        "cart/get_cart_products",
+        async (userId, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/cart/get-cart-products/${userId}`, {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
 
 const cartReducer = createSlice({
         name: "cart",
