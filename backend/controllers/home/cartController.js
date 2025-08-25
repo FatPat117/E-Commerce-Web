@@ -42,8 +42,26 @@ const add_to_cart = asyncHandler(async (req, res, next) => {
 const get_cart_products = asyncHandler(async (req, res, next) => {
         const { userId } = req.params;
 
-        const cartProduct = await Cart.aggregate([{ $match: { userId: new mongoose.Types.ObjectId(userId) } }]);
-        console.log(cartProduct);
+        const cartProduct = await Cart.aggregate([
+                { $match: { userId: new mongoose.Types.ObjectId(userId) } },
+                {
+                        $lookup: {
+                                from: "products",
+                                localField: "productId",
+                                foreignField: "_id",
+                                as: "products",
+                        },
+                },
+        ]);
+
+        let buyProductItem = 0;
+        let calculatePrice = 0;
+        let cartProductsTotal = 0;
+        const outOfStockProducts = cartProduct.filter((item) => item.products[0].stock < item.quantity);
+
+        for (let i = 0; i < outOfStockProducts.length; i++) {
+                cartProductsTotal += outOfStockProducts[i].quantity;
+        }
 });
 
 export default {
