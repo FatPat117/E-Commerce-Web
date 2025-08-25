@@ -41,6 +41,7 @@ const add_to_cart = asyncHandler(async (req, res, next) => {
 
 const get_cart_products = asyncHandler(async (req, res, next) => {
         const { userId } = req.params;
+        const co = 5;
 
         // Get cart products
         const cartProduct = await Cart.aggregate([
@@ -85,6 +86,52 @@ const get_cart_products = asyncHandler(async (req, res, next) => {
                         calculatePrice += quantity * price;
                 }
         }
+
+        let products = [];
+        let uniqueSeller = [...new Set(stockProducts.map((product) => product.products[0].sellerId.toString()))];
+
+        for (let i = 0; i < uniqueSeller.length; i++) {
+                let price = 0;
+                for (let j = 0; j < stockProducts.length; j++) {
+                        let temp = [];
+                        const tempProduct = stockProducts[j].products[0];
+
+                        if (uniqueSeller[i] === tempProduct.sellerId.toString()) {
+                                let pri = 0;
+                                if (tempProduct.discount > 0) {
+                                        pri =
+                                                tempProduct.price -
+                                                Math.floor((tempProduct.price * tempProduct.discount) / 100);
+                                } else {
+                                        pri = tempProduct.price;
+                                }
+                                pri -= Math.floor((pri * co) / 100);
+                                price += pri * stockProducts[j].quantity;
+                        }
+                        products[i] = {
+                                sellerId: uniqueSeller[i],
+                                price: price,
+                                shopName: tempProduct.shopName,
+                                products: products[i]
+                                        ? [
+                                                  ...products[i].products,
+                                                  {
+                                                          _id: stockProducts[j]._id,
+                                                          quantity: stockProducts[j].quantity,
+                                                          productInfo: tempProduct,
+                                                  },
+                                          ]
+                                        : [
+                                                  {
+                                                          _id: stockProducts[j]._id,
+                                                          quantity: stockProducts[j].quantity,
+                                                          productInfo: tempProduct,
+                                                  },
+                                          ],
+                        };
+                }
+        }
+        console.log(products);
 });
 
 export default {
