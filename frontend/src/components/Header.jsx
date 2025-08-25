@@ -11,6 +11,7 @@ const Header = () => {
         const dispatch = useDispatch();
         const { categories } = useSelector((state) => state.home);
         const { userInfo } = useSelector((state) => state.auth);
+        const { cartProductsTotal } = useSelector((state) => state.cart);
         useEffect(() => {
                 dispatch(get_category());
         }, []);
@@ -27,6 +28,13 @@ const Header = () => {
                 navigate(`/products/search?category=${category}&searchValue=${searchValue}`);
         };
 
+        const redirectCartPage = () => {
+                if (userInfo) {
+                        navigate("/cart");
+                } else {
+                        navigate("/login");
+                }
+        };
         return (
                 <header className="w-full bg-white">
                         {/* Header top */}
@@ -219,17 +227,23 @@ const Header = () => {
                                                                                 {/* Cart items */}
                                                                                 <div className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]">
                                                                                         <Link
-                                                                                                to="/cart"
+                                                                                                ocClick={
+                                                                                                        redirectCartPage
+                                                                                                }
                                                                                                 className="text-xl text-green-500"
                                                                                         >
                                                                                                 <FaShoppingCart />
                                                                                         </Link>
-                                                                                        <div
-                                                                                                className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex items-center 
+                                                                                        {cartProductsTotal !== 0 && (
+                                                                                                <div
+                                                                                                        className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex items-center 
                                                                                         justify-center -top-[3px] -right-[5px]"
-                                                                                        >
-                                                                                                {wishlist_count}
-                                                                                        </div>
+                                                                                                >
+                                                                                                        {
+                                                                                                                cartProductsTotal
+                                                                                                        }
+                                                                                                </div>
+                                                                                        )}
                                                                                 </div>
                                                                         </div>
                                                                 </div>

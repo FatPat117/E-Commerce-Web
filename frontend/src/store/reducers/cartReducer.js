@@ -35,13 +35,13 @@ const cartReducer = createSlice({
                 },
         },
         extraReducers: (builder) => {
-                builder.addCase(add_to_cart.pending, (state, action) => {
+                builder.addCase(add_to_cart.pending, (state) => {
                         state.loader = true;
                 });
                 builder.addCase(add_to_cart.fulfilled, (state, action) => {
                         state.loader = false;
                         state.cartProducts.push(action.payload.data);
-                        state.cartProductsTotal += 1;
+                        state.cartProductsTotal = state.cartProductsTotal + 1;
                         state.successMessage = action.payload.message;
                 });
                 builder.addCase(add_to_cart.rejected, (state, action) => {
