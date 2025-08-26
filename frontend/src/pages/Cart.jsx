@@ -7,6 +7,7 @@ import {
         delete_cart_product,
         get_cart_products,
         messageClear,
+        quantity_decrement,
         quantity_increment,
 } from "../store/reducers/cartReducer.js";
 import { URL } from "../utils/utils.js";
@@ -32,7 +33,16 @@ const Cart = () => {
                 if (temp <= stock) {
                         dispatch(quantity_increment({ cartId, quantity: temp }));
                 } else {
-                        toast.error("Stock is not available");
+                        toast.error(`The Product Limit is ${stock}`);
+                }
+        };
+
+        const decrementCartProduct = (cartId, quantity, stock) => {
+                const temp = quantity - 1;
+                if (temp >= 1) {
+                        dispatch(quantity_decrement({ cartId, quantity: temp }));
+                } else if (temp == 0) {
+                        dispatch(delete_cart_product(cartId));
                 }
         };
 
@@ -194,7 +204,18 @@ const Cart = () => {
                                                                                                                                                 </div>
                                                                                                                                                 <div className="flex gap-2 flex-col">
                                                                                                                                                         <div className="flex bg-slate-200 h-[30px] justify-center items-center text-xl">
-                                                                                                                                                                <div className="px-3 cursor-pointer">
+                                                                                                                                                                <div
+                                                                                                                                                                        onClick={() =>
+                                                                                                                                                                                decrementCartProduct(
+                                                                                                                                                                                        data._id,
+                                                                                                                                                                                        data.quantity,
+                                                                                                                                                                                        data
+                                                                                                                                                                                                .productInfo
+                                                                                                                                                                                                .stock
+                                                                                                                                                                                )
+                                                                                                                                                                        }
+                                                                                                                                                                        className="px-3 cursor-pointer"
+                                                                                                                                                                >
                                                                                                                                                                         -
                                                                                                                                                                 </div>
                                                                                                                                                                 <div className="px-3 ">
@@ -340,7 +361,18 @@ const Cart = () => {
                                                                                                                                                 </div>
                                                                                                                                                 <div className="flex gap-2 flex-col">
                                                                                                                                                         <div className="flex bg-slate-200 h-[30px] justify-center items-center text-xl">
-                                                                                                                                                                <div className="px-3 cursor-pointer">
+                                                                                                                                                                <div
+                                                                                                                                                                        onClick={() =>
+                                                                                                                                                                                decrementCartProduct(
+                                                                                                                                                                                        data._id,
+                                                                                                                                                                                        data.quantity,
+                                                                                                                                                                                        data
+                                                                                                                                                                                                .products[0]
+                                                                                                                                                                                                .stock
+                                                                                                                                                                                )
+                                                                                                                                                                        }
+                                                                                                                                                                        className="px-3 cursor-pointer"
+                                                                                                                                                                >
                                                                                                                                                                         -
                                                                                                                                                                 </div>
                                                                                                                                                                 <div className="px-3 ">
@@ -348,12 +380,19 @@ const Cart = () => {
                                                                                                                                                                                 data?.quantity
                                                                                                                                                                         }
                                                                                                                                                                 </div>
-                                                                                                                                                                <div className="px-3 cursor-pointer">
+                                                                                                                                                                <div>
                                                                                                                                                                         +
                                                                                                                                                                 </div>
                                                                                                                                                         </div>
 
-                                                                                                                                                        <button className="px-5 py-[3px] bg-red-500 rounded-sm text-white">
+                                                                                                                                                        <button
+                                                                                                                                                                onClick={() =>
+                                                                                                                                                                        handleDeleteCartProduct(
+                                                                                                                                                                                data._id
+                                                                                                                                                                        )
+                                                                                                                                                                }
+                                                                                                                                                                className="px-5 py-[3px] bg-red-500 rounded-sm text-white"
+                                                                                                                                                        >
                                                                                                                                                                 Delete
                                                                                                                                                         </button>
                                                                                                                                                 </div>
@@ -384,18 +423,17 @@ const Cart = () => {
                                                                                                         Items
                                                                                                 </span>
                                                                                                 <span className="">
-                                                                                                        {price}
+                                                                                                        ${price}
                                                                                                 </span>
                                                                                         </div>
 
                                                                                         {/* Shopping Fee */}
                                                                                         <div className="flex justify-between items-center">
                                                                                                 <span className="font-semibold">
-                                                                                                        Shopping Fee:
+                                                                                                        Shipping Fee:
                                                                                                 </span>
                                                                                                 <span>
-                                                                                                        {" "}
-                                                                                                        {shippingFee}
+                                                                                                        ${shippingFee}
                                                                                                 </span>
                                                                                         </div>
 

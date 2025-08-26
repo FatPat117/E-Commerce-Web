@@ -156,9 +156,17 @@ const quantity_increment = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "Cart Product increased", product));
 });
 
+const quantity_decrement = asyncHandler(async (req, res, next) => {
+        const { cartId } = req.params;
+        const { quantity } = req.body;
+        const product = await Cart.findByIdAndUpdate(cartId, { quantity: quantity }, { new: true });
+        res.status(200).json(new ApiResponse(200, "Cart Product decreased", product));
+});
+
 export default {
         add_to_cart,
         get_cart_products,
         delete_cart_product,
         quantity_increment,
+        quantity_decrement,
 };

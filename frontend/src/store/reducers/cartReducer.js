@@ -63,6 +63,23 @@ export const quantity_increment = createAsyncThunk(
         }
 );
 
+// Decrease Cart quantity
+export const quantity_decrement = createAsyncThunk(
+        "cart/quantity_decrement",
+        async ({ cartId, quantity }, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.patch(`/cart/quantity-decrement/${cartId}`, {
+                                quantity,
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const cartReducer = createSlice({
         name: "cart",
         initialState: {
@@ -145,6 +162,20 @@ const cartReducer = createSlice({
                         state.successMessage = action.payload.message;
                 });
                 builder.addCase(quantity_increment.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                //Decrease cart product
+                builder.addCase(quantity_decrement.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(quantity_decrement.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.cartProductsTotal = state.cartProductsTotal + 1;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(quantity_decrement.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
