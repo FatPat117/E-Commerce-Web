@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Cart from "./pages/Cart";
 import CategoryShop from "./pages/CategoryShop";
+import Dashboard from "./pages/Dashboard";
 import Details from "./pages/Details";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -11,6 +12,7 @@ import Register from "./pages/Register";
 import SearchProduct from "./pages/SearchProduct";
 import Shipping from "./pages/Shipping";
 import Shops from "./pages/Shops";
+import ProtectedUser from "./utils/ProtectedUser";
 const router = createBrowserRouter([
         {
                 path: "/",
@@ -55,6 +57,14 @@ const router = createBrowserRouter([
                         {
                                 path: "/payment",
                                 element: <Payment />,
+                        },
+                        {
+                                path: "/dashboard",
+                                element: (
+                                        <ProtectedUser>
+                                                <Dashboard />
+                                        </ProtectedUser>
+                                ),
                         },
                 ],
         },
