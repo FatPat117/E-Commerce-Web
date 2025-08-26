@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { place_order } from "../store/reducers/orderReducer.js";
 import { URL } from "../utils/utils.js";
 
 const Shipping = () => {
         const {
                 state: { products, price, shippingFee, items },
         } = useLocation();
-
+        const navigate = useNavigate();
+        const dispatch = useDispatch();
+        const { userInfo } = useSelector((state) => state.auth);
         const [state, setState] = useState({
                 name: "",
                 address: "",
@@ -30,6 +34,21 @@ const Shipping = () => {
                 if (name && address && phone && post && province && city && area) {
                         setRes(true);
                 }
+        };
+        const placeOrder = (e) => {
+                e.preventDefault();
+
+                dispatch(
+                        place_order({
+                                price,
+                                products,
+                                shippingFee,
+                                items,
+                                shippingInfo: state,
+                                userId: userInfo.id,
+                                navigate,
+                        })
+                );
         };
 
         return (
@@ -454,6 +473,7 @@ const Shipping = () => {
                                                                         </div>
 
                                                                         <button
+                                                                                onClick={placeOrder}
                                                                                 disabled={res ? false : true}
                                                                                 className={` px-5 py-[8px] rounded-sm   text-md text-white uppercase ${
                                                                                         res

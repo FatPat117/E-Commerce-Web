@@ -39,6 +39,7 @@ const Cart = () => {
 
         const decrementCartProduct = (cartId, quantity, stock) => {
                 const temp = quantity - 1;
+
                 if (temp >= 1) {
                         dispatch(quantity_decrement({ cartId, quantity: temp }));
                 } else if (temp == 0) {
