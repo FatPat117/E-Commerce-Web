@@ -142,7 +142,15 @@ const get_cart_products = asyncHandler(async (req, res, next) => {
         );
 });
 
+const delete_cart_product = asyncHandler(async (req, res, next) => {
+        const { id } = req.params;
+
+        await Cart.findByIdAndDelete(id);
+        res.status(200).json(new ApiResponse(200, "Cart product deleted"));
+});
+
 export default {
         add_to_cart,
         get_cart_products,
+        delete_cart_product,
 };

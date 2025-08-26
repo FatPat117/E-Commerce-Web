@@ -103,6 +103,21 @@ const cartReducer = createSlice({
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
+
+                // Delete cart-product
+                //  Get cart
+                builder.addCase(delete_cart_product.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(delete_cart_product.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.cartProductsTotal = state.cartProductsTotal - 1;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(delete_cart_product.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
         },
 });
 

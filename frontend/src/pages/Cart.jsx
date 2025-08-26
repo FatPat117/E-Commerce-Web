@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { delete_cart_product, get_cart_products } from "../store/reducers/cartReducer.js";
+import { delete_cart_product, get_cart_products, messageClear } from "../store/reducers/cartReducer.js";
 import { URL } from "../utils/utils.js";
 
 const Cart = () => {
         const dispatch = useDispatch();
         const { userInfo } = useSelector((state) => state.auth);
-        const { cartProducts, outOfStockProducts, price, shippingFee, buyProductItem } = useSelector(
-                (state) => state.cart
-        );
+        const { cartProducts, outOfStockProducts, price, shippingFee, buyProductItem, successMessage, errorMessage } =
+                useSelector((state) => state.cart);
         const navigate = useNavigate();
 
         useEffect(() => {
@@ -21,6 +21,17 @@ const Cart = () => {
                 dispatch(delete_cart_product(id));
         };
 
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                        dispatch(get_cart_products(userInfo.id));
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
         return (
                 <div>
                         {/* Banner */}
