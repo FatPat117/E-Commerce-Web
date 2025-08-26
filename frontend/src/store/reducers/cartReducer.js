@@ -49,7 +49,7 @@ export const delete_cart_product = createAsyncThunk(
 // Increase Cart quantity
 export const quantity_increment = createAsyncThunk(
         "cart/quantity_increment",
-        async (cartId, quantity, { fulfillWithValue, rejectWithValue }) => {
+        async ({ cartId, quantity }, { fulfillWithValue, rejectWithValue }) => {
                 try {
                         const response = await api.patch(`/cart/quantity-increment/${cartId}`, {
                                 quantity,
@@ -122,7 +122,6 @@ const cartReducer = createSlice({
                 });
 
                 // Delete cart-product
-                //  Get cart
                 builder.addCase(delete_cart_product.pending, (state) => {
                         state.loader = true;
                 });
@@ -132,6 +131,20 @@ const cartReducer = createSlice({
                         state.successMessage = action.payload.message;
                 });
                 builder.addCase(delete_cart_product.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Increase cart product
+                builder.addCase(quantity_increment.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(quantity_increment.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.cartProductsTotal = state.cartProductsTotal + 1;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(quantity_increment.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

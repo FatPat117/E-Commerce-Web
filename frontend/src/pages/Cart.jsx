@@ -28,8 +28,9 @@ const Cart = () => {
 
         const incrementCartProduct = (cartId, quantity, stock) => {
                 const temp = quantity + 1;
+
                 if (temp <= stock) {
-                        dispatch(quantity_increment(cartId, temp));
+                        dispatch(quantity_increment({ cartId, quantity: temp }));
                 } else {
                         toast.error("Stock is not available");
                 }

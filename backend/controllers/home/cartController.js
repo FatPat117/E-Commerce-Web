@@ -149,8 +149,16 @@ const delete_cart_product = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "Cart product deleted"));
 });
 
+const quantity_increment = asyncHandler(async (req, res, next) => {
+        const { cartId } = req.params;
+        const { quantity } = req.body;
+        const product = await Cart.findByIdAndUpdate(cartId, { quantity: quantity }, { new: true });
+        res.status(200).json(new ApiResponse(200, "Cart Product increased", product));
+});
+
 export default {
         add_to_cart,
         get_cart_products,
         delete_cart_product,
+        quantity_increment,
 };
