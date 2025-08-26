@@ -5,7 +5,7 @@ import api from "../../api/api";
 export const place_order = createAsyncThunk(
         "order/place_order",
         async (
-                { price, products, shippingFee, items, shippingInfo, userId, navigate },
+                { price, products, shippingFee, items, shippingInfo, userInfo, navigate },
                 { fulfillWithValue, rejectWithValue }
         ) => {
                 try {
@@ -17,7 +17,7 @@ export const place_order = createAsyncThunk(
                                         shippingFee,
                                         items,
                                         shippingInfo,
-                                        userId,
+                                        userInfo,
                                         navigate,
                                 },
                                 { withCredentials: true }
