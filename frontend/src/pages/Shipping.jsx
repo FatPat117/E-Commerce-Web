@@ -45,7 +45,7 @@ const Shipping = () => {
                                 shippingFee,
                                 items,
                                 shippingInfo: state,
-                                userId: userInfo.id,
+                                userId: userInfo,
                                 navigate,
                         })
                 );

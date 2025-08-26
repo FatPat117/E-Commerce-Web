@@ -9,17 +9,20 @@ export const place_order = createAsyncThunk(
                 { fulfillWithValue, rejectWithValue }
         ) => {
                 try {
-                        const response = await api.post("/order/place-order", {
-                                price,
-                                products,
-                                shippingFee,
-                                items,
-                                shippingInfo,
-                                userId,
-                                navigate,
-                                withCredentials: true,
-                        });
-                        // console.log(response.data);
+                        const response = await api.post(
+                                "/order/place-order",
+                                {
+                                        price,
+                                        products,
+                                        shippingFee,
+                                        items,
+                                        shippingInfo,
+                                        userId,
+                                        navigate,
+                                },
+                                { withCredentials: true }
+                        );
+                        console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);

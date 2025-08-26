@@ -10,6 +10,7 @@ import sellerRoutes from "./routes/dashboard/sellerRoutes.js";
 import cartRoutes from "./routes/home/cartRoutes.js";
 import customerRoutes from "./routes/home/customerRoutes.js";
 import homeRoutes from "./routes/home/homeRoutes.js";
+import orderRoutes from "./routes/order/orderRoutes.js";
 import connectDB from "./utils/db.js";
 
 dotenv.config();
@@ -39,6 +40,7 @@ app.use("/api/seller", sellerRoutes);
 app.use("/api/home", homeRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/customer", customerRoutes);
+app.use("/api/order", orderRoutes);
 app.use(notFound);
 app.use(globalErrorHandler);
 
