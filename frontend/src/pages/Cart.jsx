@@ -164,33 +164,45 @@ const Cart = () => {
                                                                                                                                                         {data
                                                                                                                                                                 ?.productInfo
                                                                                                                                                                 ?.discount >
-                                                                                                                                                                0 && (
-                                                                                                                                                                <h2 className="text-lg text-orange-500">
-                                                                                                                                                                        {data
-                                                                                                                                                                                ?.productInfo
-                                                                                                                                                                                ?.price -
-                                                                                                                                                                                Math.floor(
-                                                                                                                                                                                        (data
-                                                                                                                                                                                                ?.productInfo
-                                                                                                                                                                                                ?.price *
-                                                                                                                                                                                                data
+                                                                                                                                                        0 ? (
+                                                                                                                                                                <>
+                                                                                                                                                                        <h2 className="text-lg text-orange-500">
+                                                                                                                                                                                $
+                                                                                                                                                                                {data
+                                                                                                                                                                                        ?.productInfo
+                                                                                                                                                                                        ?.price -
+                                                                                                                                                                                        Math.floor(
+                                                                                                                                                                                                (data
                                                                                                                                                                                                         ?.productInfo
-                                                                                                                                                                                                        ?.discount) /
-                                                                                                                                                                                                100
-                                                                                                                                                                                )}
-
-                                                                                                                                                                        $
-                                                                                                                                                                </h2>
+                                                                                                                                                                                                        ?.price *
+                                                                                                                                                                                                        data
+                                                                                                                                                                                                                ?.productInfo
+                                                                                                                                                                                                                ?.discount) /
+                                                                                                                                                                                                        100
+                                                                                                                                                                                        )}
+                                                                                                                                                                        </h2>
+                                                                                                                                                                        <p className="line-through">
+                                                                                                                                                                                $
+                                                                                                                                                                                {
+                                                                                                                                                                                        data
+                                                                                                                                                                                                ?.productInfo
+                                                                                                                                                                                                ?.price
+                                                                                                                                                                                }
+                                                                                                                                                                        </p>
+                                                                                                                                                                </>
+                                                                                                                                                        ) : (
+                                                                                                                                                                <>
+                                                                                                                                                                        <h2 className="text-lg text-orange-500">
+                                                                                                                                                                                $
+                                                                                                                                                                                {
+                                                                                                                                                                                        data
+                                                                                                                                                                                                ?.productInfo
+                                                                                                                                                                                                ?.price
+                                                                                                                                                                                }
+                                                                                                                                                                        </h2>
+                                                                                                                                                                </>
                                                                                                                                                         )}
-                                                                                                                                                        <p className="line-through">
-                                                                                                                                                                {
-                                                                                                                                                                        data
-                                                                                                                                                                                ?.productInfo
-                                                                                                                                                                                ?.price
-                                                                                                                                                                }
 
-                                                                                                                                                                $
-                                                                                                                                                        </p>
                                                                                                                                                         <p className="text-green-500 text-sm font-bold">
                                                                                                                                                                 -
                                                                                                                                                                 {
@@ -323,31 +335,46 @@ const Cart = () => {
                                                                                                                                                         {data
                                                                                                                                                                 ?.products[0]
                                                                                                                                                                 ?.discount >
-                                                                                                                                                                0 && (
-                                                                                                                                                                <h2 className="text-lg text-orange-500">
-                                                                                                                                                                        {data
-                                                                                                                                                                                ?.products[0]
-                                                                                                                                                                                ?.price -
-                                                                                                                                                                                Math.floor(
-                                                                                                                                                                                        (data
-                                                                                                                                                                                                ?.products[0]
-                                                                                                                                                                                                ?.price *
-                                                                                                                                                                                                data
+                                                                                                                                                        0 ? (
+                                                                                                                                                                <>
+                                                                                                                                                                        <h2 className="text-lg text-orange-500">
+                                                                                                                                                                                $
+                                                                                                                                                                                {data
+                                                                                                                                                                                        ?.products[0]
+                                                                                                                                                                                        ?.price -
+                                                                                                                                                                                        Math.floor(
+                                                                                                                                                                                                (data
                                                                                                                                                                                                         ?.products[0]
-                                                                                                                                                                                                        ?.discount) /
-                                                                                                                                                                                                100
-                                                                                                                                                                                )}
+                                                                                                                                                                                                        ?.price *
+                                                                                                                                                                                                        data
+                                                                                                                                                                                                                ?.products[0]
+                                                                                                                                                                                                                ?.discount) /
+                                                                                                                                                                                                        100
+                                                                                                                                                                                        )}
 
-                                                                                                                                                                        $
-                                                                                                                                                                </h2>
+                                                                                                                                                                                $
+                                                                                                                                                                        </h2>
+                                                                                                                                                                        <p className="line-through">
+                                                                                                                                                                                $
+                                                                                                                                                                                {
+                                                                                                                                                                                        data
+                                                                                                                                                                                                ?.products[0]
+                                                                                                                                                                                                ?.price
+                                                                                                                                                                                }
+                                                                                                                                                                        </p>
+                                                                                                                                                                </>
+                                                                                                                                                        ) : (
+                                                                                                                                                                <>
+                                                                                                                                                                        <h2 className="text-lg text-orange-500">
+                                                                                                                                                                                {
+                                                                                                                                                                                        data
+                                                                                                                                                                                                ?.products[0]
+                                                                                                                                                                                                ?.price
+                                                                                                                                                                                }
+                                                                                                                                                                        </h2>
+                                                                                                                                                                </>
                                                                                                                                                         )}
-                                                                                                                                                        <p className="line-through">
-                                                                                                                                                                {
-                                                                                                                                                                        data
-                                                                                                                                                                                ?.products[0]
-                                                                                                                                                                                ?.price
-                                                                                                                                                                }
-                                                                                                                                                        </p>
+
                                                                                                                                                         <p className="text-green-500 text-sm font-bold">
                                                                                                                                                                 -
                                                                                                                                                                 {
@@ -470,10 +497,11 @@ const Cart = () => {
                                                                                                                 "/shipping",
                                                                                                                 {
                                                                                                                         state: {
-                                                                                                                                products: [],
-                                                                                                                                price: 500,
-                                                                                                                                shipping_fee: 40,
-                                                                                                                                items: 2,
+                                                                                                                                products: cartProducts,
+                                                                                                                                price: price,
+                                                                                                                                shippingFee:
+                                                                                                                                        shippingFee,
+                                                                                                                                items: buyProductItem,
                                                                                                                         },
                                                                                                                 }
                                                                                                         )

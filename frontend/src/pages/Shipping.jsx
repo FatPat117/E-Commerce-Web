@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { URL } from "../utils/utils.js";
+
 const Shipping = () => {
+        const {
+                state: { products, price, shippingFee, items },
+        } = useLocation();
+
         const [state, setState] = useState({
                 name: "",
                 address: "",
@@ -13,7 +18,6 @@ const Shipping = () => {
                 area: "",
         });
         const [res, setRes] = useState(false);
-        const cartProducts = [1, 2];
 
         const inputHandle = (e) => {
                 setState({ ...state, [e.target.name]: e.target.value });
@@ -284,7 +288,7 @@ const Shipping = () => {
                                                                 </div>
 
                                                                 {/* Cart info */}
-                                                                {cartProducts.map((product, idx) => {
+                                                                {products?.map((product, idx) => {
                                                                         return (
                                                                                 <div
                                                                                         key={idx}
@@ -293,73 +297,114 @@ const Shipping = () => {
                                                                                         {/* Shop Name */}
                                                                                         <div className="flex justify-start items-center">
                                                                                                 <h2 className="text-lg text-slate-600 font-bold">
-                                                                                                        Easy Shop
+                                                                                                        {
+                                                                                                                product.shopName
+                                                                                                        }
                                                                                                 </h2>
                                                                                         </div>
 
                                                                                         {/* Product info */}
-                                                                                        {[1, 2].map((data, idx) => {
-                                                                                                return (
-                                                                                                        // Cart details
-                                                                                                        <div
-                                                                                                                className="w-full flex flex-wrap"
-                                                                                                                key={
-                                                                                                                        idx
-                                                                                                                }
-                                                                                                        >
-                                                                                                                {/* Image and name */}
-                                                                                                                <div className="flex w-full gap-2 sm:w-7/12">
-                                                                                                                        <div className="flex gap-2 items-center justify-start">
-                                                                                                                                <img
-                                                                                                                                        className="w-[80px] h-[80px]"
-                                                                                                                                        src={`/images/products/${data}.webp`}
-                                                                                                                                        alt=""
-                                                                                                                                />
-                                                                                                                                <div className="pl-3 text-slate-600">
-                                                                                                                                        <h2 className="text-xl font-semibold">
-                                                                                                                                                Product
-                                                                                                                                                Name
-                                                                                                                                        </h2>
-                                                                                                                                        <span>
-                                                                                                                                                Brand:Apple
-                                                                                                                                        </span>
+                                                                                        {product.products.map(
+                                                                                                (data, idx) => {
+                                                                                                        return (
+                                                                                                                // Cart details
+                                                                                                                <div
+                                                                                                                        className="w-full flex flex-wrap border-b border-slate-200 pb-4"
+                                                                                                                        key={
+                                                                                                                                idx
+                                                                                                                        }
+                                                                                                                >
+                                                                                                                        {/* Image and name */}
+                                                                                                                        <div className="flex w-full gap-2 sm:w-7/12">
+                                                                                                                                <div className="flex gap-2 items-center justify-start">
+                                                                                                                                        <img
+                                                                                                                                                className="w-[80px] h-[80px]"
+                                                                                                                                                src={
+                                                                                                                                                        data
+                                                                                                                                                                ?.productInfo
+                                                                                                                                                                ?.images[0]
+                                                                                                                                                }
+                                                                                                                                                alt=""
+                                                                                                                                        />
+                                                                                                                                        <div className="pl-3 text-slate-600">
+                                                                                                                                                <h2 className="text-xl font-semibold">
+                                                                                                                                                        {
+                                                                                                                                                                data
+                                                                                                                                                                        ?.productInfo
+                                                                                                                                                                        ?.name
+                                                                                                                                                        }
+                                                                                                                                                </h2>
+                                                                                                                                                <span>
+                                                                                                                                                        Brand:
+                                                                                                                                                        {
+                                                                                                                                                                data
+                                                                                                                                                                        ?.productInfo
+                                                                                                                                                                        ?.brand
+                                                                                                                                                        }
+                                                                                                                                                </span>
+                                                                                                                                        </div>
                                                                                                                                 </div>
                                                                                                                         </div>
-                                                                                                                </div>
-                                                                                                                {/* Price */}
-                                                                                                                <div className="flex justify-between w-full sm:w-5/12 mt-3 sm:mt-0">
-                                                                                                                        <div className="pl-0 sm:pl-4">
-                                                                                                                                <h2 className="text-lg text-orange-500">
-                                                                                                                                        $233
-                                                                                                                                </h2>
-                                                                                                                                <p className="line-through">
-                                                                                                                                        $350
-                                                                                                                                </p>
-                                                                                                                                <p className="text-green-500 text-sm font-bold">
-                                                                                                                                        -15%
-                                                                                                                                </p>
-                                                                                                                        </div>
-                                                                                                                        <div className="flex gap-2 flex-col">
-                                                                                                                                <div className="flex bg-slate-200 h-[30px] justify-center items-center text-xl">
-                                                                                                                                        <div className="px-3 cursor-pointer">
+                                                                                                                        {/* Price */}
+                                                                                                                        <div className="flex justify-between w-full sm:w-5/12 mt-3 sm:mt-0">
+                                                                                                                                <div className="pl-0 sm:pl-4">
+                                                                                                                                        {data
+                                                                                                                                                ?.productInfo
+                                                                                                                                                ?.discount >
+                                                                                                                                        0 ? (
+                                                                                                                                                <>
+                                                                                                                                                        <h2 className="text-lg text-orange-500">
+                                                                                                                                                                $
+                                                                                                                                                                {data
+                                                                                                                                                                        ?.productInfo
+                                                                                                                                                                        ?.price -
+                                                                                                                                                                        Math.floor(
+                                                                                                                                                                                (data
+                                                                                                                                                                                        ?.productInfo
+                                                                                                                                                                                        ?.price *
+                                                                                                                                                                                        data
+                                                                                                                                                                                                ?.productInfo
+                                                                                                                                                                                                ?.discount) /
+                                                                                                                                                                                        100
+                                                                                                                                                                        )}
+                                                                                                                                                        </h2>
+                                                                                                                                                        <p className="line-through">
+                                                                                                                                                                $
+                                                                                                                                                                {
+                                                                                                                                                                        data
+                                                                                                                                                                                ?.productInfo
+                                                                                                                                                                                ?.price
+                                                                                                                                                                }
+                                                                                                                                                        </p>
+                                                                                                                                                </>
+                                                                                                                                        ) : (
+                                                                                                                                                <>
+                                                                                                                                                        <h2 className="text-lg text-orange-500">
+                                                                                                                                                                $
+                                                                                                                                                                {
+                                                                                                                                                                        data
+                                                                                                                                                                                ?.productInfo
+                                                                                                                                                                                ?.price
+                                                                                                                                                                }
+                                                                                                                                                        </h2>
+                                                                                                                                                </>
+                                                                                                                                        )}
+                                                                                                                                        <p className="text-green-500 text-sm font-bold">
                                                                                                                                                 -
-                                                                                                                                        </div>
-                                                                                                                                        <div className="px-3 ">
-                                                                                                                                                2
-                                                                                                                                        </div>
-                                                                                                                                        <div className="px-3 cursor-pointer">
-                                                                                                                                                +
-                                                                                                                                        </div>
-                                                                                                                                </div>
+                                                                                                                                                {
+                                                                                                                                                        data
+                                                                                                                                                                ?.productInfo
+                                                                                                                                                                ?.discount
+                                                                                                                                                }
 
-                                                                                                                                <button className="px-5 py-[3px] bg-red-500 rounded-sm text-white">
-                                                                                                                                        Delete
-                                                                                                                                </button>
+                                                                                                                                                %
+                                                                                                                                        </p>
+                                                                                                                                </div>
                                                                                                                         </div>
                                                                                                                 </div>
-                                                                                                        </div>
-                                                                                                );
-                                                                                        })}
+                                                                                                        );
+                                                                                                }
+                                                                                        )}
                                                                                 </div>
                                                                         );
                                                                 })}
@@ -376,9 +421,9 @@ const Shipping = () => {
                                                                         {/* Items */}
                                                                         <div className="flex justify-between items-center">
                                                                                 <span className="font-semibold">
-                                                                                        Items Total (5):
+                                                                                        Items Total ({items}):
                                                                                 </span>
-                                                                                <span className="">$343</span>
+                                                                                <span className="">${price}</span>
                                                                         </div>
 
                                                                         {/* Shopping Fee */}
@@ -386,7 +431,7 @@ const Shipping = () => {
                                                                                 <span className="font-semibold">
                                                                                         Delivery Fee:
                                                                                 </span>
-                                                                                <span> $343</span>
+                                                                                <span> ${shippingFee}</span>
                                                                         </div>
 
                                                                         {/* Shopping Fee */}
@@ -394,7 +439,7 @@ const Shipping = () => {
                                                                                 <span className="font-semibold">
                                                                                         Total Payment:
                                                                                 </span>
-                                                                                <span> $343</span>
+                                                                                <span> ${price + shippingFee}</span>
                                                                         </div>
 
                                                                         {/* Total */}
@@ -404,7 +449,7 @@ const Shipping = () => {
                                                                                 </span>
                                                                                 <span className="font-bold text-xl text-[#059473]">
                                                                                         {" "}
-                                                                                        $343
+                                                                                        ${price + shippingFee}
                                                                                 </span>
                                                                         </div>
 
