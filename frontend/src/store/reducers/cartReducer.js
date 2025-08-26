@@ -72,9 +72,12 @@ const cartReducer = createSlice({
                 });
                 builder.addCase(get_cart_products.fulfilled, (state, action) => {
                         state.loader = false;
-                        state.cartProducts = action.payload.data.cardProducts;
+                        state.cartProducts = action.payload.data.cartProducts;
                         state.price = action.payload.data.price;
-                        state.cartProductsTotal = action.payload.data.cartProductsTotal;
+                        state.cartProductsTotal =
+                                action.payload.data.cartProductsTotal > 100
+                                        ? "99+"
+                                        : action.payload.data.cartProductsTotal;
                         state.shippingFee = action.payload.data.shippingFee;
                         state.outOfStockProducts = action.payload.data.outOfStockProducts;
                         state.buyProductItem = action.payload.data.buyProductItem;

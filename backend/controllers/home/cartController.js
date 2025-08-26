@@ -61,25 +61,24 @@ const get_cart_products = asyncHandler(async (req, res, next) => {
         let calculatePrice = 0;
         let cartProductsTotal = 0;
 
-        // Calculate out of stock products
-        const outOfStockProducts = cartProduct.filter((item) => item.products[0].stock < item.quantity);
-
-        // Calculate out of stock products total
+        // Out of stock products
+        const outOfStockProducts = cartProduct.filter(
+                (item) => item.products?.length > 0 && item.products[0].stock < item.quantity
+        );
         for (let i = 0; i < outOfStockProducts.length; i++) {
                 cartProductsTotal += outOfStockProducts[i].quantity;
         }
 
-        // Calculate stock products
-        const stockProducts = cartProduct.filter((item) => item.products[0].stock >= item.quantity);
-
-        // Calculate stock products
+        // Stock products
+        const stockProducts = cartProduct.filter(
+                (item) => item.products?.length > 0 && item.products[0].stock >= item.quantity
+        );
         for (let i = 0; i < stockProducts.length; i++) {
                 const { quantity } = stockProducts[i];
-                cartProductsTotal = buyProductItem + quantity;
                 buyProductItem += quantity;
+                cartProductsTotal += quantity;
 
                 const { price, discount } = stockProducts[i].products[0];
-
                 if (discount > 0) {
                         calculatePrice += quantity * (price - Math.floor((price * discount) / 100));
                 } else {
@@ -93,7 +92,6 @@ const get_cart_products = asyncHandler(async (req, res, next) => {
         for (let i = 0; i < uniqueSeller.length; i++) {
                 let price = 0;
                 for (let j = 0; j < stockProducts.length; j++) {
-                        let temp = [];
                         const tempProduct = stockProducts[j].products[0];
 
                         if (uniqueSeller[i] === tempProduct.sellerId.toString()) {
@@ -107,33 +105,34 @@ const get_cart_products = asyncHandler(async (req, res, next) => {
                                 }
                                 pri -= Math.floor((pri * co) / 100);
                                 price += pri * stockProducts[j].quantity;
+
+                                products[i] = {
+                                        sellerId: uniqueSeller[i],
+                                        price: price,
+                                        shopName: tempProduct.shopName,
+                                        products: products[i]?.products
+                                                ? [
+                                                          ...products[i].products,
+                                                          {
+                                                                  _id: stockProducts[j]._id,
+                                                                  quantity: stockProducts[j].quantity,
+                                                                  productInfo: tempProduct,
+                                                          },
+                                                  ]
+                                                : [
+                                                          {
+                                                                  _id: stockProducts[j]._id,
+                                                                  quantity: stockProducts[j].quantity,
+                                                                  productInfo: tempProduct,
+                                                          },
+                                                  ],
+                                };
                         }
-                        products[i] = {
-                                sellerId: uniqueSeller[i],
-                                price: price,
-                                shopName: tempProduct.shopName,
-                                products: products[i]
-                                        ? [
-                                                  ...products[i].products,
-                                                  {
-                                                          _id: stockProducts[j]._id,
-                                                          quantity: stockProducts[j].quantity,
-                                                          productInfo: tempProduct,
-                                                  },
-                                          ]
-                                        : [
-                                                  {
-                                                          _id: stockProducts[j]._id,
-                                                          quantity: stockProducts[j].quantity,
-                                                          productInfo: tempProduct,
-                                                  },
-                                          ],
-                        };
                 }
         }
         res.status(200).json(
-                new ApiResponse(200, "Cart products", {
-                        cardProducts: products,
+                new ApiResponse(200, "", {
+                        cartProducts: products,
                         price: calculatePrice,
                         cartProductsTotal,
                         shippingFee: 100 * products.length,

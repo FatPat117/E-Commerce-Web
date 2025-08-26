@@ -8,9 +8,10 @@ import { URL } from "../utils/utils.js";
 const Cart = () => {
         const dispatch = useDispatch();
         const { userInfo } = useSelector((state) => state.auth);
+        const { cartProducts, outOfStockProducts, successMessage, price, shippingFee, buyProductItem } = useSelector(
+                (state) => state.cart
+        );
         const navigate = useNavigate();
-        const cartProducts = [1, 2];
-        const outOfStockProducts = [1, 2];
 
         useEffect(() => {
                 dispatch(get_cart_products(userInfo.id));
@@ -66,13 +67,14 @@ const Cart = () => {
                                                                                                         {/* Shop Name */}
                                                                                                         <div className="flex justify-start items-center">
                                                                                                                 <h2 className="text-lg text-slate-600 font-bold">
-                                                                                                                        Easy
-                                                                                                                        Shop
+                                                                                                                        {
+                                                                                                                                product?.shopName
+                                                                                                                        }
                                                                                                                 </h2>
                                                                                                         </div>
 
                                                                                                         {/* Product info */}
-                                                                                                        {[1, 2].map(
+                                                                                                        {product?.products?.map(
                                                                                                                 (
                                                                                                                         data,
                                                                                                                         idx
@@ -80,7 +82,7 @@ const Cart = () => {
                                                                                                                         return (
                                                                                                                                 // Cart details
                                                                                                                                 <div
-                                                                                                                                        className="w-full flex flex-wrap"
+                                                                                                                                        className="w-full flex flex-wrap border-b border-slate-200 pb-3"
                                                                                                                                         key={
                                                                                                                                                 idx
                                                                                                                                         }
@@ -90,16 +92,28 @@ const Cart = () => {
                                                                                                                                                 <div className="flex gap-2 items-center justify-start">
                                                                                                                                                         <img
                                                                                                                                                                 className="w-[80px] h-[80px]"
-                                                                                                                                                                src={`/images/products/${data}.webp`}
+                                                                                                                                                                src={
+                                                                                                                                                                        data
+                                                                                                                                                                                ?.productInfo
+                                                                                                                                                                                ?.images[0]
+                                                                                                                                                                }
                                                                                                                                                                 alt=""
                                                                                                                                                         />
                                                                                                                                                         <div className="pl-3 text-slate-600">
                                                                                                                                                                 <h2 className="text-xl font-semibold">
-                                                                                                                                                                        Product
-                                                                                                                                                                        Name
+                                                                                                                                                                        {
+                                                                                                                                                                                data
+                                                                                                                                                                                        ?.productInfo
+                                                                                                                                                                                        ?.name
+                                                                                                                                                                        }
                                                                                                                                                                 </h2>
                                                                                                                                                                 <span>
-                                                                                                                                                                        Brand:Apple
+                                                                                                                                                                        Brand:{" "}
+                                                                                                                                                                        {
+                                                                                                                                                                                data
+                                                                                                                                                                                        ?.productInfo
+                                                                                                                                                                                        ?.brand
+                                                                                                                                                                        }
                                                                                                                                                                 </span>
                                                                                                                                                         </div>
                                                                                                                                                 </div>
@@ -107,14 +121,45 @@ const Cart = () => {
                                                                                                                                         {/* Price */}
                                                                                                                                         <div className="flex justify-between w-full sm:w-5/12 mt-3 sm:mt-0">
                                                                                                                                                 <div className="pl-0 sm:pl-4">
-                                                                                                                                                        <h2 className="text-lg text-orange-500">
-                                                                                                                                                                $233
-                                                                                                                                                        </h2>
+                                                                                                                                                        {data
+                                                                                                                                                                ?.productInfo
+                                                                                                                                                                ?.discount >
+                                                                                                                                                                0 && (
+                                                                                                                                                                <h2 className="text-lg text-orange-500">
+                                                                                                                                                                        {data
+                                                                                                                                                                                ?.productInfo
+                                                                                                                                                                                ?.price -
+                                                                                                                                                                                Math.floor(
+                                                                                                                                                                                        (data
+                                                                                                                                                                                                ?.productInfo
+                                                                                                                                                                                                ?.price *
+                                                                                                                                                                                                data
+                                                                                                                                                                                                        ?.productInfo
+                                                                                                                                                                                                        ?.discount) /
+                                                                                                                                                                                                100
+                                                                                                                                                                                )}
+
+                                                                                                                                                                        $
+                                                                                                                                                                </h2>
+                                                                                                                                                        )}
                                                                                                                                                         <p className="line-through">
-                                                                                                                                                                $350
+                                                                                                                                                                {
+                                                                                                                                                                        data
+                                                                                                                                                                                ?.productInfo
+                                                                                                                                                                                ?.price
+                                                                                                                                                                }
+
+                                                                                                                                                                $
                                                                                                                                                         </p>
                                                                                                                                                         <p className="text-green-500 text-sm font-bold">
-                                                                                                                                                                -15%
+                                                                                                                                                                -
+                                                                                                                                                                {
+                                                                                                                                                                        data
+                                                                                                                                                                                ?.productInfo
+                                                                                                                                                                                ?.discount
+                                                                                                                                                                }
+
+                                                                                                                                                                %
                                                                                                                                                         </p>
                                                                                                                                                 </div>
                                                                                                                                                 <div className="flex gap-2 flex-col">
@@ -123,7 +168,9 @@ const Cart = () => {
                                                                                                                                                                         -
                                                                                                                                                                 </div>
                                                                                                                                                                 <div className="px-3 ">
-                                                                                                                                                                        2
+                                                                                                                                                                        {
+                                                                                                                                                                                data?.quantity
+                                                                                                                                                                        }
                                                                                                                                                                 </div>
                                                                                                                                                                 <div className="px-3 cursor-pointer">
                                                                                                                                                                         +
@@ -157,7 +204,7 @@ const Cart = () => {
                                                                                                 </div>
 
                                                                                                 <div className="bg-white p-4 flex flex-col gap-5 ">
-                                                                                                        {[1, 2].map(
+                                                                                                        {outOfStockProducts?.map(
                                                                                                                 (
                                                                                                                         data,
                                                                                                                         idx
@@ -175,16 +222,28 @@ const Cart = () => {
                                                                                                                                                 <div className="flex gap-2 items-center justify-start">
                                                                                                                                                         <img
                                                                                                                                                                 className="w-[80px] h-[80px]"
-                                                                                                                                                                src={`/images/products/${data}.webp`}
+                                                                                                                                                                src={
+                                                                                                                                                                        data
+                                                                                                                                                                                ?.products[0]
+                                                                                                                                                                                ?.images[0]
+                                                                                                                                                                }
                                                                                                                                                                 alt=""
                                                                                                                                                         />
                                                                                                                                                         <div className="pl-3 text-slate-600">
                                                                                                                                                                 <h2 className="text-xl font-semibold">
-                                                                                                                                                                        Product
-                                                                                                                                                                        Name
+                                                                                                                                                                        {
+                                                                                                                                                                                data
+                                                                                                                                                                                        ?.products[0]
+                                                                                                                                                                                        ?.name
+                                                                                                                                                                        }
                                                                                                                                                                 </h2>
                                                                                                                                                                 <span>
-                                                                                                                                                                        Brand:Apple
+                                                                                                                                                                        Brand:{" "}
+                                                                                                                                                                        {
+                                                                                                                                                                                data
+                                                                                                                                                                                        ?.products[0]
+                                                                                                                                                                                        ?.brand
+                                                                                                                                                                        }
                                                                                                                                                                 </span>
                                                                                                                                                         </div>
                                                                                                                                                 </div>
@@ -192,14 +251,43 @@ const Cart = () => {
                                                                                                                                         {/* Price */}
                                                                                                                                         <div className="flex justify-between w-full sm:w-5/12 mt-3 sm:mt-0">
                                                                                                                                                 <div className="pl-0 sm:pl-4">
-                                                                                                                                                        <h2 className="text-lg text-orange-500">
-                                                                                                                                                                $233
-                                                                                                                                                        </h2>
+                                                                                                                                                        {data
+                                                                                                                                                                ?.products[0]
+                                                                                                                                                                ?.discount >
+                                                                                                                                                                0 && (
+                                                                                                                                                                <h2 className="text-lg text-orange-500">
+                                                                                                                                                                        {data
+                                                                                                                                                                                ?.products[0]
+                                                                                                                                                                                ?.price -
+                                                                                                                                                                                Math.floor(
+                                                                                                                                                                                        (data
+                                                                                                                                                                                                ?.products[0]
+                                                                                                                                                                                                ?.price *
+                                                                                                                                                                                                data
+                                                                                                                                                                                                        ?.products[0]
+                                                                                                                                                                                                        ?.discount) /
+                                                                                                                                                                                                100
+                                                                                                                                                                                )}
+
+                                                                                                                                                                        $
+                                                                                                                                                                </h2>
+                                                                                                                                                        )}
                                                                                                                                                         <p className="line-through">
-                                                                                                                                                                $350
+                                                                                                                                                                {
+                                                                                                                                                                        data
+                                                                                                                                                                                ?.products[0]
+                                                                                                                                                                                ?.price
+                                                                                                                                                                }
                                                                                                                                                         </p>
                                                                                                                                                         <p className="text-green-500 text-sm font-bold">
-                                                                                                                                                                -15%
+                                                                                                                                                                -
+                                                                                                                                                                {
+                                                                                                                                                                        data
+                                                                                                                                                                                ?.products[0]
+                                                                                                                                                                                ?.discount
+                                                                                                                                                                }
+
+                                                                                                                                                                %
                                                                                                                                                         </p>
                                                                                                                                                 </div>
                                                                                                                                                 <div className="flex gap-2 flex-col">
@@ -208,7 +296,9 @@ const Cart = () => {
                                                                                                                                                                         -
                                                                                                                                                                 </div>
                                                                                                                                                                 <div className="px-3 ">
-                                                                                                                                                                        2
+                                                                                                                                                                        {
+                                                                                                                                                                                data?.quantity
+                                                                                                                                                                        }
                                                                                                                                                                 </div>
                                                                                                                                                                 <div className="px-3 cursor-pointer">
                                                                                                                                                                         +

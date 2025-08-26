@@ -218,8 +218,8 @@ const Header = () => {
                                                                                                 <AiFillHeart />
                                                                                         </span>
                                                                                         <div
-                                                                                                className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex items-center 
-                                                                                        justify-center -top-[3px] -right-[5px]"
+                                                                                                className="w-[25px] h-[25px] absolute bg-red-500 rounded-full text-white flex items-center 
+                                                                                        justify-center -top-[10px] -right-[5px] text-[14px] font-semibold "
                                                                                         >
                                                                                                 {wishlist_count}
                                                                                         </div>
@@ -227,7 +227,7 @@ const Header = () => {
                                                                                 {/* Cart items */}
                                                                                 <div className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]">
                                                                                         <li
-                                                                                                ocClick={
+                                                                                                onClick={
                                                                                                         redirectCartPage
                                                                                                 }
                                                                                                 className="text-xl flex text-green-500"
@@ -236,8 +236,8 @@ const Header = () => {
                                                                                         </li>
                                                                                         {cartProductsTotal !== 0 && (
                                                                                                 <div
-                                                                                                        className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex items-center 
-                                                                                        justify-center -top-[3px] -right-[5px]"
+                                                                                                        className="w-[25px] h-[25px] absolute bg-red-500 rounded-full text-white flex items-center 
+                                                                                        justify-center -top-[10px] -right-[5px] text-[14px] font-semibold "
                                                                                                 >
                                                                                                         {
                                                                                                                 cartProductsTotal
