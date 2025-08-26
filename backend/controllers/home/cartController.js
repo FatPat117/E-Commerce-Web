@@ -86,6 +86,7 @@ const get_cart_products = asyncHandler(async (req, res, next) => {
                 }
         }
 
+        // Calculate products from each seller
         let products = [];
         let uniqueSeller = [...new Set(stockProducts.map((product) => product.products[0].sellerId.toString()))];
 

@@ -22,7 +22,14 @@ export const place_order = createAsyncThunk(
                                 },
                                 { withCredentials: true }
                         );
-                        console.log(response.data);
+                        // console.log(response.data);
+                        navigate("/payment", {
+                                state: {
+                                        price: price + shippingFee,
+                                        items,
+                                        orderId: response.data.data.orderId,
+                                },
+                        });
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -45,8 +52,15 @@ const orderReducer = createSlice({
                 },
         },
         extraReducers: (builder) => {
+                builder.addCase(place_order.pending, (state, action) => {
+                        state.loading = true;
+                });
                 builder.addCase(place_order.fulfilled, (state, action) => {
-                        state.myOrder = action.payload;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(place_order.rejected, (state, action) => {
+                        state.loading = false;
+                        state.errorMessage = action.payload;
                 });
         },
 });

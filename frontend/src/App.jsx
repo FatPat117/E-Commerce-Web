@@ -6,6 +6,7 @@ import Details from "./pages/Details";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import PageLayout from "./pages/PageLayout";
+import Payment from "./pages/Payment";
 import Register from "./pages/Register";
 import SearchProduct from "./pages/SearchProduct";
 import Shipping from "./pages/Shipping";
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
                         {
                                 path: "/register",
                                 element: <Register />,
+                        },
+                        {
+                                path: "/payment",
+                                element: <Payment />,
                         },
                 ],
         },

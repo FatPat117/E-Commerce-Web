@@ -34,6 +34,7 @@ const place_order = asyncHandler(async (req, res, next) => {
         }
 
         // customerOrderProduct
+
         for (let i = 0; i < products.length; i++) {
                 const pros = products[i]?.products || [];
 
