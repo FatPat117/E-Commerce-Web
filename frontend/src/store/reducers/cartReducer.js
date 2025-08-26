@@ -22,6 +22,22 @@ export const get_cart_products = createAsyncThunk(
                         const response = await api.get(`/cart/get-cart-products/${userId}`, {
                                 withCredentials: true,
                         });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Delete cart product
+export const delete_cart_product = createAsyncThunk(
+        "cart/delete_cart_product",
+        async (id, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.delete(`/cart/delete-cart-product/${id}`, {
+                                withCredentials: true,
+                        });
                         console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {

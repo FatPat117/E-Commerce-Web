@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { get_cart_products } from "../store/reducers/cartReducer.js";
+import { delete_cart_product, get_cart_products } from "../store/reducers/cartReducer.js";
 import { URL } from "../utils/utils.js";
 
 const Cart = () => {
         const dispatch = useDispatch();
         const { userInfo } = useSelector((state) => state.auth);
-        const { cartProducts, outOfStockProducts, successMessage, price, shippingFee, buyProductItem } = useSelector(
+        const { cartProducts, outOfStockProducts, price, shippingFee, buyProductItem } = useSelector(
                 (state) => state.cart
         );
         const navigate = useNavigate();
@@ -16,6 +16,10 @@ const Cart = () => {
         useEffect(() => {
                 dispatch(get_cart_products(userInfo.id));
         }, []);
+
+        const handleDeleteCartProduct = (id) => {
+                dispatch(delete_cart_product(id));
+        };
 
         return (
                 <div>
@@ -177,7 +181,14 @@ const Cart = () => {
                                                                                                                                                                 </div>
                                                                                                                                                         </div>
 
-                                                                                                                                                        <button className="px-5 py-[3px] bg-red-500 rounded-sm text-white">
+                                                                                                                                                        <button
+                                                                                                                                                                onClick={() =>
+                                                                                                                                                                        handleDeleteCartProduct(
+                                                                                                                                                                                data._id
+                                                                                                                                                                        )
+                                                                                                                                                                }
+                                                                                                                                                                className="px-5 py-[3px] bg-red-500 rounded-sm text-white"
+                                                                                                                                                        >
                                                                                                                                                                 Delete
                                                                                                                                                         </button>
                                                                                                                                                 </div>
@@ -332,10 +343,11 @@ const Cart = () => {
                                                                                         {/* Items */}
                                                                                         <div className="flex justify-between items-center">
                                                                                                 <span className="font-semibold">
-                                                                                                        2 Items
+                                                                                                        {buyProductItem}{" "}
+                                                                                                        Items
                                                                                                 </span>
                                                                                                 <span className="">
-                                                                                                        $343
+                                                                                                        {price}
                                                                                                 </span>
                                                                                         </div>
 
@@ -344,7 +356,10 @@ const Cart = () => {
                                                                                                 <span className="font-semibold">
                                                                                                         Shopping Fee:
                                                                                                 </span>
-                                                                                                <span> $343</span>
+                                                                                                <span>
+                                                                                                        {" "}
+                                                                                                        {shippingFee}
+                                                                                                </span>
                                                                                         </div>
 
                                                                                         {/* Voucher Coupon */}
@@ -368,7 +383,9 @@ const Cart = () => {
                                                                                                 </span>
                                                                                                 <span className="font-bold text-xl text-[#059473]">
                                                                                                         {" "}
-                                                                                                        $343
+                                                                                                        $
+                                                                                                        {price +
+                                                                                                                shippingFee}
                                                                                                 </span>
                                                                                         </div>
 
@@ -388,7 +405,8 @@ const Cart = () => {
                                                                                                 }
                                                                                                 className="cursor-pointer px-5 py-[8px] rounded-sm hover:shadow-red-500/50 hover:shadow-md font-semibold bg-red-500 text-md text-white uppercase"
                                                                                         >
-                                                                                                Process to Checkout
+                                                                                                Process to Checkout ({" "}
+                                                                                                {buyProductItem} items)
                                                                                         </button>
                                                                                 </div>
                                                                         )}
