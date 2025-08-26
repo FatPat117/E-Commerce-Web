@@ -38,6 +38,23 @@ export const delete_cart_product = createAsyncThunk(
                         const response = await api.delete(`/cart/delete-cart-product/${id}`, {
                                 withCredentials: true,
                         });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Increase Cart quantity
+export const quantity_increment = createAsyncThunk(
+        "cart/quantity_increment",
+        async (cartId, quantity, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.patch(`/cart/quantity-increment/${cartId}`, {
+                                quantity,
+                                withCredentials: true,
+                        });
                         console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {

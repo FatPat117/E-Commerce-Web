@@ -3,7 +3,12 @@ import { toast } from "react-hot-toast";
 import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { delete_cart_product, get_cart_products, messageClear } from "../store/reducers/cartReducer.js";
+import {
+        delete_cart_product,
+        get_cart_products,
+        messageClear,
+        quantity_increment,
+} from "../store/reducers/cartReducer.js";
 import { URL } from "../utils/utils.js";
 
 const Cart = () => {
@@ -17,8 +22,17 @@ const Cart = () => {
                 dispatch(get_cart_products(userInfo.id));
         }, []);
 
-        const handleDeleteCartProduct = (id) => {
-                dispatch(delete_cart_product(id));
+        const handleDeleteCartProduct = (cartId) => {
+                dispatch(delete_cart_product(cartId));
+        };
+
+        const incrementCartProduct = (cartId, quantity, stock) => {
+                const temp = quantity + 1;
+                if (temp <= stock) {
+                        dispatch(quantity_increment(cartId, temp));
+                } else {
+                        toast.error("Stock is not available");
+                }
         };
 
         useEffect(() => {
@@ -187,7 +201,18 @@ const Cart = () => {
                                                                                                                                                                                 data?.quantity
                                                                                                                                                                         }
                                                                                                                                                                 </div>
-                                                                                                                                                                <div className="px-3 cursor-pointer">
+                                                                                                                                                                <div
+                                                                                                                                                                        onClick={() => {
+                                                                                                                                                                                incrementCartProduct(
+                                                                                                                                                                                        data._id,
+                                                                                                                                                                                        data.quantity,
+                                                                                                                                                                                        data
+                                                                                                                                                                                                .productInfo
+                                                                                                                                                                                                .stock
+                                                                                                                                                                                );
+                                                                                                                                                                        }}
+                                                                                                                                                                        className="px-3 cursor-pointer"
+                                                                                                                                                                >
                                                                                                                                                                         +
                                                                                                                                                                 </div>
                                                                                                                                                         </div>
