@@ -44,7 +44,11 @@ const orderReducer = createSlice({
                         state.successMessage = "";
                 },
         },
-        extraReducers: (builder) => {},
+        extraReducers: (builder) => {
+                builder.addCase(place_order.fulfilled, (state, action) => {
+                        state.myOrder = action.payload;
+                });
+        },
 });
 
 export default orderReducer.reducer;

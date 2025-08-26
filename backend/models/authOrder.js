@@ -31,7 +31,7 @@ const authOrderSchema = new mongoose.Schema(
                 },
                 date: {
                         type: String,
-                        required,
+                        required: true,
                 },
         },
         { timestamps: true }

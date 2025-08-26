@@ -13,7 +13,7 @@ const customerOrderSchema = new mongoose.Schema(
                 },
                 price: {
                         type: Number,
-                        required,
+                        required: true,
                 },
                 paymentStatus: {
                         type: String,
