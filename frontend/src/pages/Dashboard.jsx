@@ -65,7 +65,7 @@ const Dashboard = () => {
                                                                         <span className="text-xl">
                                                                                 <FaKey />
                                                                         </span>
-                                                                        <Link to="/dashboard" className="block ">
+                                                                        <Link to="change-password" className="block ">
                                                                                 Change Password
                                                                         </Link>
                                                                 </li>

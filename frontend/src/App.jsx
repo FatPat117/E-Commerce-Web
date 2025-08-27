@@ -1,5 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import ChangePassword from "./components/dashboard/ChangePassword";
 import Index from "./components/dashboard/Index";
 import Orders from "./components/dashboard/Orders";
 import Cart from "./pages/Cart";
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
                                         {
                                                 path: "my-orders",
                                                 element: <Orders />,
+                                        },
+                                        {
+                                                path: "change-password",
+                                                element: <ChangePassword />,
                                         },
                                 ],
                         },
