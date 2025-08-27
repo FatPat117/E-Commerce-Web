@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaBorderAll, FaHeart, FaKey, FaList, FaSignOutAlt } from "react-icons/fa";
 import { IoIosHome, IoMdChatbubbles } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 const Dashboard = () => {
         const [filterShow, setFilterShow] = useState(false);
         return (
@@ -82,7 +82,9 @@ const Dashboard = () => {
                                                 </div>
 
                                                 <div className="w-full md-lg:w-[calc(100%-270px)]">
-                                                        <div className="mx-0 md-lg:mx-4"></div>
+                                                        <div className="mx-0 md-lg:mx-4">
+                                                                <Outlet />
+                                                        </div>
                                                 </div>
                                         </div>
                                 </div>

@@ -1,5 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import Index from "./components/dashboard/Index";
 import Cart from "./pages/Cart";
 import CategoryShop from "./pages/CategoryShop";
 import Dashboard from "./pages/Dashboard";
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
                                                 <Dashboard />
                                         </ProtectedUser>
                                 ),
+                                children: [{ index: true, element: <Index /> }],
                         },
                 ],
         },
