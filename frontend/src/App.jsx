@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Index from "./components/dashboard/Index";
+import Orders from "./components/dashboard/Orders";
 import Cart from "./pages/Cart";
 import CategoryShop from "./pages/CategoryShop";
 import Dashboard from "./pages/Dashboard";
@@ -14,6 +15,7 @@ import SearchProduct from "./pages/SearchProduct";
 import Shipping from "./pages/Shipping";
 import Shops from "./pages/Shops";
 import ProtectedUser from "./utils/ProtectedUser";
+
 const router = createBrowserRouter([
         {
                 path: "/",
@@ -66,7 +68,13 @@ const router = createBrowserRouter([
                                                 <Dashboard />
                                         </ProtectedUser>
                                 ),
-                                children: [{ index: true, element: <Index /> }],
+                                children: [
+                                        { index: true, element: <Index /> },
+                                        {
+                                                path: "my-orders",
+                                                element: <Orders />,
+                                        },
+                                ],
                         },
                 ],
         },

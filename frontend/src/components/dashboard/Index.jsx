@@ -54,6 +54,7 @@ const Index = () => {
                         <div className="bg-white p-5 mt-5 rounded-md">
                                 <h2 className="text-xl font-bold">Recent Orders</h2>
                                 <div className="pt-4">
+                                        {/* Table */}
                                         <div className="relative overflow-x-auto rounded-md">
                                                 <table className="w-full text-sm text-left text-gray-500 ">
                                                         <thead className="text-xs text-gray-700 uppercase bg-gray-200 ">
