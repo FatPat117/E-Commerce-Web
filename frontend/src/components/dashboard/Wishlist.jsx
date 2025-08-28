@@ -1,19 +1,33 @@
 import React, { useEffect } from "react";
-import { FaEye, FaRegHeart } from "react-icons/fa";
+import { toast } from "react-hot-toast";
+import { FaEye, FaRegTrashAlt } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { get_wishlist_products } from "../../store/reducers/cartReducer";
+import { get_wishlist_products, messageClear, remove_wishlist_product } from "../../store/reducers/cartReducer";
 import Rating from "../Rating";
-
 const Wishlist = () => {
         const dispatch = useDispatch();
         const { userInfo } = useSelector((state) => state.auth);
-        const { wishlistProducts, wishlistProductsTotal } = useSelector((state) => state.cart);
+        const { wishlistProducts, successMessage, errorMessage } = useSelector((state) => state.cart);
         useEffect(() => {
                 dispatch(get_wishlist_products(userInfo?.id));
-        }, []);
+        }, [dispatch, userInfo?.id]);
 
+        const removeWishlistProduct = (wishlistId) => {
+                dispatch(remove_wishlist_product(wishlistId));
+        };
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
         return (
                 <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md-lg:grid-cols-4 gap-6">
                         {wishlistProducts?.map((data, idx) => {
@@ -39,8 +53,11 @@ const Wishlist = () => {
                                                         />
 
                                                         <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
-                                                                <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
-                                                                        <FaRegHeart />
+                                                                <li
+                                                                        onClick={() => removeWishlistProduct(data?._id)}
+                                                                        className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all"
+                                                                >
+                                                                        <FaRegTrashAlt />
                                                                 </li>
                                                                 <Link
                                                                         to={`/product/details/${data?.slug}`}

@@ -104,6 +104,22 @@ export const get_wishlist_products = createAsyncThunk(
                         const response = await api.get(`/cart/get-wishlist-products/${userId}`, {
                                 withCredentials: true,
                         });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Remove wishlist
+export const remove_wishlist_product = createAsyncThunk(
+        "cart/remove_wishlist_product",
+        async (wishlistId, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.delete(`/cart/remove-wishlist-product/${wishlistId}`, {
+                                withCredentials: true,
+                        });
                         console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
@@ -238,6 +254,23 @@ const cartReducer = createSlice({
                         state.wishlistProductsTotal = action.payload.data.wishlistProductsTotal;
                 });
                 builder.addCase(get_wishlist_products.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Delete wishlist product
+                builder.addCase(remove_wishlist_product.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(remove_wishlist_product.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.wishlistProducts = state.wishlistProducts.filter(
+                                (product) => product._id !== action.payload.data.wishlistProduct._id
+                        );
+                        state.wishlistProductsTotal = state.wishlistProductsTotal - 1;
+                });
+                builder.addCase(remove_wishlist_product.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

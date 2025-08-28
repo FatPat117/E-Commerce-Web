@@ -218,6 +218,12 @@ const get_wishlist_products = asyncHandler(async (req, res, next) => {
         );
 });
 
+const remove_wishlist_product = asyncHandler(async (req, res, next) => {
+        const { wishlistId } = req.params;
+        const wishlistProduct = await Wishlist.findByIdAndDelete(wishlistId);
+        res.status(200).json(new ApiResponse(200, "Wishlist product removed", { wishlistProduct }));
+});
+
 export default {
         add_to_cart,
         get_cart_products,
@@ -226,4 +232,5 @@ export default {
         quantity_decrement,
         add_to_wishlist,
         get_wishlist_products,
+        remove_wishlist_product,
 };
