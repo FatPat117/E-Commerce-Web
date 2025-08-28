@@ -1,6 +1,8 @@
 import moment from "moment/moment.js";
+import mongoose from "mongoose";
 import AuthOrder from "../../models/authOrder.js";
 import Cart from "../../models/cartModel.js";
+import Customer from "../../models/customerModel.js";
 import CustomerOrder from "../../models/customerOrder.js";
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
@@ -94,6 +96,53 @@ const place_order = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "Order placed successfully", { orderId: order._id }));
 });
 
+const get_dashboard_data = asyncHandler(async (req, res, next) => {
+        const { userId } = req.params;
+
+        // Find if customer is existed
+        const existedCustomer = await Customer.findOne({ _id: userId });
+
+        if (!existedCustomer) {
+                return next(new ApiError(404, "Customer not found"));
+        }
+
+        // Find all Recent orders
+        const customerRecentOrders = await CustomerOrder.find({
+                customerId: new mongoose.Types.ObjectId(userId),
+        }).limit(5);
+
+        if (customerRecentOrders.length === 0) {
+                return next(new ApiError(404, "No orders found"));
+        }
+
+        // Find all Pending orders
+        const customerPendingOrders = await CustomerOrder.find({
+                customerId: new mongoose.Types.ObjectId(userId),
+                deliveryStatus: "pending",
+        }).countDocuments();
+
+        // Find all Cancelled orders
+        const customerCancelledOrders = await CustomerOrder.find({
+                customerId: new mongoose.Types.ObjectId(userId),
+                deliveryStatus: "cancelled",
+        }).countDocuments();
+
+        // Find all Total orders
+        const customerTotalOrders = await CustomerOrder.find({
+                customerId: new mongoose.Types.ObjectId(userId),
+        }).countDocuments();
+
+        res.status(200).json(
+                new ApiResponse(200, "Dashboard data fetched successfully", {
+                        customerRecentOrders,
+                        customerPendingOrders,
+                        customerCancelledOrders,
+                        customerTotalOrders,
+                })
+        );
+});
+
 export default {
         place_order,
+        get_dashboard_data,
 };
