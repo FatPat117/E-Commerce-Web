@@ -133,7 +133,7 @@ const get_dashboard_data = asyncHandler(async (req, res, next) => {
         }).countDocuments();
 
         res.status(200).json(
-                new ApiResponse(200, "Dashboard data fetched successfully", {
+                new ApiResponse(200, "", {
                         customerRecentOrders,
                         customerPendingOrders,
                         customerCancelledOrders,

@@ -23,37 +23,37 @@ const Index = () => {
                                         </div>
 
                                         <div className="flex flex-col justify-start items-start text-slate-600">
-                                                <h2 className="text-3xl font-bold">100</h2>
+                                                <h2 className="text-3xl font-bold">{totalOrder}</h2>
                                                 <span>Orders</span>
                                         </div>
                                 </div>
 
                                 {/* Pending: Orders */}
                                 <div className="flex justify-center items-center p-5 bg-white rounded-md gap-5">
-                                        <div className="bg-green-100 w-[47px] h-[47px] rounded-full flex justify-center items-center text-xl ">
-                                                <span className="text-xl text-green-800">
+                                        <div className="bg-yellow-100 w-[47px] h-[47px] rounded-full flex justify-center items-center text-xl ">
+                                                <span className="text-xl text-yellow-500">
                                                         {" "}
                                                         <RiShoppingCart2Fill />
                                                 </span>
                                         </div>
 
                                         <div className="flex flex-col justify-start items-start text-slate-600">
-                                                <h2 className="text-3xl font-bold">100</h2>
+                                                <h2 className="text-3xl font-bold">{pendingOrder}</h2>
                                                 <span>Pending Orders</span>
                                         </div>
                                 </div>
 
                                 {/*Cancelled Orders */}
                                 <div className="flex justify-center items-center p-5 bg-white rounded-md gap-5">
-                                        <div className="bg-green-100 w-[47px] h-[47px] rounded-full flex justify-center items-center text-xl ">
-                                                <span className="text-xl text-green-800">
+                                        <div className="bg-red-100 w-[47px] h-[47px] rounded-full flex justify-center items-center text-xl ">
+                                                <span className="text-xl text-red-500">
                                                         {" "}
                                                         <RiShoppingCart2Fill />
                                                 </span>
                                         </div>
 
                                         <div className="flex flex-col justify-start items-start text-slate-600">
-                                                <h2 className="text-3xl font-bold ">100</h2>
+                                                <h2 className="text-3xl font-bold ">{cancelledOrder}</h2>
                                                 <span>Cancelled Orders</span>
                                         </div>
                                 </div>
@@ -85,48 +85,55 @@ const Index = () => {
                                                                 </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <tr className="bg-white border-b border-slate-200">
-                                                                        <td
-                                                                                scope="row"
-                                                                                className="px-6 py-4 font-medium whitespace-nowrap"
-                                                                        >
-                                                                                #300
-                                                                        </td>
-                                                                        <td
-                                                                                scope="row"
-                                                                                className="px-6 py-4 font-medium whitespace-nowrap"
-                                                                        >
-                                                                                $300
-                                                                        </td>
-                                                                        <td
-                                                                                scope="row"
-                                                                                className="px-6 py-4 font-medium whitespace-nowrap"
-                                                                        >
-                                                                                UnPaid
-                                                                        </td>
-                                                                        <td
-                                                                                scope="row"
-                                                                                className="px-6 py-4 font-medium whitespace-nowrap"
-                                                                        >
-                                                                                Pending
-                                                                        </td>
-                                                                        <td
-                                                                                scope="row"
-                                                                                className="px-6 py-4 font-medium whitespace-nowrap"
-                                                                        >
-                                                                                <Link>
-                                                                                        <span className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md">
-                                                                                                View
-                                                                                        </span>
-                                                                                </Link>
+                                                                {recentOrder?.map((data, idx) => {
+                                                                        return (
+                                                                                <tr
+                                                                                        key={idx}
+                                                                                        className="bg-white border-b border-slate-200"
+                                                                                >
+                                                                                        <td
+                                                                                                scope="row"
+                                                                                                className="px-6 py-4 font-medium whitespace-nowrap"
+                                                                                        >
+                                                                                                {data._id}
+                                                                                        </td>
+                                                                                        <td
+                                                                                                scope="row"
+                                                                                                className="px-6 py-4 font-medium whitespace-nowrap"
+                                                                                        >
+                                                                                                {data.price}
+                                                                                        </td>
+                                                                                        <td
+                                                                                                scope="row"
+                                                                                                className="px-6 py-4 font-medium whitespace-nowrap"
+                                                                                        >
+                                                                                                {data.paymentStatus}
+                                                                                        </td>
+                                                                                        <td
+                                                                                                scope="row"
+                                                                                                className="px-6 py-4 font-medium whitespace-nowrap"
+                                                                                        >
+                                                                                                {data.deliveryStatus}
+                                                                                        </td>
+                                                                                        <td
+                                                                                                scope="row"
+                                                                                                className="px-6 py-4 font-medium whitespace-nowrap"
+                                                                                        >
+                                                                                                <Link>
+                                                                                                        <span className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md">
+                                                                                                                View
+                                                                                                        </span>
+                                                                                                </Link>
 
-                                                                                <Link>
-                                                                                        <span className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md">
-                                                                                                Pay Now
-                                                                                        </span>
-                                                                                </Link>
-                                                                        </td>
-                                                                </tr>
+                                                                                                <Link>
+                                                                                                        <span className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md">
+                                                                                                                Pay Now
+                                                                                                        </span>
+                                                                                                </Link>
+                                                                                        </td>
+                                                                                </tr>
+                                                                        );
+                                                                })}
                                                         </tbody>
                                                 </table>
                                         </div>

@@ -34,7 +34,22 @@ const dashboardReducer = createSlice({
                         state.successMessage = "";
                 },
         },
-        extraReducers: (builder) => {},
+        extraReducers: (builder) => {
+                builder.addCase(get_dashboard_index_data.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_dashboard_index_data.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.recentOrder = action.payload.data.customerRecentOrders;
+                        state.totalOrder = action.payload.data.customerTotalOrders;
+                        state.pendingOrder = action.payload.data.customerPendingOrders;
+                        state.cancelledOrder = action.payload.data.customerCancelledOrders;
+                });
+                builder.addCase(get_dashboard_index_data.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+        },
 });
 
 export default dashboardReducer.reducer;
