@@ -11,7 +11,7 @@ const Header = () => {
         const dispatch = useDispatch();
         const { categories } = useSelector((state) => state.home);
         const { userInfo } = useSelector((state) => state.auth);
-        const { cartProductsTotal } = useSelector((state) => state.cart);
+        const { cartProductsTotal, wishlistProductsTotal } = useSelector((state) => state.cart);
         useEffect(() => {
                 dispatch(get_category());
         }, []);
@@ -21,8 +21,6 @@ const Header = () => {
         const [categoryShow, setCategoryShow] = useState(false);
         const [searchValue, setSearchValue] = useState("");
         const [category, setCategory] = useState("All Category");
-
-        const wishlist_count = 3;
 
         const searchProduct = () => {
                 navigate(`/products/search?category=${category}&searchValue=${searchValue}`);
@@ -217,12 +215,16 @@ const Header = () => {
                                                                                         <span className="text-xl text-green-500">
                                                                                                 <AiFillHeart />
                                                                                         </span>
-                                                                                        <div
-                                                                                                className="w-[25px] h-[25px] absolute bg-red-500 rounded-full text-white flex items-center 
+                                                                                        {wishlistProductsTotal != 0 && (
+                                                                                                <div
+                                                                                                        className="w-[25px] h-[25px] absolute bg-red-500 rounded-full text-white flex items-center 
                                                                                         justify-center -top-[10px] -right-[5px] text-[14px] font-semibold "
-                                                                                        >
-                                                                                                {wishlist_count}
-                                                                                        </div>
+                                                                                                >
+                                                                                                        {
+                                                                                                                wishlistProductsTotal
+                                                                                                        }
+                                                                                                </div>
+                                                                                        )}
                                                                                 </div>
                                                                                 {/* Cart items */}
                                                                                 <div className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]">

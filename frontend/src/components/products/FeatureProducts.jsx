@@ -47,7 +47,7 @@ const FeatureProducts = ({ products }) => {
                                 image: product?.images[0],
                                 discount: product?.discount,
                                 rating: product?.rating,
-                                slud: product?.slug,
+                                slug: product?.slug,
                         })
                 );
         };

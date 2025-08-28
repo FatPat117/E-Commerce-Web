@@ -195,6 +195,22 @@ const cartReducer = createSlice({
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
+
+                //Add to wishlist
+                builder.addCase(add_to_wishlist.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(add_to_wishlist.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.wishlistProductsTotal =
+                                state.wishlistProductsTotal > 0 ? state.wishlistProductsTotal + 1 : 1;
+                        state.wishlistProducts.push(action.payload.data);
+                });
+                builder.addCase(add_to_wishlist.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
         },
 });
 
