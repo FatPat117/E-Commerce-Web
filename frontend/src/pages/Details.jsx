@@ -1,26 +1,30 @@
 import React, { useEffect, useState } from "react";
+import "react-multi-carousel/lib/styles.css";
+import { useParams } from "react-router-dom";
+// import Swiper and modules styles
+import { toast } from "react-hot-toast";
 import { FaFacebookF, FaGithub, FaHeart, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import { Link, useParams } from "react-router-dom";
-import { Pagination } from "swiper/modules";
-import { Swiper } from "swiper/react";
-import Rating from "../components/Rating";
-import Reviews from "../components/Reviews";
-import { URL } from "../utils/utils";
-// import Swiper and modules styles
-import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import Rating from "../components/Rating";
+import Reviews from "../components/Reviews";
+import { add_to_cart, messageClear } from "../store/reducers/cartReducer";
 import { product_details } from "../store/reducers/homeReducer";
+import { URL } from "../utils/utils";
 const Details = () => {
         const { slug } = useParams();
         const dispatch = useDispatch();
-        const { product, relatedProducts, moreProducts } = useSelector((state) => state.home);
+        const { loader, product, relatedProducts, moreProducts } = useSelector((state) => state.home);
+        const { successMessage, errorMessage } = useSelector((state) => state.cart);
+        const { userInfo } = useSelector((state) => state.auth);
+        const navigate = useNavigate();
         useEffect(() => {
                 dispatch(product_details(slug));
         }, [slug, dispatch]);
@@ -67,6 +71,32 @@ const Details = () => {
                         setQuantity(quantity - 1);
                 }
         };
+        const addToCart = (productId) => {
+                if (userInfo) {
+                        dispatch(
+                                add_to_cart({
+                                        userId: userInfo.id,
+                                        productId: productId,
+                                        quantity: 1,
+                                })
+                        );
+                } else {
+                        navigate("/login");
+                }
+        };
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage, dispatch]);
+        if (loader || !product) {
+                return <div className="w-full h-screen flex justify-center items-center">Loading...</div>;
+        }
         return (
                 <div>
                         {/* Banner */}
@@ -122,7 +152,11 @@ const Details = () => {
                                                         <div className="p-5 border border-slate-300 flex justify-center items-center">
                                                                 <div className="h-full w-full flex justify-center items-center">
                                                                         <img
-                                                                                src={image ? image : product?.images[0]}
+                                                                                src={
+                                                                                        image ||
+                                                                                        product?.images?.[0] ||
+                                                                                        "/images/products/1.webp"
+                                                                                }
                                                                                 alt="product"
                                                                                 className="h-[450px] w-[50%]"
                                                                         />
@@ -214,8 +248,12 @@ const Details = () => {
                                                         {/* Description */}
                                                         <div className="text-slate-600 max-w-[700px]">
                                                                 <p>
-                                                                        {product?.description.substring(0, 200)}
-                                                                        {"..."}
+                                                                        {product?.description
+                                                                                ? `${product.description.substring(
+                                                                                          0,
+                                                                                          200
+                                                                                  )}...`
+                                                                                : "No description available"}
                                                                 </p>
                                                         </div>
 
@@ -241,7 +279,14 @@ const Details = () => {
                                                                                         </div>
                                                                                 </div>
                                                                                 <div>
-                                                                                        <button className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-green-500/40 bg-[#059473] text-white capitalize font-bold">
+                                                                                        <button
+                                                                                                onClick={() =>
+                                                                                                        addToCart(
+                                                                                                                product?._id
+                                                                                                        )
+                                                                                                }
+                                                                                                className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-green-500/40 bg-[#059473] text-white capitalize font-bold"
+                                                                                        >
                                                                                                 Add to cart
                                                                                         </button>
                                                                                 </div>
@@ -271,11 +316,15 @@ const Details = () => {
                                                                 <div className="flex flex-col gap-5">
                                                                         <span
                                                                                 className={`text-${
-                                                                                        stock ? "green" : "red"
-                                                                                }-500 ${stock ? "" : "line-through"}`}
+                                                                                        product?.stock ? "green" : "red"
+                                                                                }-500 ${
+                                                                                        product?.stock
+                                                                                                ? ""
+                                                                                                : "line-through"
+                                                                                }`}
                                                                         >
-                                                                                {stock
-                                                                                        ? `In Stock (${stock})`
+                                                                                {product?.stock
+                                                                                        ? `In Stock (${product?.stock})`
                                                                                         : "Out of Stock"}
                                                                         </span>
 
