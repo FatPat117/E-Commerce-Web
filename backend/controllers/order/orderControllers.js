@@ -142,7 +142,32 @@ const get_dashboard_data = asyncHandler(async (req, res, next) => {
         );
 });
 
+const get_order = asyncHandler(async (req, res, next) => {
+        const { customerId, status } = req.params;
+        console.log(req.params);
+        // Find if Customer is existed
+        const existedCustomer = await Customer.findOne({ _id: customerId });
+
+        if (!existedCustomer) {
+                return next(new ApiError(404, "Customer not found"));
+        }
+
+        // Find all orders
+        let orders;
+        if (status != "all")
+                orders = await CustomerOrder.find({
+                        customerId: new mongoose.Types.ObjectId(customerId),
+                        deliveryStatus: status,
+                });
+        else {
+                orders = await CustomerOrder.find({
+                        customerId: new mongoose.Types.ObjectId(customerId),
+                });
+        }
+        res.status(200).json(new ApiResponse(200, "", { orders }));
+});
 export default {
         place_order,
         get_dashboard_data,
+        get_order,
 };

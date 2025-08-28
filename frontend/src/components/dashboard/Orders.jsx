@@ -1,7 +1,30 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { get_order } from "../../store/reducers/orderReducer";
 const Orders = () => {
+        const navigate = useNavigate();
         const [state, setState] = useState("all");
+        const dispatch = useDispatch();
+        const { userInfo } = useSelector((state) => state.auth);
+        const { myOrders } = useSelector((state) => state.order);
+        useEffect(() => {
+                dispatch(get_order({ customerId: userInfo.id, status: state }));
+        }, [state, userInfo.id, dispatch]);
+
+        const redirect = (order) => {
+                let items = 0;
+                for (let i = 0; i < order.products.length; i++) {
+                        items += order.products[i].quantity;
+                }
+                navigate("/payment", {
+                        state: {
+                                price: order?.price,
+                                items: items,
+                                orderId: order?._id,
+                        },
+                });
+        };
         return (
                 <div className="bg-white p-4 rounded-md">
                         <div className="flex justify-between items-center">
@@ -46,48 +69,65 @@ const Orders = () => {
                                                         </tr>
                                                 </thead>
                                                 <tbody>
-                                                        <tr className="bg-white border-b border-slate-200">
-                                                                <td
-                                                                        scope="row"
-                                                                        className="px-6 py-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        #300
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="px-6 py-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        $300
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="px-6 py-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        UnPaid
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="px-6 py-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        Pending
-                                                                </td>
-                                                                <td
-                                                                        scope="row"
-                                                                        className="px-6 py-4 font-medium whitespace-nowrap"
-                                                                >
-                                                                        <Link>
-                                                                                <span className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md">
-                                                                                        View
-                                                                                </span>
-                                                                        </Link>
+                                                        {myOrders.map((data, idx) => {
+                                                                return (
+                                                                        <tr
+                                                                                key={idx}
+                                                                                className="bg-white border-b border-slate-200"
+                                                                        >
+                                                                                <td
+                                                                                        scope="row"
+                                                                                        className="px-6 py-4 font-medium whitespace-nowrap"
+                                                                                >
+                                                                                        {data._id}
+                                                                                </td>
+                                                                                <td
+                                                                                        scope="row"
+                                                                                        className="px-6 py-4 font-medium whitespace-nowrap"
+                                                                                >
+                                                                                        {data.price}
+                                                                                </td>
+                                                                                <td
+                                                                                        scope="row"
+                                                                                        className="px-6 py-4 font-medium whitespace-nowrap"
+                                                                                >
+                                                                                        {data.paymentStatus}
+                                                                                </td>
+                                                                                <td
+                                                                                        scope="row"
+                                                                                        className="px-6 py-4 font-medium whitespace-nowrap"
+                                                                                >
+                                                                                        {data.deliveryStatus}
+                                                                                </td>
+                                                                                <td
+                                                                                        scope="row"
+                                                                                        className="px-6 py-4 font-medium whitespace-nowrap"
+                                                                                >
+                                                                                        <Link
+                                                                                                to={`dashboard/order/${data._id}  `}
+                                                                                        >
+                                                                                                <span className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md">
+                                                                                                        View
+                                                                                                </span>
+                                                                                        </Link>
 
-                                                                        <Link>
-                                                                                <span className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md">
-                                                                                        Pay Now
-                                                                                </span>
-                                                                        </Link>
-                                                                </td>
-                                                        </tr>
+                                                                                        {data.paymentStatus !=
+                                                                                                "paid" && (
+                                                                                                <span
+                                                                                                        onClick={() =>
+                                                                                                                redirect(
+                                                                                                                        data
+                                                                                                                )
+                                                                                                        }
+                                                                                                        className="cursor-pointer bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md"
+                                                                                                >
+                                                                                                        Pay Now
+                                                                                                </span>
+                                                                                        )}
+                                                                                </td>
+                                                                        </tr>
+                                                                );
+                                                        })}
                                                 </tbody>
                                         </table>
                                 </div>

@@ -150,7 +150,7 @@ const Index = () => {
                                                                                                                                 data
                                                                                                                         )
                                                                                                                 }
-                                                                                                                className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md"
+                                                                                                                className="cursor-pointer bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md"
                                                                                                         >
                                                                                                                 Pay Now
                                                                                                         </span>

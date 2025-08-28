@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
-// Add to cart
+// place order
 export const place_order = createAsyncThunk(
         "order/place_order",
         async (
@@ -37,6 +37,23 @@ export const place_order = createAsyncThunk(
         }
 );
 
+// get order
+export const get_order = createAsyncThunk(
+        "order/get_order",
+        async ({ customerId, status }, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/order/get-order/${customerId}/${status}`, {
+                                withCredentials: true,
+                        });
+                        // console.log(response.data);
+
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const orderReducer = createSlice({
         name: "order",
         initialState: {
@@ -52,6 +69,7 @@ const orderReducer = createSlice({
                 },
         },
         extraReducers: (builder) => {
+                // Place orders
                 builder.addCase(place_order.pending, (state, action) => {
                         state.loading = true;
                 });
@@ -59,6 +77,18 @@ const orderReducer = createSlice({
                         state.successMessage = action.payload.message;
                 });
                 builder.addCase(place_order.rejected, (state, action) => {
+                        state.loading = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Get orders
+                builder.addCase(get_order.pending, (state, action) => {
+                        state.loading = true;
+                });
+                builder.addCase(get_order.fulfilled, (state, action) => {
+                        state.myOrders = action.payload.data.orders;
+                });
+                builder.addCase(get_order.rejected, (state, action) => {
                         state.loading = false;
                         state.errorMessage = action.payload;
                 });
