@@ -54,6 +54,23 @@ export const get_order = createAsyncThunk(
         }
 );
 
+// get order Details
+export const get_order_details = createAsyncThunk(
+        "order/get_order_details",
+        async (orderId, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/order/get-order-details/${orderId}`, {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const orderReducer = createSlice({
         name: "order",
         initialState: {

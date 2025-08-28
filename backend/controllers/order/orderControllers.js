@@ -166,8 +166,15 @@ const get_order = asyncHandler(async (req, res, next) => {
         }
         res.status(200).json(new ApiResponse(200, "", { orders }));
 });
+
+const get_order_details = asyncHandler(async (req, res, next) => {
+        const { orderId } = req.params;
+        console.log(orderId);
+});
+
 export default {
         place_order,
         get_dashboard_data,
         get_order,
+        get_order_details,
 };

@@ -104,7 +104,7 @@ const Orders = () => {
                                                                                         className="px-6 py-4 font-medium whitespace-nowrap"
                                                                                 >
                                                                                         <Link
-                                                                                                to={`dashboard/order/${data._id}  `}
+                                                                                                to={`/dashboard/order/${data._id}  `}
                                                                                         >
                                                                                                 <span className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md">
                                                                                                         View
