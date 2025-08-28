@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ChangePassword from "./components/dashboard/ChangePassword";
 import Index from "./components/dashboard/Index";
 import Orders from "./components/dashboard/Orders";
+import Wishlist from "./components/dashboard/Wishlist";
 import Cart from "./pages/Cart";
 import CategoryShop from "./pages/CategoryShop";
 import Dashboard from "./pages/Dashboard";
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
                                         {
                                                 path: "change-password",
                                                 element: <ChangePassword />,
+                                        },
+                                        {
+                                                path: "my-wishlist",
+                                                element: <Wishlist />,
                                         },
                                 ],
                         },

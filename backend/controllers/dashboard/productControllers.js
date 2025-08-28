@@ -43,7 +43,7 @@ const add_product = asyncHandler(async (req, res) => {
 
         if (allImagesUrl.length === 0) throw new ApiError(400, "No images uploaded");
 
-        const product = await Product.create({
+        const products = await Product.create({
                 sellerId,
                 name,
                 brand,

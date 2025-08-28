@@ -47,7 +47,7 @@ const Dashboard = () => {
                                                                         <span className="text-xl">
                                                                                 <FaHeart />
                                                                         </span>
-                                                                        <Link to="/dashboard" className="block ">
+                                                                        <Link to="my-wishlist" className="block ">
                                                                                 My Wishlist
                                                                         </Link>
                                                                 </li>
