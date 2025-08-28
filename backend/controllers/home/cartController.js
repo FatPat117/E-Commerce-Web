@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Cart from "../../models/cartModel.js";
 import Customer from "../../models/customerModel.js";
 import Product from "../../models/productModel.js";
+import Wishlist from "../../models/wishlistModel.js";
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
@@ -164,10 +165,21 @@ const quantity_decrement = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "Cart Product decreased", product));
 });
 
+const add_to_wishlist = asyncHandler(async (req, res, next) => {
+        const { userId, productId, name, price, image, discount, rating, slug } = req.body;
+        const existedWishlist = await Wishlist.findOne({ $or: [{ userId, productId }, { slug }] });
+        if (existedWishlist) {
+                return next(new ApiError(400, "Product already in wishlist"));
+        }
+        const wishlist = await Wishlist.create({ userId, productId, name, price, image, discount, rating, slug });
+        res.status(201).json(new ApiResponse(201, "Product added to wishlist", wishlist));
+});
+
 export default {
         add_to_cart,
         get_cart_products,
         delete_cart_product,
         quantity_increment,
         quantity_decrement,
+        add_to_wishlist,
 };

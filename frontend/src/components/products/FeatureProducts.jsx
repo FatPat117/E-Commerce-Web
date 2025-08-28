@@ -4,7 +4,7 @@ import { FaEye, FaRegHeart } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { add_to_cart, messageClear } from "../../store/reducers/cartReducer";
+import { add_to_cart, add_to_wishlist, messageClear } from "../../store/reducers/cartReducer";
 import Rating from "../Rating";
 const FeatureProducts = ({ products }) => {
         const { userInfo } = useSelector((state) => state.auth);
@@ -37,6 +37,21 @@ const FeatureProducts = ({ products }) => {
                 }
         }, [successMessage, errorMessage]);
 
+        const addToWishList = (product) => {
+                dispatch(
+                        add_to_wishlist({
+                                userId: userInfo.id,
+                                productId: product._id,
+                                name: product?.name,
+                                price: product?.price,
+                                image: product?.images[0],
+                                discount: product?.discount,
+                                rating: product?.rating,
+                                slud: product?.slug,
+                        })
+                );
+        };
+
         return (
                 <div className="w-[85%] flex flex-wrap mx-auto">
                         <div className="w-full">
@@ -68,7 +83,10 @@ const FeatureProducts = ({ products }) => {
                                                                 />
 
                                                                 <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
-                                                                        <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
+                                                                        <li
+                                                                                onClick={() => addToWishList(product)}
+                                                                                className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all"
+                                                                        >
                                                                                 <FaRegHeart />
                                                                         </li>
                                                                         <Link

@@ -169,7 +169,14 @@ const get_order = asyncHandler(async (req, res, next) => {
 
 const get_order_details = asyncHandler(async (req, res, next) => {
         const { orderId } = req.params;
-        console.log(orderId);
+
+        const order = await CustomerOrder.findById(orderId);
+
+        if (!order) {
+                return next(new ApiError(404, "Order not found"));
+        }
+
+        res.status(200).json(new ApiResponse(200, "", { order }));
 });
 
 export default {

@@ -62,7 +62,7 @@ export const get_order_details = createAsyncThunk(
                         const response = await api.get(`/order/get-order-details/${orderId}`, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
 
                         return fulfillWithValue(response.data);
                 } catch (error) {
@@ -78,6 +78,7 @@ const orderReducer = createSlice({
                 errorMessage: "",
                 successMessage: "",
                 myOrder: {},
+                loading: false,
         },
         reducers: {
                 messageClear(state) {
@@ -87,7 +88,7 @@ const orderReducer = createSlice({
         },
         extraReducers: (builder) => {
                 // Place orders
-                builder.addCase(place_order.pending, (state, action) => {
+                builder.addCase(place_order.pending, (state) => {
                         state.loading = true;
                 });
                 builder.addCase(place_order.fulfilled, (state, action) => {
@@ -99,13 +100,26 @@ const orderReducer = createSlice({
                 });
 
                 // Get orders
-                builder.addCase(get_order.pending, (state, action) => {
+                builder.addCase(get_order.pending, (state) => {
                         state.loading = true;
                 });
                 builder.addCase(get_order.fulfilled, (state, action) => {
-                        state.myOrders = action.payload.data.orders;
+                        state.myOrder = action.payload.data.orders;
                 });
                 builder.addCase(get_order.rejected, (state, action) => {
+                        state.loading = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Get order details
+
+                builder.addCase(get_order_details.pending, (state) => {
+                        state.loading = true;
+                });
+                builder.addCase(get_order_details.fulfilled, (state, action) => {
+                        state.myOrder = action.payload.data.order;
+                });
+                builder.addCase(get_order_details.rejected, (state, action) => {
                         state.loading = false;
                         state.errorMessage = action.payload;
                 });
