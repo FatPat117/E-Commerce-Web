@@ -66,6 +66,22 @@ export const query_products = createAsyncThunk(
         }
 );
 
+// Product Details
+export const product_details = createAsyncThunk(
+        "home/product_details",
+        async (slug, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/home/product-details/${slug}`, {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const homeReducer = createSlice({
         name: "home",
         initialState: {

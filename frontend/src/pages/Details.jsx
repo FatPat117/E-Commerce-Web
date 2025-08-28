@@ -1,20 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaFacebookF, FaGithub, FaHeart, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Pagination } from "swiper/modules";
 import { Swiper } from "swiper/react";
 import Rating from "../components/Rating";
 import Reviews from "../components/Reviews";
 import { URL } from "../utils/utils";
 // import Swiper and modules styles
+import { useDispatch } from "react-redux";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { SwiperSlide } from "swiper/react";
+import { product_details } from "../store/reducers/homeReducer";
 const Details = () => {
+        const { slug } = useParams();
+        const dispatch = useDispatch();
+        useEffect(() => {
+                dispatch(product_details(slug));
+        }, [slug, dispatch]);
+
         const images = [1, 2, 3, 4, 5, 6];
         const [image, setImage] = useState("");
         const discount = 5;
@@ -132,7 +140,6 @@ const Details = () => {
                                                                                                                 <img
                                                                                                                         src={`/images/products/${data}.webp`}
                                                                                                                         alt="Product image"
-                                                                                                                        s
                                                                                                                         className="h-[120px] cursor-pointer"
                                                                                                                 />
                                                                                                         </div>

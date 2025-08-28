@@ -104,9 +104,14 @@ const query_products = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "", { products, totalProducts, perPage: parseInt(query.perPage) }));
 });
 
+const product_details = asyncHandler(async (req, res, next) => {
+        const { slug } = req.params;
+});
+
 export default {
         get_categories,
         get_products,
         price_range_latest_product,
         query_products,
+        product_details,
 };
