@@ -9,14 +9,14 @@ import Rating from "../Rating";
 const Wishlist = () => {
         const dispatch = useDispatch();
         const { userInfo } = useSelector((state) => state.auth);
-        const { wishlistProducts } = useSelector((state) => state.cart);
+        const { wishlistProducts, wishlistProductsTotal } = useSelector((state) => state.cart);
         useEffect(() => {
                 dispatch(get_wishlist_products(userInfo?.id));
         }, []);
 
         return (
                 <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md-lg:grid-cols-4 gap-6">
-                        {[1, 2, 3, 4].map((data, idx) => {
+                        {wishlistProducts?.map((data, idx) => {
                                 return (
                                         <div
                                                 key={idx}
@@ -26,12 +26,14 @@ const Wishlist = () => {
                                                 <div className="relative overflow-hidden">
                                                         {/* Discount part */}
 
-                                                        <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2">
-                                                                30%
-                                                        </div>
+                                                        {data?.discount != 0 && (
+                                                                <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2">
+                                                                        {data?.discount}%
+                                                                </div>
+                                                        )}
 
                                                         <img
-                                                                src="/images/products/1.webp"
+                                                                src={data?.image}
                                                                 alt="products"
                                                                 className="w-full h-[300px] md-lg:w-full "
                                                         />
@@ -41,7 +43,7 @@ const Wishlist = () => {
                                                                         <FaRegHeart />
                                                                 </li>
                                                                 <Link
-                                                                        to="/product/details/newslug"
+                                                                        to={`/product/details/${data?.slug}`}
                                                                         className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all"
                                                                 >
                                                                         <FaEye />
@@ -57,11 +59,13 @@ const Wishlist = () => {
 
                                                 {/* Product Details*/}
                                                 <div className="py-3 text-slate-600 px-2">
-                                                        <h2 className="font-bold text-lg">Product Name</h2>
+                                                        <h2 className="font-bold text-lg">{data?.name}</h2>
                                                         <div className="flex justify-start items-center gap-3">
-                                                                <span className="text-md font-semibold">10000</span>
+                                                                <span className="text-md font-semibold">
+                                                                        {data?.price}
+                                                                </span>
                                                                 <div className="flex">
-                                                                        <Rating ratings={4.5}></Rating>
+                                                                        <Rating ratings={data?.rating}></Rating>
                                                                 </div>
                                                         </div>
                                                 </div>
