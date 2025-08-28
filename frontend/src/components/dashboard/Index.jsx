@@ -1,15 +1,30 @@
 import React, { useEffect } from "react";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { get_dashboard_index_data } from "../../store/reducers/dashboardReducer";
 const Index = () => {
+        const navigate = useNavigate();
         const dispatch = useDispatch();
         const { recentOrder, totalOrder, pendingOrder, cancelledOrder } = useSelector((state) => state.dashboard);
         const { userInfo } = useSelector((state) => state.auth);
         useEffect(() => {
                 dispatch(get_dashboard_index_data(userInfo.id));
         }, [dispatch]);
+
+        const redirect = (order) => {
+                let items = 0;
+                for (let i = 0; i < order.products.length; i++) {
+                        items += order.products[i].quantity;
+                }
+                navigate("/payment", {
+                        state: {
+                                price: order?.price,
+                                items: items,
+                                orderId: order?._id,
+                        },
+                });
+        };
         return (
                 <div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -119,17 +134,27 @@ const Index = () => {
                                                                                                 scope="row"
                                                                                                 className="px-6 py-4 font-medium whitespace-nowrap"
                                                                                         >
-                                                                                                <Link>
+                                                                                                <Link
+                                                                                                        to={`/dashboard/order/detais/${data._id}`}
+                                                                                                >
                                                                                                         <span className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md">
                                                                                                                 View
                                                                                                         </span>
                                                                                                 </Link>
 
-                                                                                                <Link>
-                                                                                                        <span className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md">
+                                                                                                {data.paymentStatus !=
+                                                                                                        "paid" && (
+                                                                                                        <span
+                                                                                                                onClick={() =>
+                                                                                                                        redirect(
+                                                                                                                                data
+                                                                                                                        )
+                                                                                                                }
+                                                                                                                className="bg-green-200 font-semibold text-md mr-2 px-3 py-[2px] rounded-md"
+                                                                                                        >
                                                                                                                 Pay Now
                                                                                                         </span>
-                                                                                                </Link>
+                                                                                                )}
                                                                                         </td>
                                                                                 </tr>
                                                                         );
