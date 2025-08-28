@@ -74,7 +74,7 @@ export const product_details = createAsyncThunk(
                         const response = await api.get(`/home/product-details/${slug}`, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -99,6 +99,9 @@ const homeReducer = createSlice({
                         low: 0,
                         high: 1000,
                 },
+                product: {},
+                relatedProducts: [],
+                moreProducts: [],
         },
         reducers: {},
         extraReducers: (builder) => {
@@ -158,6 +161,21 @@ const homeReducer = createSlice({
                         state.perPage = action.payload.data.perPage;
                 });
                 builder.addCase(query_products.rejected, (state, action) => {
+                        state.loader = false;
+                        state.error = action.payload;
+                });
+
+                // Product query
+                builder.addCase(product_details.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(product_details.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.product = action.payload.data.product;
+                        state.relatedProducts = action.payload.data.relatedProduct;
+                        state.moreProducts = action.payload.data.moreProducts;
+                });
+                builder.addCase(product_details.rejected, (state, action) => {
                         state.loader = false;
                         state.error = action.payload;
                 });

@@ -10,7 +10,8 @@ import Rating from "../components/Rating";
 import Reviews from "../components/Reviews";
 import { URL } from "../utils/utils";
 // import Swiper and modules styles
-import { useDispatch } from "react-redux";
+import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -19,12 +20,14 @@ import { product_details } from "../store/reducers/homeReducer";
 const Details = () => {
         const { slug } = useParams();
         const dispatch = useDispatch();
+        const { product, relatedProducts, moreProducts } = useSelector((state) => state.home);
         useEffect(() => {
                 dispatch(product_details(slug));
         }, [slug, dispatch]);
 
-        const images = [1, 2, 3, 4, 5, 6];
         const [image, setImage] = useState("");
+        const [quantity, setQuantity] = useState(1);
+
         const discount = 5;
         const stock = 100;
         const [state, setState] = useState("reviews");
@@ -49,6 +52,20 @@ const Details = () => {
                         breakpoint: { max: 464, min: 0 },
                         items: 2,
                 },
+        };
+        const increment = () => {
+                if (quantity >= product?.stock) {
+                        toast.error("Out of stock");
+                } else {
+                        setQuantity(quantity + 1);
+                }
+        };
+        const decrement = () => {
+                if (quantity <= 1) {
+                        toast.error("Minimum quantity is 1");
+                } else {
+                        setQuantity(quantity - 1);
+                }
         };
         return (
                 <div>
@@ -84,12 +101,12 @@ const Details = () => {
                                                         <span className="pt-[3px]">
                                                                 <IoIosArrowForward />
                                                         </span>
-                                                        <Link to="/">Category</Link>
+                                                        <Link to="/">{product?.category}</Link>
                                                         <span className="pt-[3px]">
                                                                 {" "}
                                                                 <IoIosArrowForward />
                                                         </span>
-                                                        <span className="underline text-blue-500">Product Name</span>
+                                                        <span className="underline text-blue-500">{product?.name}</span>
                                                 </div>
                                         </div>
                                 </div>
@@ -105,11 +122,7 @@ const Details = () => {
                                                         <div className="p-5 border border-slate-300 flex justify-center items-center">
                                                                 <div className="h-full w-full flex justify-center items-center">
                                                                         <img
-                                                                                src={
-                                                                                        image
-                                                                                                ? `/images/products/${image}.webp`
-                                                                                                : `/images/products/${images[2]}.webp`
-                                                                                }
+                                                                                src={image ? image : product?.images[0]}
                                                                                 alt="product"
                                                                                 className="h-[450px] w-[50%]"
                                                                         />
@@ -117,7 +130,7 @@ const Details = () => {
                                                         </div>
                                                         <div className="w-full h-full border border-slate-300">
                                                                 <div className="py-3">
-                                                                        {images && (
+                                                                        {product?.images && (
                                                                                 <Carousel
                                                                                         autoPlay={true}
                                                                                         infinite={true}
@@ -125,26 +138,30 @@ const Details = () => {
                                                                                         responsive={responsive}
                                                                                         transitionDuration={500}
                                                                                 >
-                                                                                        {images.map((data, idx) => {
-                                                                                                return (
-                                                                                                        <div
-                                                                                                                key={
-                                                                                                                        idx
-                                                                                                                }
-                                                                                                                onClick={() =>
-                                                                                                                        setImage(
-                                                                                                                                data
-                                                                                                                        )
-                                                                                                                }
-                                                                                                        >
-                                                                                                                <img
-                                                                                                                        src={`/images/products/${data}.webp`}
-                                                                                                                        alt="Product image"
-                                                                                                                        className="h-[120px] cursor-pointer"
-                                                                                                                />
-                                                                                                        </div>
-                                                                                                );
-                                                                                        })}
+                                                                                        {product?.images.map(
+                                                                                                (data, idx) => {
+                                                                                                        return (
+                                                                                                                <div
+                                                                                                                        key={
+                                                                                                                                idx
+                                                                                                                        }
+                                                                                                                        onClick={() =>
+                                                                                                                                setImage(
+                                                                                                                                        data
+                                                                                                                                )
+                                                                                                                        }
+                                                                                                                >
+                                                                                                                        <img
+                                                                                                                                src={
+                                                                                                                                        data
+                                                                                                                                }
+                                                                                                                                alt="Product image"
+                                                                                                                                className="h-[120px] cursor-pointer"
+                                                                                                                        />
+                                                                                                                </div>
+                                                                                                        );
+                                                                                                }
+                                                                                        )}
                                                                                 </Carousel>
                                                                         )}
                                                                 </div>
@@ -155,7 +172,7 @@ const Details = () => {
                                                 <div className="flex flex-col gap-5">
                                                         {/* Product Name */}
                                                         <div className="text-3xl text-slate-600 font-bold">
-                                                                <h3>Product Name</h3>
+                                                                <h3>{product?.name}</h3>
                                                         </div>
 
                                                         {/* Rating */}
@@ -168,23 +185,28 @@ const Details = () => {
 
                                                         {/* Price */}
                                                         <div className="flex justify-start items-center text-2xl text-red-500 font-bold gap-3">
-                                                                {discount !== 0 ? (
+                                                                <h2>Price: </h2>
+                                                                {product?.discount !== 0 ? (
                                                                         <>
-                                                                                <h2 className="line-through">$500</h2>
+                                                                                <h2 className="line-through text-slate-600">
+                                                                                        ${product?.price}
+                                                                                </h2>
                                                                                 <h2 className="">
                                                                                         $
-                                                                                        {500 -
+                                                                                        {product?.price -
                                                                                                 Math.floor(
-                                                                                                        (500 *
-                                                                                                                discount) /
+                                                                                                        (product?.price *
+                                                                                                                product?.discount) /
                                                                                                                 100
                                                                                                 )}
                                                                                 </h2>
-                                                                                <h2>(-{discount}%)</h2>
+                                                                                <h2 className="text-sm text-green-500 font-bold md-lg:mt-2">
+                                                                                        (-{product?.discount}%)
+                                                                                </h2>
                                                                         </>
                                                                 ) : (
                                                                         <>
-                                                                                <h2>Price: $600</h2>
+                                                                                <h2>${product?.price}</h2>
                                                                         </>
                                                                 )}
                                                         </div>
@@ -192,30 +214,29 @@ const Details = () => {
                                                         {/* Description */}
                                                         <div className="text-slate-600 max-w-[700px]">
                                                                 <p>
-                                                                        Lorem ipsum dolor sit amet consectetur
-                                                                        adipisicing elit. Quis ipsam natus amet, aut
-                                                                        voluptas beatae veniam dolorum ex. Odit
-                                                                        molestias suscipit impedit ducimus doloribus
-                                                                        sint explicabo accusamus laborum. Laboriosam
-                                                                        quisquam molestias laudantium ipsa quasi saepe
-                                                                        commodi beatae similique delectus, iste ratione
-                                                                        illum molestiae repudiandae cupiditate
-                                                                        reprehenderit fugit, nisi blanditiis tempore.
+                                                                        {product?.description.substring(0, 200)}
+                                                                        {"..."}
                                                                 </p>
                                                         </div>
 
                                                         {/* Action */}
                                                         <div className="flex gap-3 pb-10  border-slate-300 border-b">
-                                                                {stock ? (
+                                                                {product?.stock ? (
                                                                         <>
                                                                                 <div className="flex bg-slate-200 h-[50px] justify-center items-center text-xl">
-                                                                                        <div className="flex justify-center items-center px-6 cursor-pointer">
+                                                                                        <div
+                                                                                                onClick={decrement}
+                                                                                                className="flex justify-center items-center px-6 cursor-pointer"
+                                                                                        >
                                                                                                 -
                                                                                         </div>
                                                                                         <div className="flex justify-center items-center px-6 ">
-                                                                                                2
+                                                                                                {quantity}
                                                                                         </div>
-                                                                                        <div className="flex justify-center items-center px-6 cursor-pointer">
+                                                                                        <div
+                                                                                                onClick={increment}
+                                                                                                className="flex justify-center items-center px-6 cursor-pointer"
+                                                                                        >
                                                                                                 +
                                                                                         </div>
                                                                                 </div>
