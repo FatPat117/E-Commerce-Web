@@ -106,6 +106,21 @@ const query_products = asyncHandler(async (req, res, next) => {
 
 const product_details = asyncHandler(async (req, res, next) => {
         const { slug } = req.params;
+
+        // find product by slug
+        const product = await Product.findOne({ slug });
+
+        // find related product by category
+        const relatedProduct = await Product.find({ category: product.category, _id: { $ne: product._id } }).limit(12);
+
+        // Find product from the same seller
+        const moreProducts = await Product.find({ sellerId: product.sellerId, _id: { $ne: product._id } }).limit(3);
+
+        if (!product) {
+                next(new ApiError(404, "Product not found"));
+        }
+
+        res.status(200).json(new ApiResponse(200, "", { product, relatedProduct, moreProducts }));
 });
 
 export default {
