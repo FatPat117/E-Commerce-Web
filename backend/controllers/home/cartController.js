@@ -175,6 +175,49 @@ const add_to_wishlist = asyncHandler(async (req, res, next) => {
         res.status(201).json(new ApiResponse(201, "Product added to wishlist", wishlist));
 });
 
+const get_wishlist_products = asyncHandler(async (req, res, next) => {
+        const { userId } = req.params;
+
+        const wishlistProducts = await Wishlist.aggregate([
+                { $match: { userId: new mongoose.Types.ObjectId(userId) } },
+                {
+                        $lookup: {
+                                from: "products",
+                                localField: "productId",
+                                foreignField: "_id",
+                                as: "product",
+                                pipeline: [
+                                        {
+                                                $project: {
+                                                        _id: 1,
+                                                        name: 1,
+                                                        price: 1,
+                                                        image: 1,
+                                                        slug: 1,
+                                                        discount: 1,
+                                                        rating: 1,
+                                                },
+                                        },
+                                ],
+                        },
+                },
+                {
+                        $unwind: {
+                                path: "$product",
+                                preserveNullAndEmptyArrays: true, // nếu có wishlist mà sản phẩm đã bị xóa thì vẫn giữ lại
+                        },
+                },
+        ]);
+
+        if (wishlistProducts.length == 0) return next(new ApiError(404, "Wishlist is empty"));
+        res.status(200).json(
+                new ApiResponse(200, "", {
+                        wishlistProductsTotal: wishlistProducts.length,
+                        wishlistProducts,
+                })
+        );
+});
+
 export default {
         add_to_cart,
         get_cart_products,
@@ -182,4 +225,5 @@ export default {
         quantity_increment,
         quantity_decrement,
         add_to_wishlist,
+        get_wishlist_products,
 };

@@ -88,6 +88,22 @@ export const add_to_wishlist = createAsyncThunk(
                         const response = await api.post(`/cart/add-to-wishlist`, info, {
                                 withCredentials: true,
                         });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Get wishlist
+export const get_wishlist_products = createAsyncThunk(
+        "cart/get_wishlist",
+        async (userId, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/cart/get-wishlist-products/${userId}`, {
+                                withCredentials: true,
+                        });
                         console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
@@ -208,6 +224,20 @@ const cartReducer = createSlice({
                         state.wishlistProducts.push(action.payload.data);
                 });
                 builder.addCase(add_to_wishlist.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Get wishlist product
+                builder.addCase(get_wishlist_products.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_wishlist_products.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.wishlistProducts = action.payload.data.wishlistProducts;
+                        state.wishlistProductsTotal = action.payload.data.wishlistProductsTotal;
+                });
+                builder.addCase(get_wishlist_products.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
