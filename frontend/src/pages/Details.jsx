@@ -21,7 +21,7 @@ import { URL } from "../utils/utils";
 const Details = () => {
         const { slug } = useParams();
         const dispatch = useDispatch();
-        const { loader, product, relatedProducts, moreProducts } = useSelector((state) => state.home);
+        const { product, relatedProducts, moreProducts } = useSelector((state) => state.home);
         const { successMessage, errorMessage } = useSelector((state) => state.cart);
         const { userInfo } = useSelector((state) => state.auth);
         const navigate = useNavigate();

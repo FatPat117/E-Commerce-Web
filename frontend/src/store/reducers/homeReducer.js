@@ -205,13 +205,15 @@ const homeReducer = createSlice({
                         state.error = action.payload;
                 });
 
-                // Product query
+                // Product details
                 builder.addCase(product_details.pending, (state) => {
                         state.loader = true;
                 });
                 builder.addCase(product_details.fulfilled, (state, action) => {
                         state.loader = false;
                         state.product = action.payload.data.product;
+                        state.relatedProducts = action.payload.data.relatedProduct;
+                        state.moreProducts = action.payload.data.moreProducts;
                         state.successMessage = action.payload.message;
                 });
                 builder.addCase(product_details.rejected, (state, action) => {
@@ -228,6 +230,21 @@ const homeReducer = createSlice({
                         state.successMessage = action.payload.message;
                 });
                 builder.addCase(customer_review.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // get review
+                builder.addCase(get_review.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_review.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.totalReview = action.payload.data.totalReview;
+                        state.ratingReview = action.payload.data.ratingReview;
+                        state.reviews = action.payload.data.reviews;
+                });
+                builder.addCase(get_review.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

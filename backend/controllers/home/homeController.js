@@ -160,7 +160,7 @@ const customer_review = asyncHandler(async (req, res, next) => {
         for (let i = 0; i < reviews.length; i++) {
                 rate += reviews[i].rating;
         }
-        rate = rate / reviews.length;
+        rate = Math.round((rate / reviews.length).toFixed(2));
         const product = await Product.findByIdAndUpdate(productId, { rating: rate }, { new: true });
 
         res.status(200).json(new ApiResponse(200, "Review add successfully ", { product }));
@@ -228,7 +228,7 @@ const get_review = asyncHandler(async (req, res, next) => {
                 }
         }
 
-        const totalReview = await Review.findById(productId).countDocuments();
+        const totalReview = await Review.find({ productId: new mongoose.Types.ObjectId(productId) }).countDocuments();
         const reviews = await Review.find({ productId: new mongoose.Types.ObjectId(productId) })
                 .skip(skipPage)
                 .limit(limit);
