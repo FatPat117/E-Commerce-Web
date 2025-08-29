@@ -2,16 +2,31 @@ import React, { useState } from "react";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import RatingReact from "react-rating";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
+import { customer_review } from "../store/reducers/homeReducer";
 import Pagination from "./Pagination";
 import RatingTemp from "./RatingTemp";
-const Reviews = () => {
+const Reviews = ({ product }) => {
+        const { userInfo } = useSelector((state) => state.auth);
+        const dispatch = useDispatch();
         const [currentPage, setCurrentPage] = useState(1);
         const [perPage, setPerPage] = useState(2);
-        const userInfo = {};
+
         const [rate, setRate] = useState(0);
         const [review, setReview] = useState("");
+
+        const reviewSubmit = (e) => {
+                e.preventDefault();
+                const obj = {
+                        name: userInfo?.name,
+                        review,
+                        rating: rate,
+                        productId: product?._id,
+                };
+                dispatch(customer_review(obj));
+        };
         return (
                 <div className="mt-8">
                         {/* Star ratings */}
@@ -159,7 +174,7 @@ const Reviews = () => {
                                                                 }
                                                         />
                                                 </div>
-                                                <form action="">
+                                                <form action="" onSubmit={reviewSubmit}>
                                                         <textarea
                                                                 name=""
                                                                 id=""

@@ -484,7 +484,7 @@ const Details = () => {
 
                                                                 <div>
                                                                         {state === "reviews" ? (
-                                                                                <Reviews />
+                                                                                <Reviews product={product} />
                                                                         ) : (
                                                                                 <p className="py-5 text-slate-500">
                                                                                         Lorem ipsum dolor sit amet

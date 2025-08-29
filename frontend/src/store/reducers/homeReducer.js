@@ -67,6 +67,22 @@ export const query_products = createAsyncThunk(
 );
 
 // Product Details
+export const customer_review = createAsyncThunk(
+        "home/customer_review",
+        async (data, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.post(`/home/customer-review`, data, {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Customer product reviews
 export const product_details = createAsyncThunk(
         "home/product_details",
         async (slug, { fulfillWithValue, rejectWithValue }) => {
