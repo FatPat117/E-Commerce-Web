@@ -1,5 +1,8 @@
+import moment from "moment";
+import mongoose from "mongoose";
 import Category from "../../models/categoryModel.js";
 import Product from "../../models/productModel.js";
+import Review from "../../models/reviewModel.js";
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
@@ -123,10 +126,51 @@ const product_details = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "", { product, relatedProduct, moreProducts }));
 });
 
+const customer_review = asyncHandler(async (req, res, next) => {
+        const { name, review, rating, productId } = req.body;
+
+        // Find existed product
+        const existedProduct = await Product.findById(productId);
+        if (!existedProduct) {
+                next(new ApiError(404, "Product not found"));
+        }
+
+        // create review
+        const customerReview = await Review.create({
+                customerName: name,
+                review,
+                rating,
+                productId,
+                date: moment(Date.now()).format("LL"),
+        });
+
+        const reviews = await Review.aggregate([
+                { $match: { productId: new mongoose.Types.ObjectId(productId) } },
+                {
+                        $lookup: {
+                                from: "products",
+                                localField: "productId",
+                                foreignField: "_id",
+                                as: "product",
+                        },
+                },
+        ]);
+
+        let rate = 0;
+        for (let i = 0; i < reviews.length; i++) {
+                rate += reviews[i].rating;
+        }
+        rate = rate / reviews.length;
+        const product = await Product.findByIdAndUpdate(productId, { rating: rate }, { new: true });
+
+        res.status(200).json(new ApiResponse(200, "Review add successfully ", { product }));
+});
+
 export default {
         get_categories,
         get_products,
         price_range_latest_product,
         query_products,
         product_details,
+        customer_review,
 };
