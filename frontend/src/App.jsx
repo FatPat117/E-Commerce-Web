@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import ChangePassword from "./components/dashboard/ChangePassword";
+import Chat from "./components/dashboard/Chat";
 import Index from "./components/dashboard/Index";
 import OrderDetails from "./components/dashboard/OrderDetails";
 import Orders from "./components/dashboard/Orders";
@@ -88,6 +89,14 @@ const router = createBrowserRouter([
                                         {
                                                 path: "order/:orderId",
                                                 element: <OrderDetails />,
+                                        },
+                                        {
+                                                path: "chat",
+                                                element: <Chat />,
+                                        },
+                                        {
+                                                path: "chat/:sellerId",
+                                                element: <Chat />,
                                         },
                                 ],
                         },

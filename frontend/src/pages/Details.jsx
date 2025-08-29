@@ -297,6 +297,9 @@ const Details = () => {
                                                                                   )}...`
                                                                                 : "No description available"}
                                                                 </p>
+                                                                <p className="text-slate-600 py-1 font-bold">
+                                                                        Shop Name: {product?.shopName}
+                                                                </p>
                                                         </div>
 
                                                         {/* Action */}
@@ -435,7 +438,7 @@ const Details = () => {
                                                                         </button>
                                                                 ) : null}
                                                                 <Link
-                                                                        to="#"
+                                                                        to={`/dashboard/chat/${product?.sellerId}`}
                                                                         className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-red-500/40 bg-red-500 text-white capitalize font-bold"
                                                                 >
                                                                         Chat Seller
@@ -518,7 +521,7 @@ const Details = () => {
                                                         <div className="pl-0 md-lg:pl-4 ">
                                                                 <div className="px-3 py-2 text-slate-600 bg-slate-200">
                                                                         <h2 className="font-bold text-center">
-                                                                                From Easy Shop
+                                                                                From {product?.shopName}
                                                                         </h2>
                                                                 </div>
                                                                 <div className="flex flex-col gap-5 mt-3 p-3">
