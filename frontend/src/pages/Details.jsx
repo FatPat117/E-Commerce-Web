@@ -15,7 +15,7 @@ import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Rating from "../components/Rating";
 import Reviews from "../components/Reviews";
-import { add_to_cart, messageClear } from "../store/reducers/cartReducer";
+import { add_to_cart, add_to_wishlist, messageClear } from "../store/reducers/cartReducer";
 import { product_details } from "../store/reducers/homeReducer";
 import { URL } from "../utils/utils";
 const Details = () => {
@@ -97,6 +97,25 @@ const Details = () => {
         if (loader || !product) {
                 return <div className="w-full h-screen flex justify-center items-center">Loading...</div>;
         }
+
+        const addToWishList = (product) => {
+                if (userInfo) {
+                        dispatch(
+                                add_to_wishlist({
+                                        userId: userInfo.id,
+                                        productId: product._id,
+                                        name: product?.name,
+                                        price: product?.price,
+                                        image: product?.images[0],
+                                        discount: product?.discount,
+                                        rating: product?.rating,
+                                        slug: product?.slug,
+                                })
+                        );
+                } else {
+                        navigate("/login");
+                }
+        };
         return (
                 <div>
                         {/* Banner */}
@@ -144,7 +163,7 @@ const Details = () => {
 
                         {/* Product details */}
                         <section>
-                                <div className="w-[85%] md-lg:w-[90%] mx-auto h-full">
+                                <div className="w-[85%] md-lg:w-[90%] mx-auto h-full pb-10">
                                         <div className="grid grid-cols-1 md-lg:grid-cols-2 gap-6 gap-x-10">
                                                 {/* Image and carousel */}
                                                 <div className="flex flex-col gap-y-5">
@@ -291,7 +310,14 @@ const Details = () => {
                                                                                         </button>
                                                                                 </div>
                                                                                 <div>
-                                                                                        <div className="h-[50px] w-[50px] flex justify-center items-center cursor-pointer hover:shadow-lg hover:shadow-cyan-500/40 bg-cyan-500 text-white">
+                                                                                        <div
+                                                                                                onClick={() =>
+                                                                                                        addToWishList(
+                                                                                                                product
+                                                                                                        )
+                                                                                                }
+                                                                                                className="h-[50px] w-[50px] flex justify-center items-center cursor-pointer hover:shadow-lg hover:shadow-cyan-500/40 bg-cyan-500 text-white"
+                                                                                        >
                                                                                                 <FaHeart />
                                                                                         </div>
                                                                                 </div>
@@ -299,7 +325,14 @@ const Details = () => {
                                                                 ) : (
                                                                         <>
                                                                                 <div>
-                                                                                        <div className="h-[50px] w-[50px] flex justify-center items-center cursor-pointer hover:shadow-lg hover:shadow-cyan-500/40 bg-cyan-500 text-white">
+                                                                                        <div
+                                                                                                onClick={() =>
+                                                                                                        addToWishList(
+                                                                                                                product
+                                                                                                        )
+                                                                                                }
+                                                                                                className="h-[50px] w-[50px] flex justify-center items-center cursor-pointer hover:shadow-lg hover:shadow-cyan-500/40 bg-cyan-500 text-white"
+                                                                                        >
                                                                                                 <FaHeart />
                                                                                         </div>
                                                                                 </div>
