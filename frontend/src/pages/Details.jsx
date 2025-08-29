@@ -27,7 +27,7 @@ const Details = () => {
         const navigate = useNavigate();
         useEffect(() => {
                 dispatch(product_details(slug));
-        }, [slug, dispatch]);
+        }, [slug]);
 
         const [image, setImage] = useState("");
         const [quantity, setQuantity] = useState(1);
@@ -91,10 +91,7 @@ const Details = () => {
                         toast.error(errorMessage);
                         dispatch(messageClear());
                 }
-        }, [successMessage, errorMessage, dispatch]);
-        if (loader || !product) {
-                return <div className="w-full h-screen flex justify-center items-center">Loading...</div>;
-        }
+        }, [successMessage, errorMessage]);
 
         const addToWishList = (product) => {
                 if (userInfo) {

@@ -22,6 +22,7 @@ const Pagination = ({ pageNumber, setPageNumber, totalItem, perPage, showPage })
                 for (let i = startPage; i < endPage; i++) {
                         btns.push(
                                 <li
+                                        key={i}
                                         className={`w-[33px] h-[33px] rounded-full flex justify-center items-center cursor-pointer text-[#d0d2d6] transition-all duration-300  ${
                                                 pageNumber === i
                                                         ? "bg-green-700 shadow-lg shadow-indigo-300/50 text-white"

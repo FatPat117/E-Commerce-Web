@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import RatingReact from "react-rating";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
-import { customer_review } from "../store/reducers/homeReducer";
+import { customer_review, messageClear } from "../store/reducers/homeReducer";
 import Pagination from "./Pagination";
 import RatingTemp from "./RatingTemp";
 const Reviews = ({ product }) => {
         const { userInfo } = useSelector((state) => state.auth);
+        const { errorMessage, successMessage } = useSelector((state) => state.home);
         const dispatch = useDispatch();
         const [currentPage, setCurrentPage] = useState(1);
         const [perPage, setPerPage] = useState(2);
@@ -27,6 +29,16 @@ const Reviews = ({ product }) => {
                 };
                 dispatch(customer_review(obj));
         };
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        setReview("");
+                        setRate(0);
+                        dispatch(messageClear());
+                }
+        }, [successMessage]);
+
         return (
                 <div className="mt-8">
                         {/* Star ratings */}
@@ -174,11 +186,11 @@ const Reviews = ({ product }) => {
                                                                 }
                                                         />
                                                 </div>
-                                                <form action="" onSubmit={reviewSubmit}>
+                                                <form onSubmit={reviewSubmit}>
                                                         <textarea
                                                                 name=""
-                                                                id=""
                                                                 required
+                                                                id=""
                                                                 cols={30}
                                                                 rows={5}
                                                                 value={review}
@@ -188,7 +200,10 @@ const Reviews = ({ product }) => {
                                                                 className=" outline-none p-3 w-full border-[2px] border-slate-300"
                                                         ></textarea>
                                                         <div className="mt-2 ">
-                                                                <button className=" mb-5 md-lg:mb-0 cursor-pointer py-1 px-5 bg-indigo-500 text-white rounded-sm">
+                                                                <button
+                                                                        type="submit"
+                                                                        className=" mb-5 md-lg:mb-0 cursor-pointer py-1 px-5 bg-indigo-500 text-white rounded-sm"
+                                                                >
                                                                         Submit
                                                                 </button>
                                                         </div>

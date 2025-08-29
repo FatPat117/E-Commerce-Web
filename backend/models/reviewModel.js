@@ -17,7 +17,6 @@ const ReviewSchema = new mongoose.Schema(
                 },
                 review: {
                         type: String,
-                        required: [true, "Review is required"],
                 },
                 data: {
                         type: String,

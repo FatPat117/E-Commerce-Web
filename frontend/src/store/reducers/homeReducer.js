@@ -66,22 +66,6 @@ export const query_products = createAsyncThunk(
         }
 );
 
-// Product Details
-export const customer_review = createAsyncThunk(
-        "home/customer_review",
-        async (data, { fulfillWithValue, rejectWithValue }) => {
-                try {
-                        const response = await api.post(`/home/customer-review`, data, {
-                                withCredentials: true,
-                        });
-                        console.log(response.data);
-                        return fulfillWithValue(response.data);
-                } catch (error) {
-                        return rejectWithValue(error.response.data.message);
-                }
-        }
-);
-
 // Customer product reviews
 export const product_details = createAsyncThunk(
         "home/product_details",
@@ -91,6 +75,22 @@ export const product_details = createAsyncThunk(
                                 withCredentials: true,
                         });
                         // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// customer Reviews
+export const customer_review = createAsyncThunk(
+        "home/customer_review",
+        async (data, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.post(`/home/customer-review`, data, {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -118,8 +118,16 @@ const homeReducer = createSlice({
                 product: {},
                 relatedProducts: [],
                 moreProducts: [],
+                totalReview: 0,
+                ratingReview: [],
+                reviews: [],
         },
-        reducers: {},
+        reducers: {
+                messageClear(state) {
+                        state.errorMessage = "";
+                        state.successMessage = "";
+                },
+        },
         extraReducers: (builder) => {
                 builder.addCase(get_category.pending, (state) => {
                         state.loader = true;
@@ -188,14 +196,27 @@ const homeReducer = createSlice({
                 builder.addCase(product_details.fulfilled, (state, action) => {
                         state.loader = false;
                         state.product = action.payload.data.product;
-                        state.relatedProducts = action.payload.data.relatedProduct;
-                        state.moreProducts = action.payload.data.moreProducts;
+                        state.successMessage = action.payload.message;
                 });
                 builder.addCase(product_details.rejected, (state, action) => {
                         state.loader = false;
                         state.error = action.payload;
                 });
+
+                // customer review
+                builder.addCase(customer_review.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(customer_review.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(customer_review.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
         },
 });
 
 export default homeReducer.reducer;
+export const { messageClear } = homeReducer.actions;
