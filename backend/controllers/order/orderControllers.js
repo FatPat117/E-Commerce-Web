@@ -144,7 +144,6 @@ const get_dashboard_data = asyncHandler(async (req, res, next) => {
 
 const get_order = asyncHandler(async (req, res, next) => {
         const { customerId, status } = req.params;
-        console.log(req.params);
         // Find if Customer is existed
         const existedCustomer = await Customer.findOne({ _id: customerId });
 

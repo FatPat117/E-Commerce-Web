@@ -104,7 +104,7 @@ const orderReducer = createSlice({
                         state.loading = true;
                 });
                 builder.addCase(get_order.fulfilled, (state, action) => {
-                        state.myOrder = action.payload.data.orders;
+                        state.myOrders = action.payload.data.orders;
                 });
                 builder.addCase(get_order.rejected, (state, action) => {
                         state.loading = false;

@@ -32,8 +32,6 @@ const Details = () => {
         const [image, setImage] = useState("");
         const [quantity, setQuantity] = useState(1);
 
-        const discount = 5;
-        const stock = 100;
         const [state, setState] = useState("reviews");
         const responsive = {
                 superLargeDesktop: {
@@ -116,6 +114,34 @@ const Details = () => {
                         navigate("/login");
                 }
         };
+        const buyNow = () => {
+                let price = 0;
+                if (product.discount) {
+                        price = product?.price - Math.floor((product?.price * product?.discount) / 100);
+                } else {
+                        price = product?.price;
+                }
+
+                const obj = [
+                        {
+                                sellerId: product?.sellerId,
+                                shopName: product?.shopName,
+                                productId: product?._id,
+                                price: quantity * price,
+                                products: [{ quantity, productInfo: product }],
+                        },
+                ];
+
+                navigate("/shipping", {
+                        state: {
+                                products: obj,
+                                price: price * quantity,
+                                shippingFee: 50,
+                                items: 1,
+                        },
+                });
+        };
+
         return (
                 <div>
                         {/* Banner */}
@@ -403,8 +429,11 @@ const Details = () => {
 
                                                         {/* Actions*/}
                                                         <div className="flex justify-start items-center gap-3">
-                                                                {stock ? (
-                                                                        <button className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-green-500/40 bg-[#059473] text-white capitalize font-bold">
+                                                                {product?.stock ? (
+                                                                        <button
+                                                                                onClick={buyNow}
+                                                                                className="px-8 py-3 h-[50px] cursor-pointer hover:shadow-lg hover:shadow-green-500/40 bg-[#059473] text-white capitalize font-bold"
+                                                                        >
                                                                                 Buy now
                                                                         </button>
                                                                 ) : null}
