@@ -4,6 +4,12 @@ import { GrEmoji } from "react-icons/gr";
 import { IoSend } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import io from "socket.io-client";
+
+// chỉ tạo socket 1 lần
+const socket = io("http://localhost:5000", {
+        transports: ["websocket"], // giúp ổn định hơn
+});
 const Chat = () => {
         const { sellerId } = useParams();
         const { userInfo } = useSelector((state) => state.auth);
