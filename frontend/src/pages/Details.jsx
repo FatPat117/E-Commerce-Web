@@ -463,7 +463,7 @@ const Details = () => {
                                                                         </h2>
                                                                 </div>
                                                                 <div className="flex flex-col gap-5 mt-3 p-3">
-                                                                        {[1, 2, 3].map((data, idx) => {
+                                                                        {moreProducts?.map((data, idx) => {
                                                                                 return (
                                                                                         <Link
                                                                                                 key={idx}
@@ -471,15 +471,19 @@ const Details = () => {
                                                                                         >
                                                                                                 <div className="relative h-[270px]">
                                                                                                         <img
-                                                                                                                src={`/images/products/${data}.webp`}
-                                                                                                                alt="Product image"
+                                                                                                                src={
+                                                                                                                        data
+                                                                                                                                ?.images[0] ||
+                                                                                                                        "/images/products/1.webp"
+                                                                                                                }
+                                                                                                                alt="Product    image"
                                                                                                                 className="w-full h-full object-contain"
                                                                                                         />
-                                                                                                        {discount !==
+                                                                                                        {data?.discount !==
                                                                                                                 0 && (
                                                                                                                 <div className="flex justify-center items-center absolute text-white w-[38px] h-[38px] rounded-full bg-red-500 font-semibold text-xs left-2 top-2">
                                                                                                                         {
-                                                                                                                                discount
+                                                                                                                                data?.discount
                                                                                                                         }
 
                                                                                                                         %
@@ -489,16 +493,19 @@ const Details = () => {
 
                                                                                                 <h2 className="text-slate-600 py-1 font-bold">
                                                                                                         Product Name:
-                                                                                                        Pitachi
+                                                                                                        {data?.name}
                                                                                                 </h2>
                                                                                                 <div className="flex gap-2 ">
                                                                                                         <h2 className="text-lg font-bold text-blue-500">
-                                                                                                                $450
+                                                                                                                $
+                                                                                                                {
+                                                                                                                        data?.price
+                                                                                                                }
                                                                                                         </h2>
                                                                                                         <div className="flex items-center gap-2">
                                                                                                                 <Rating
                                                                                                                         ratings={
-                                                                                                                                4.5
+                                                                                                                                data?.rating
                                                                                                                         }
                                                                                                                 />
                                                                                                         </div>
@@ -533,36 +540,42 @@ const Details = () => {
                                                         modules={[Pagination]}
                                                         className="mySwiper"
                                                 >
-                                                        {[1, 2, 3, 4, 5, 6].map((data, idx) => (
+                                                        {relatedProducts?.map((data, idx) => (
                                                                 <SwiperSlide key={idx}>
                                                                         <Link className="block">
                                                                                 <div className="relative h-[270px]">
                                                                                         <div className="w-full h-full">
                                                                                                 <img
-                                                                                                        src={`/images/products/${data}.webp`}
+                                                                                                        src={`${
+                                                                                                                data
+                                                                                                                        ?.images[0] ||
+                                                                                                                "/images/products/1.webp"
+                                                                                                        }`}
                                                                                                         alt="Product-img"
                                                                                                         className="object-contain w-full h-full"
                                                                                                 />
                                                                                                 <div className="absolute inset-0 bg-black/25 hover:bg-black/50 transition-all duration-500 z-10" />
                                                                                         </div>
-                                                                                        {discount !== 0 && (
+                                                                                        {data?.discount !== 0 && (
                                                                                                 <div className="absolute left-2 top-2 flex items-center justify-center w-[38px] h-[38px] rounded-full bg-red-500 text-white text-xs font-semibold">
-                                                                                                        {discount}%
+                                                                                                        {data?.discount}
+                                                                                                        %
                                                                                                 </div>
                                                                                         )}
                                                                                 </div>
                                                                                 <div className="p-4 flex flex-col gap-1 relative mb-5">
                                                                                         <h2 className="text-slate-600 py-1 font-bold">
-                                                                                                Product Name: Pitachi
+                                                                                                Product Name:{" "}
+                                                                                                {data?.name}
                                                                                         </h2>
                                                                                         <div className="flex gap-2 ">
                                                                                                 <h2 className="text-lg font-bold text-blue-500">
-                                                                                                        $450
+                                                                                                        ${data?.price}
                                                                                                 </h2>
                                                                                                 <div className="flex items-center gap-2">
                                                                                                         <Rating
                                                                                                                 ratings={
-                                                                                                                        4.5
+                                                                                                                        data?.rating
                                                                                                                 }
                                                                                                         />
                                                                                                 </div>
