@@ -6,7 +6,7 @@ import RatingReact from "react-rating";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
-import { customer_review, messageClear } from "../store/reducers/homeReducer";
+import { customer_review, get_review, messageClear } from "../store/reducers/homeReducer";
 import Pagination from "./Pagination";
 import RatingTemp from "./RatingTemp";
 const Reviews = ({ product }) => {
@@ -38,6 +38,12 @@ const Reviews = ({ product }) => {
                         dispatch(messageClear());
                 }
         }, [successMessage]);
+
+        useEffect(() => {
+                if (product) {
+                        dispatch(get_review({ productId: product?._id, pageNumber: currentPage }));
+                }
+        }, [currentPage, product?._id]);
 
         return (
                 <div className="mt-8">

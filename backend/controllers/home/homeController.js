@@ -166,6 +166,76 @@ const customer_review = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "Review add successfully ", { product }));
 });
 
+const get_review = asyncHandler(async (req, res, next) => {
+        const { productId } = req.params;
+        const limit = 5;
+        let { page } = req.query;
+        page = parseInt(page);
+        const skipPage = (page - 1) * limit;
+
+        let getRating = await Review.aggregate([
+                {
+                        $match: {
+                                productId: new mongoose.Types.ObjectId(productId),
+                                rating: { $ne: null },
+                        },
+                },
+                {
+                        $group: {
+                                _id: "$rating",
+                                count: { $sum: 1 },
+                        },
+                },
+        ]);
+
+        let ratingReview = [
+                {
+                        rating: 5,
+                        sum: 0,
+                },
+                {
+                        rating: 4,
+                        sum: 0,
+                },
+
+                {
+                        rating: 3,
+                        sum: 0,
+                },
+
+                {
+                        rating: 2,
+                        sum: 0,
+                },
+
+                {
+                        rating: 1,
+                        sum: 0,
+                },
+
+                {
+                        rating: 0,
+                        sum: 0,
+                },
+        ];
+
+        for (let i = 0; i < ratingReview.length; i++) {
+                for (let j = 0; j < getRating.length; j++) {
+                        if (ratingReview[i].rating == getRating[j]._id) {
+                                ratingReview[i].sum = getRating[j].count;
+                                break;
+                        }
+                }
+        }
+
+        const totalReview = await Review.findById(productId).countDocuments();
+        const reviews = await Review.find({ productId: new mongoose.Types.ObjectId(productId) })
+                .skip(skipPage)
+                .limit(limit);
+
+        res.status(200).json(new ApiResponse(200, "", { ratingReview, reviews, totalReview }));
+});
+
 export default {
         get_categories,
         get_products,
@@ -173,4 +243,5 @@ export default {
         query_products,
         product_details,
         customer_review,
+        get_review,
 };

@@ -90,6 +90,22 @@ export const customer_review = createAsyncThunk(
                         const response = await api.post(`/home/customer-review`, data, {
                                 withCredentials: true,
                         });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// get review
+export const get_review = createAsyncThunk(
+        "home/get_review",
+        async ({ productId, pageNumber }, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/home/get-review/${productId}?page=${pageNumber}`, {
+                                withCredentials: true,
+                        });
                         console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
