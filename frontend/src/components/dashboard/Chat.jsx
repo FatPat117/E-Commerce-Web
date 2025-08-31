@@ -25,7 +25,8 @@ const Chat = () => {
                 dispatch(add_friend({ sellerId: sellerId || "", userId: userInfo?.id }));
         }, [sellerId, userInfo?.id]);
 
-        const sendMessage = () => {
+        const sendMessage = (e) => {
+                e.preventDefault();
                 if (!text || !sellerId) return;
                 dispatch(send_message({ userId: userInfo?.id, sellerId: sellerId, text, name: userInfo?.name }));
                 setText("");
@@ -70,29 +71,60 @@ const Chat = () => {
                                                         </div>
                                                         <div className="h-[400px] w-full bg-slate-100 p-3 rounded-md">
                                                                 <div className="w-full h-full overflow-y-auto flex flex-col gap-3">
-                                                                        <div className="w-full flex gap-2 justify-start items-center text-[14px]">
-                                                                                <img
-                                                                                        className="w-[30px] h-[30px] "
-                                                                                        src="/images/user.png"
-                                                                                        alt=""
-                                                                                />
-                                                                                <div className="p-2 bg-purple-500 text-white rounded-md">
-                                                                                        <span>weewewewewewewe</span>
-                                                                                </div>
-                                                                        </div>
-                                                                        <div className="w-full flex gap-2 justify-end items-center text-[14px]">
-                                                                                <img
-                                                                                        className="w-[30px] h-[30px] "
-                                                                                        src="/images/user.png"
-                                                                                        alt=""
-                                                                                />
-                                                                                <div className="p-2 bg-cyan-500 text-white rounded-md">
-                                                                                        <span>ewwwwwwwww</span>
-                                                                                </div>
-                                                                        </div>
+                                                                        {friendMessages?.map((message, idx) => {
+                                                                                // Customer message
+                                                                                if (
+                                                                                        currentFriend?.friendId !==
+                                                                                        message.senderId
+                                                                                ) {
+                                                                                        return (
+                                                                                                <div
+                                                                                                        key={idx}
+                                                                                                        className="w-full flex gap-2 justify-start items-center text-[14px]"
+                                                                                                >
+                                                                                                        <img
+                                                                                                                className="w-[30px] h-[30px] "
+                                                                                                                src="/images/user.png"
+                                                                                                                alt=""
+                                                                                                        />
+                                                                                                        <div className="p-2 bg-purple-500 text-white rounded-md">
+                                                                                                                <span>
+                                                                                                                        {
+                                                                                                                                message?.message
+                                                                                                                        }
+                                                                                                                </span>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        );
+                                                                                        // Seller message
+                                                                                } else {
+                                                                                        return (
+                                                                                                <div
+                                                                                                        key={idx}
+                                                                                                        className="w-full flex gap-2 justify-end items-center text-[14px]"
+                                                                                                >
+                                                                                                        <img
+                                                                                                                className="w-[30px] h-[30px] "
+                                                                                                                src="/images/user.png"
+                                                                                                                alt=""
+                                                                                                        />
+                                                                                                        <div className="p-2 bg-cyan-500 text-white rounded-md">
+                                                                                                                <span>
+                                                                                                                        {
+                                                                                                                                message?.message
+                                                                                                                        }
+                                                                                                                </span>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        );
+                                                                                }
+                                                                        })}
                                                                 </div>
                                                         </div>
-                                                        <div className="flex p-2 justify-between items-center w-full">
+                                                        <form
+                                                                className="flex p-2 justify-between items-center w-full"
+                                                                onSubmit={sendMessage}
+                                                        >
                                                                 <div className="w-[40px] h-[40px] border p-2 justify-center items-center flex rounded-full">
                                                                         <label className="cursor-pointer" htmlFor="">
                                                                                 <AiOutlinePlus />
@@ -116,14 +148,11 @@ const Chat = () => {
                                                                         </div>
                                                                 </div>
                                                                 <div className="w-[40px] p-2 justify-center items-center rounded-full">
-                                                                        <div
-                                                                                onClick={sendMessage}
-                                                                                className="text-2xl cursor-pointer"
-                                                                        >
+                                                                        <button className="text-2xl cursor-pointer inline-block">
                                                                                 <IoSend />
-                                                                        </div>
+                                                                        </button>
                                                                 </div>
-                                                        </div>
+                                                        </form>
                                                 </div>
                                         ) : (
                                                 <div className="w-full h-full flex justify-center items-center text-lg ont-bold text-slate-600">

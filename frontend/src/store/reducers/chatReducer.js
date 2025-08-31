@@ -54,6 +54,23 @@ const chatReducer = createSlice({
                         state.friendMessages = action.payload.data.messages;
                         state.currentFriend = action.payload.data.currentFriend;
                 });
+                builder.addCase(send_message.fulfilled, (state, action) => {
+                        let tempFriends = state.myFriends;
+                        let index = tempFriends.findIndex(
+                                (friend) =>
+                                        friend.friendId.toString() === action.payload.data.message.receiverId.toString()
+                        );
+                        while (index > 0) {
+                                let temp = tempFriends[index];
+                                tempFriends[index] = tempFriends[index - 1];
+                                tempFriends[index - 1] = temp;
+                                index--;
+                        }
+                        state.myFriends = tempFriends;
+
+                        state.friendMessages = [...state.friendMessages, action.payload.data.message];
+                        state.successMessage = action.payload.message;
+                });
         },
 });
 
