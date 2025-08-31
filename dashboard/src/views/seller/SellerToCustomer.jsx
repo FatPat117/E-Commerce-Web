@@ -10,7 +10,7 @@ const SellerToCustomer = () => {
 
         const dispatch = useDispatch();
         const { userInfo } = useSelector((state) => state.auth);
-        const { customers } = useSelector((state) => state.chat);
+        const { customers, messages, currentCustomer } = useSelector((state) => state.chat);
 
         const [show, setShow] = useState(false);
         const sellerId = 65;
@@ -92,7 +92,7 @@ const SellerToCustomer = () => {
                                                                                 <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
                                                                         </div>
                                                                         <h2 className="text-base text-white font-semibold">
-                                                                                Pitachiti
+                                                                                {currentCustomer?.name}
                                                                         </h2>
                                                                 </div>
                                                         )}
@@ -110,37 +110,64 @@ const SellerToCustomer = () => {
                                                 {/* Message Box */}
                                                 <div className="py-4 ">
                                                         <div className="bg-[#475569] h-[calc(100vh-300px)] rounded-md p-3 overflow-y-auto">
-                                                                {/* Other Message   */}
-                                                                <div className="w-full flex justify-start items-center">
-                                                                        <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
-                                                                                <div>
-                                                                                        <img
-                                                                                                src="/images/admin.jpg"
-                                                                                                alt="avatar"
-                                                                                                className="w-[38px] h-[38px] rounded-full border-white border-2 max-w-[38px] p-[3px] "
-                                                                                        />
-                                                                                </div>
-                                                                                <div className="flex justify-center items-start flex-col w-full bg-blue-500 shadow-md shadow-blue-500/50 text-white py-1 px-2 rounded-sm ">
-                                                                                        <span>How are you ? </span>
-                                                                                </div>
+                                                                {customerId ? (
+                                                                        messages?.map((message, idx) => {
+                                                                                if (
+                                                                                        message.senderId.toString() ===
+                                                                                        customerId.toString()
+                                                                                ) {
+                                                                                        /* Customer Message   */
+                                                                                        return (
+                                                                                                <div className="w-full flex justify-start items-center">
+                                                                                                        <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
+                                                                                                                <div>
+                                                                                                                        <img
+                                                                                                                                src={`/images/admin.jpg`}
+                                                                                                                                alt="avatar"
+                                                                                                                                className="w-[38px] h-[38px] rounded-full border-white border-2 max-w-[38px] p-[3px] "
+                                                                                                                        />
+                                                                                                                </div>
+                                                                                                                <div className="flex justify-center items-start flex-col w-full bg-blue-500 shadow-md shadow-blue-500/50 text-white py-1 px-2 rounded-sm ">
+                                                                                                                        <span>
+                                                                                                                                {
+                                                                                                                                        message.message
+                                                                                                                                }
+                                                                                                                        </span>
+                                                                                                                </div>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        );
+                                                                                } else {
+                                                                                        /* My  Message */
+                                                                                        return (
+                                                                                                <div className="w-full flex justify-end items-center">
+                                                                                                        <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
+                                                                                                                <div className="flex justify-center items-start flex-col w-full bg-red-500 shadow-md shadow-red-500/50 text-white py-1 px-2 rounded-sm ">
+                                                                                                                        <span>
+                                                                                                                                {
+                                                                                                                                        message.message
+                                                                                                                                }
+                                                                                                                        </span>
+                                                                                                                </div>
+                                                                                                                <div>
+                                                                                                                        <img
+                                                                                                                                src={
+                                                                                                                                        "/images/admin.jpg"
+                                                                                                                                }
+                                                                                                                                alt="avatar"
+                                                                                                                                className="w-[38px] h-[38px] rounded-full border-white border-2 max-w-[38px] p-[3px] "
+                                                                                                                        />
+                                                                                                                </div>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        );
+                                                                                }
+                                                                        })
+                                                                ) : (
+                                                                        <div className="w-full h-full flex justify-center items-center text-white gap-2 flex-col">
+                                                                                <span>Select Customer</span>
                                                                         </div>
-                                                                </div>
-
-                                                                {/* My  Message */}
-                                                                <div className="w-full flex justify-end items-center">
-                                                                        <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
-                                                                                <div className="flex justify-center items-start flex-col w-full bg-red-500 shadow-md shadow-red-500/50 text-white py-1 px-2 rounded-sm ">
-                                                                                        <span>How are you ? </span>
-                                                                                </div>
-                                                                                <div>
-                                                                                        <img
-                                                                                                src="/images/admin.jpg"
-                                                                                                alt="avatar"
-                                                                                                className="w-[38px] h-[38px] rounded-full border-white border-2 max-w-[38px] p-[3px] "
-                                                                                        />
-                                                                                </div>
-                                                                        </div>
-                                                                </div>
+                                                                )}
                                                         </div>
                                                 </div>
 

@@ -168,5 +168,18 @@ const get_customers = asyncHandler(async (req, res, next) => {
 const get_customer_messages = asyncHandler(async (req, res, next) => {
         const { customerId } = req.params;
         const id = req._id;
+
+        // Lấy messages giữa user & seller
+        const messages = await SellerCustomerMessage.find({
+                $or: [
+                        { senderId: customerId, receiverId: id },
+                        { senderId: id, receiverId: customerId },
+                ],
+        });
+
+        const currentCustomer = await Customer.findById(customerId);
+        return res
+                .status(200)
+                .json(new ApiResponse(200, "Messages fetched successfully", { messages, currentCustomer }));
 });
 export default { add_customer_friend, send_message_to_seller, get_customers, get_customer_messages };

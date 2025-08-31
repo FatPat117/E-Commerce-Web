@@ -74,7 +74,7 @@ const Chat = () => {
                                                                         {friendMessages?.map((message, idx) => {
                                                                                 // Customer message
                                                                                 if (
-                                                                                        currentFriend?.friendId !==
+                                                                                        currentFriend?.friendId ==
                                                                                         message.senderId
                                                                                 ) {
                                                                                         return (

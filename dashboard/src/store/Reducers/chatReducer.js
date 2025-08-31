@@ -61,6 +61,10 @@ const chatReducer = createSlice({
                 builder.addCase(get_customers.fulfilled, (state, action) => {
                         state.customers = action.payload.data.customers;
                 });
+                builder.addCase(get_customer_messages.fulfilled, (state, action) => {
+                        state.messages = action.payload.data.messages;
+                        state.currentCustomer = action.payload.data.currentCustomer;
+                });
         },
 });
 
