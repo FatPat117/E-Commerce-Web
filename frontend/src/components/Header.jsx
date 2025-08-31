@@ -212,9 +212,12 @@ const Header = () => {
                                                                         <div className="flex justify-center gap-5">
                                                                                 {/* Loved items */}
                                                                                 <div className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]">
-                                                                                        <span className="text-xl text-green-500">
+                                                                                        <Link
+                                                                                                to="/dashboard/my-wishlist"
+                                                                                                className="text-xl text-green-500"
+                                                                                        >
                                                                                                 <AiFillHeart />
-                                                                                        </span>
+                                                                                        </Link>
                                                                                         {wishlistProductsTotal != 0 && (
                                                                                                 <div
                                                                                                         className="w-[25px] h-[25px] absolute bg-red-500 rounded-full text-white flex items-center 

@@ -7,6 +7,7 @@ import { Server } from "socket.io";
 
 import globalErrorHandler, { notFound } from "./middlewares/error.js";
 import authRoutes from "./routes/authRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
 import categoryRoutes from "./routes/dashboard/categoryRoutes.js";
 import productRoutes from "./routes/dashboard/productRoutes.js";
 import sellerRoutes from "./routes/dashboard/sellerRoutes.js";
@@ -15,7 +16,6 @@ import customerRoutes from "./routes/home/customerRoutes.js";
 import homeRoutes from "./routes/home/homeRoutes.js";
 import orderRoutes from "./routes/order/orderRoutes.js";
 import connectDB from "./utils/db.js";
-import chatRoutes from "./routes/chatRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -28,9 +28,17 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
+
 app.use(
         cors({
-                origin: "http://localhost:5173",
+                origin: function (origin, callback) {
+                        if (!origin || allowedOrigins.includes(origin)) {
+                                callback(null, true);
+                        } else {
+                                callback(new Error("Not allowed by CORS"));
+                        }
+                },
                 credentials: true,
         })
 );
