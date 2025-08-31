@@ -164,4 +164,9 @@ const get_customers = asyncHandler(async (req, res, next) => {
 
         return res.status(200).json(new ApiResponse(200, "", { customers: data.myFriends }));
 });
-export default { add_customer_friend, send_message_to_seller, get_customers };
+
+const get_customer_messages = asyncHandler(async (req, res, next) => {
+        const { customerId } = req.params;
+        const id = req._id;
+});
+export default { add_customer_friend, send_message_to_seller, get_customers, get_customer_messages };
