@@ -65,7 +65,8 @@ const io = new Server(server, {
         },
 });
 
-let allCustomer = [];
+const allCustomer = [];
+const allSeller = [];
 const addUser = (customerId, userInfo, socketId) => {
         const checkUser = allCustomer.some((user) => user.customerId === customerId);
         if (!checkUser) {
@@ -74,9 +75,21 @@ const addUser = (customerId, userInfo, socketId) => {
         return allCustomer;
 };
 
+const addSeller = (sellerId, sellerInfo, socketId) => {
+        const checkSeller = allSeller.some((seller) => seller.sellerId === sellerId);
+        if (!checkSeller) {
+                allSeller.push({ sellerId, sellerInfo, socketId });
+        }
+        return allSeller;
+};
+
 io.on("connection", (socket) => {
         socket.on("add_user", (customerId, userInfo) => {
                 addUser(customerId, userInfo, socket.id);
+        });
+
+        socket.on("add_seller", (sellerId, sellerInfo) => {
+                addSeller(sellerId, sellerInfo, socket.id);
         });
 
         socket.on("disconnect", () => {
