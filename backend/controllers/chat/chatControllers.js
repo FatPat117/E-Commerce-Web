@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
+import SellerCustomerMessage from "../../models/chat/sellerCustomerMessageModel.js";
 import SellerCustomer from "../../models/chat/sellerCustomerModel.js";
 import Customer from "../../models/customerModel.js";
 import Seller from "../../models/sellerModel.js";
 import ApiError from "../../utils/ApiError.js";
+import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 const add_customer_friend = asyncHandler(async (req, res, next) => {
         const { userId, sellerId } = req.body;
@@ -68,6 +70,36 @@ const add_customer_friend = asyncHandler(async (req, res, next) => {
                                 },
                         }
                 );
+        }
+
+        // Find the messages between the user and the seller
+        const messages = await SellerCustomerMessage.find({
+                $or: [
+                        { senderId: userId, receiverId: sellerId },
+                        { senderId: sellerId, receiverId: userId },
+                ],
+        });
+
+        // Get all friends
+        const allFriends = await SellerCustomer.findOne({ myId: new mongoose.Types.ObjectId(userId) });
+
+        // Get current friend
+        const currentFriend = allFriends.myFriends.find(
+                (friend) => friend.friendId === new mongoose.Types.ObjectId(sellerId)
+        );
+
+        if (currentFriend)
+                res.status(200).json(
+                        new ApiResponse(200, "Messages fetched successfully", {
+                                messages,
+                                myFriends: allFriends.myFriends,
+                                currentFriend: currentFriend,
+                        })
+                );
+        else {
+                new ApiResponse(200, "Messages fetched successfully", {
+                        myFriends: allFriends.myFriends,
+                });
         }
 });
 
