@@ -15,7 +15,7 @@ import customerRoutes from "./routes/home/customerRoutes.js";
 import homeRoutes from "./routes/home/homeRoutes.js";
 import orderRoutes from "./routes/order/orderRoutes.js";
 import connectDB from "./utils/db.js";
-
+import chatRoutes from "./routes/chatRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -44,6 +44,7 @@ app.use("/api/home", homeRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/customer", customerRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/chat", chatRoutes);
 
 app.use(notFound);
 app.use(globalErrorHandler);

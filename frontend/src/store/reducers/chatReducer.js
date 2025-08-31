@@ -2,21 +2,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
 // customer register
-export const customer_register = createAsyncThunk(
-        "auth/customer_register",
-        async (data, { fulfillWithValue, rejectWithValue }) => {
-                try {
-                        const response = await api.post("/customer/customer-register", data, {
-                                withCredentials: true,
-                        });
-                        // console.log(response.data);
-                        localStorage.setItem("customerToken", response.data.data.token);
-                        return fulfillWithValue(response.data);
-                } catch (error) {
-                        return rejectWithValue(error.response.data.message);
-                }
+export const add_friend = createAsyncThunk("chat/add_friend", async (info, { fulfillWithValue, rejectWithValue }) => {
+        try {
+                const response = await api.post("/chat/customer/add_friend", info, {
+                        withCredentials: true,
+                });
+                console.log(response.data);
+                localStorage.setItem("customerToken", response.data.data.token);
+                return fulfillWithValue(response.data);
+        } catch (error) {
+                return rejectWithValue(error.response.data.message);
         }
-);
+});
 
 const chatReducer = createSlice({
         name: "chat",
