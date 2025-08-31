@@ -54,7 +54,7 @@ export const seller_status_update = createAsyncThunk(
 );
 
 const sellerReducer = createSlice({
-        name: "category",
+        name: "seller",
         initialState: {
                 successMessage: "",
                 errorMessage: "",

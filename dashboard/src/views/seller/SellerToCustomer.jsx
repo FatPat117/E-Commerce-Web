@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaList } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { get_customers } from "../../store/Reducers/chatReducer";
 
 const SellerToCustomer = () => {
+        const dispatch = useDispatch();
+        const { userInfo } = useSelector((state) => state.auth);
         const [show, setShow] = useState(false);
         const sellerId = 65;
-
+        useEffect(() => {
+                dispatch(get_customers(userInfo?._id));
+        }, [userInfo?.id]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md  h-[calc(100vh-140px)]">
