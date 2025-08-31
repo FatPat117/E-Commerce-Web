@@ -51,13 +51,24 @@ app.use(globalErrorHandler);
 // 🔥 Socket.IO init
 const io = new Server(server, {
         cors: {
-                origin: "http://localhost:5173",
+                origin: "*",
                 credentials: true,
         },
 });
 
+let allCustomer = [];
+const addUser = (customerId, userInfo, socketId) => {
+        const checkUser = allCustomer.some((user) => user.customerId === customerId);
+        if (!checkUser) {
+                allCustomer.push({ customerId, userInfo, socketId });
+        }
+        return allCustomer;
+};
+
 io.on("connection", (socket) => {
-        console.log("⚡ Client connected:", socket.id);
+        socket.on("add_user", (customerId, userInfo) => {
+                addUser(customerId, userInfo, socket.id);
+        });
 
         socket.on("disconnect", () => {
                 console.log("❌ Client disconnected:", socket.id);
