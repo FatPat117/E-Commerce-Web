@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineMessage, AiOutlinePlus } from "react-icons/ai";
 import { GrEmoji } from "react-icons/gr";
 import { IoSend } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import io from "socket.io-client";
-import { add_friend } from "../../store/reducers/chatReducer";
+import { add_friend, send_message } from "../../store/reducers/chatReducer";
 
 // chỉ tạo socket 1 lần
 const socket = io("http://localhost:5000", {
@@ -16,12 +16,20 @@ const Chat = () => {
         const { sellerId } = useParams();
         const { userInfo } = useSelector((state) => state.auth);
         const { myFriends, friendMessages, currentFriend } = useSelector((state) => state.chat);
+        const [text, setText] = useState("");
         useEffect(() => {
                 socket.emit("add_user", userInfo.id, userInfo);
         }, [userInfo]);
+
         useEffect(() => {
                 dispatch(add_friend({ sellerId: sellerId || "", userId: userInfo?.id }));
         }, [sellerId, userInfo?.id]);
+
+        const sendMessage = () => {
+                if (!text || !sellerId) return;
+                dispatch(send_message({ userId: userInfo?.id, sellerId: sellerId, text, name: userInfo?.name }));
+                setText("");
+        };
         return (
                 <div className="bg-white p-3 rounded-md">
                         <div className="w-full flex">
@@ -93,6 +101,10 @@ const Chat = () => {
                                                                 </div>
                                                                 <div className="border h-[40px] p-0 ml-2 w-[calc(100%-90px)] rounded-full relative">
                                                                         <input
+                                                                                value={text}
+                                                                                onChange={(e) =>
+                                                                                        setText(e.target.value)
+                                                                                }
                                                                                 type="text"
                                                                                 placeholder="input message"
                                                                                 className="w-full rounded-full h-full outline-none p-3"
@@ -104,7 +116,10 @@ const Chat = () => {
                                                                         </div>
                                                                 </div>
                                                                 <div className="w-[40px] p-2 justify-center items-center rounded-full">
-                                                                        <div className="text-2xl cursor-pointer">
+                                                                        <div
+                                                                                onClick={sendMessage}
+                                                                                className="text-2xl cursor-pointer"
+                                                                        >
                                                                                 <IoSend />
                                                                         </div>
                                                                 </div>
