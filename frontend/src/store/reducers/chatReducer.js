@@ -8,7 +8,7 @@ export const add_friend = createAsyncThunk("chat/add_friend", async (info, { ful
                         withCredentials: true,
                 });
                 console.log(response.data);
-                localStorage.setItem("customerToken", response.data.data.token);
+
                 return fulfillWithValue(response.data);
         } catch (error) {
                 return rejectWithValue(error.response.data.message);
@@ -20,7 +20,7 @@ const chatReducer = createSlice({
         initialState: {
                 myFriends: [],
                 friendMessages: [],
-                currentFriend: {},
+                currentFriend: null,
                 errorMessage: "",
                 successMessage: "",
         },
@@ -31,7 +31,13 @@ const chatReducer = createSlice({
                 },
         },
         // Customer register
-        extraReducers: (builder) => {},
+        extraReducers: (builder) => {
+                builder.addCase(add_friend.fulfilled, (state, action) => {
+                        state.myFriends = action.payload.data.myFriends;
+                        state.friendMessages = action.payload.data.messages;
+                        state.currentFriend = action.payload.data.currentFriend;
+                });
+        },
 });
 
 export default chatReducer.reducer;

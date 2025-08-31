@@ -6,33 +6,38 @@ import Seller from "../../models/sellerModel.js";
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
+
 const add_customer_friend = asyncHandler(async (req, res, next) => {
         const { userId, sellerId } = req.body;
 
-        // Find the seller
-        if (!sellerId) {
-                return next(new ApiError(400, "Cannot find the seller with the id"));
-        }
-        const seller = await Seller.findById(sellerId);
-        if (!seller) {
-                return next(new ApiError(404, "Seller not found"));
-        }
-
-        // Find the user
+        // Lấy thông tin user
         const user = await Customer.findById(userId);
         if (!user) {
                 return next(new ApiError(404, "User not found"));
         }
 
-        // Check if the seller is already in the user's friends
+        // Nếu không có sellerId thì chỉ trả về danh sách bạn bè
+        if (!sellerId) {
+                const allFriends = await SellerCustomer.findOne({ myId: new mongoose.Types.ObjectId(userId) });
+                return res.status(200).json(
+                        new ApiResponse(200, "Friends fetched successfully", {
+                                myFriends: allFriends ? allFriends.myFriends : [],
+                        })
+                );
+        }
+
+        // Có sellerId → lấy thông tin seller
+        const seller = await Seller.findById(sellerId);
+        if (!seller) {
+                return next(new ApiError(404, "Seller not found"));
+        }
+
+        // Check nếu chưa có thì add seller vào bạn bè user
         const checkSellerWithUser = await SellerCustomer.findOne({
-                $and: [
-                        { myId: new mongoose.Types.ObjectId(userId) },
-                        { "myFriends.friendId": new mongoose.Types.ObjectId(sellerId) },
-                ],
+                myId: new mongoose.Types.ObjectId(userId),
+                "myFriends.friendId": new mongoose.Types.ObjectId(sellerId),
         });
 
-        // If the seller is not in the user's friends, add it
         if (!checkSellerWithUser) {
                 await SellerCustomer.updateOne(
                         { myId: new mongoose.Types.ObjectId(userId) },
@@ -44,19 +49,17 @@ const add_customer_friend = asyncHandler(async (req, res, next) => {
                                                 image: seller.image,
                                         },
                                 },
-                        }
+                        },
+                        { upsert: true } // đảm bảo có document
                 );
         }
 
-        // Check if the user is already in the seller's friends
+        // Check nếu chưa có thì add user vào bạn bè seller
         const checkUserWithSeller = await SellerCustomer.findOne({
-                $and: [
-                        { myId: new mongoose.Types.ObjectId(sellerId) },
-                        { "myFriends.friendId": new mongoose.Types.ObjectId(userId) },
-                ],
+                myId: new mongoose.Types.ObjectId(sellerId),
+                "myFriends.friendId": new mongoose.Types.ObjectId(userId),
         });
 
-        // If the seller is not in the user's friends, add it
         if (!checkUserWithSeller) {
                 await SellerCustomer.updateOne(
                         { myId: new mongoose.Types.ObjectId(sellerId) },
@@ -68,11 +71,12 @@ const add_customer_friend = asyncHandler(async (req, res, next) => {
                                                 image: "",
                                         },
                                 },
-                        }
+                        },
+                        { upsert: true }
                 );
         }
 
-        // Find the messages between the user and the seller
+        // Lấy messages giữa user & seller
         const messages = await SellerCustomerMessage.find({
                 $or: [
                         { senderId: userId, receiverId: sellerId },
@@ -80,27 +84,21 @@ const add_customer_friend = asyncHandler(async (req, res, next) => {
                 ],
         });
 
-        // Get all friends
+        // Lấy danh sách bạn bè user
         const allFriends = await SellerCustomer.findOne({ myId: new mongoose.Types.ObjectId(userId) });
 
-        // Get current friend
-        const currentFriend = allFriends.myFriends.find(
-                (friend) => friend.friendId === new mongoose.Types.ObjectId(sellerId)
+        // Lấy bạn bè hiện tại
+        const currentFriend = allFriends?.myFriends.find(
+                (friend) => friend.friendId.toString() === sellerId.toString()
         );
 
-        if (currentFriend)
-                res.status(200).json(
-                        new ApiResponse(200, "Messages fetched successfully", {
-                                messages,
-                                myFriends: allFriends.myFriends,
-                                currentFriend: currentFriend,
-                        })
-                );
-        else {
+        return res.status(200).json(
                 new ApiResponse(200, "Messages fetched successfully", {
-                        myFriends: allFriends.myFriends,
-                });
-        }
+                        messages,
+                        myFriends: allFriends ? allFriends.myFriends : [],
+                        currentFriend: currentFriend || null,
+                })
+        );
 });
 
 export default { add_customer_friend };
