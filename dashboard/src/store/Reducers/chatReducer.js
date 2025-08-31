@@ -41,7 +41,11 @@ const chatReducer = createSlice({
                 },
         },
         // Customer register
-        extraReducers: (builder) => {},
+        extraReducers: (builder) => {
+                builder.addCase(get_customers.fulfilled, (state, action) => {
+                        state.customers = action.payload.data.customers;
+                });
+        },
 });
 
 export default chatReducer.reducer;

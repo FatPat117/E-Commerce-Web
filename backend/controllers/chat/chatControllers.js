@@ -153,4 +153,15 @@ const send_message_to_seller = asyncHandler(async (req, res, next) => {
         return res.status(200).json(new ApiResponse(200, "Message sent successfully", { message }));
 });
 
-export default { add_customer_friend, send_message_to_seller };
+const get_customers = asyncHandler(async (req, res, next) => {
+        const { sellerId } = req.params;
+
+        const data = await SellerCustomer.findOne({ myId: new mongoose.Types.ObjectId(sellerId) });
+
+        if (!data) {
+                return next(new ApiError(404, "Seller not found"));
+        }
+
+        return res.status(200).json(new ApiResponse(200, "", { customers: data.myFriends }));
+});
+export default { add_customer_friend, send_message_to_seller, get_customers };
