@@ -87,6 +87,10 @@ const findCustomer = (customerId) => {
         return allCustomer.find((customer) => customer.customerId.toString() == customerId.toString());
 };
 
+const findSeller = (sellerId) => {
+        return allSeller.find((seller) => seller.sellerId.toString() == sellerId.toString());
+};
+
 const remove = (socketId) => {
         allCustomer = allCustomer.filter((customer) => customer.socketId != socketId);
         allSeller = allSeller.filter((seller) => seller.socketId != socketId);
@@ -108,6 +112,14 @@ io.on("connection", (socket) => {
 
                 if (customer) {
                         socket.to(customer.socketId).emit("seller_message", message);
+                }
+        });
+
+        socket.on("send_customer_message", (message) => {
+                const seller = findSeller(message.receiverId);
+
+                if (seller) {
+                        socket.to(seller.socketId).emit("customer_message", message);
                 }
         });
 

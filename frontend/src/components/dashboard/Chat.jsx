@@ -15,7 +15,7 @@ const Chat = () => {
         const dispatch = useDispatch();
         const { sellerId } = useParams();
         const { userInfo } = useSelector((state) => state.auth);
-        const { myFriends, friendMessages, currentFriend } = useSelector((state) => state.chat);
+        const { myFriends, friendMessages, currentFriend, successMessage } = useSelector((state) => state.chat);
         const [text, setText] = useState("");
         const [receiverMessage, setReceiverMessage] = useState("");
         const [activeSeller, setActiveSeller] = useState([]);
@@ -43,6 +43,13 @@ const Chat = () => {
                         setActiveSeller(allSeller);
                 });
         }, []);
+
+        useEffect(() => {
+                if (successMessage) {
+                        socket.emit("send_customer_message", friendMessages[friendMessages.length - 1]);
+                        dispatch(messageClear());
+                }
+        }, [successMessage]);
 
         useEffect(() => {
                 if (receiverMessage) {

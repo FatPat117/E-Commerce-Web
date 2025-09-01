@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaList } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { get_customer_messages, get_customers, messageClear, send_message } from "../../store/Reducers/chatReducer";
+import {
+        get_customer_messages,
+        get_customers,
+        messageClear,
+        send_message,
+        updateMessage,
+} from "../../store/Reducers/chatReducer";
 import { socket } from "../../utils/utils";
 const SellerToCustomer = () => {
         const { customerId } = useParams();
@@ -13,7 +20,9 @@ const SellerToCustomer = () => {
         const { customers, messages, currentCustomer, successMessage } = useSelector((state) => state.chat);
         const [text, setText] = useState("");
         const [show, setShow] = useState(false);
-        const sellerId = userInfo?._id;
+        const [receiverMessage, setReceiverMessage] = useState("");
+        const [activeCustomer, setActiveCustomer] = useState([]);
+
         useEffect(() => {
                 dispatch(get_customers(userInfo?._id));
         }, [userInfo?.id]);
@@ -44,6 +53,26 @@ const SellerToCustomer = () => {
                         dispatch(messageClear());
                 }
         }, [successMessage]);
+
+        useEffect(() => {
+                socket.on("customer_message", (message) => {
+                        setReceiverMessage(message);
+                });
+                socket.on("activeCustomer", (allCustomer) => {
+                        setActiveCustomer(allCustomer);
+                });
+        }, []);
+
+        useEffect(() => {
+                if (receiverMessage) {
+                        if (customerId == receiverMessage.senderId && userInfo?._id == receiverMessage.receiverId) {
+                                dispatch(updateMessage(receiverMessage));
+                        } else {
+                                toast.success(receiverMessage?.senderName + " " + "Send A message");
+                                dispatch(messageClear());
+                        }
+                }
+        }, [receiverMessage]);
 
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -84,7 +113,13 @@ const SellerToCustomer = () => {
                                                                                         alt="avatar"
                                                                                         className="w-[38px] h-[38px] rounded-full border-white border-2 max-w-[38px] p-[2px] "
                                                                                 />
-                                                                                <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                                                                                {activeCustomer?.some(
+                                                                                        (cus) =>
+                                                                                                cus?.customerId.toString() ==
+                                                                                                customer?.friendId.toString()
+                                                                                ) && (
+                                                                                        <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                                                                                )}
                                                                         </div>
 
                                                                         <div className="flex justify-center items-start flex-col w-full">
@@ -103,7 +138,7 @@ const SellerToCustomer = () => {
                                         <div className="w-full md:w-[calc(100%-200px)] md:pl-4">
                                                 {/* Top */}
                                                 <div className="flex justify-between items-center">
-                                                        {sellerId && (
+                                                        {customerId && (
                                                                 <div className="flex justify-start items-center gap-3">
                                                                         <div className="relative">
                                                                                 <img
@@ -111,7 +146,13 @@ const SellerToCustomer = () => {
                                                                                         alt="avatar"
                                                                                         className="w-[45px] h-[45px] rounded-full border-green-500 border-2 max-w-[45px] p-[2px] "
                                                                                 />
-                                                                                <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                                                                                {activeCustomer?.some(
+                                                                                        (customer) =>
+                                                                                                customer?.customerId.toString() ==
+                                                                                                customerId?.toString()
+                                                                                ) && (
+                                                                                        <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                                                                                )}
                                                                         </div>
                                                                         <h2 className="text-base text-white font-semibold">
                                                                                 {currentCustomer?.name}

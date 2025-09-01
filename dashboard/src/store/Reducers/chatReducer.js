@@ -71,6 +71,9 @@ const chatReducer = createSlice({
                         state.errorMessage = "";
                         state.successMessage = "";
                 },
+                updateMessage(state, action) {
+                        state.messages = [...state.messages, action.payload];
+                },
         },
         // Customer register
         extraReducers: (builder) => {
@@ -107,4 +110,4 @@ const chatReducer = createSlice({
 
 export default chatReducer.reducer;
 
-export const { messageClear } = chatReducer.actions;
+export const { messageClear, updateMessage } = chatReducer.actions;
