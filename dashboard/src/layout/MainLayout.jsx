@@ -20,7 +20,6 @@ const MainLayout = () => {
 
         useEffect(() => {
                 socket.on("activeSeller", (allSeller) => {
-                        console.log(allSeller);
                         dispatch(updateSellers(allSeller));
                 });
                 socket.on("activeCustomer", (admin) => {

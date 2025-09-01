@@ -6,7 +6,7 @@ import { get_sellers } from "../../store/Reducers/chatReducer";
 
 const ChatSeller = () => {
         const dispatch = useDispatch();
-        const { sellers } = useSelector((state) => state.chat);
+        const { sellers, activeSeller } = useSelector((state) => state.chat);
         const [show, setShow] = useState(false);
         const sellerId = 65;
         useEffect(() => {
@@ -47,7 +47,13 @@ const ChatSeller = () => {
                                                                                         alt="avatar"
                                                                                         className="w-[38px] h-[38px] rounded-full border-white border-2 max-w-[38px] p-[2px] "
                                                                                 />
-                                                                                <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                                                                                {activeSeller?.some(
+                                                                                        (sel) =>
+                                                                                                sel?.sellerId.toString() ==
+                                                                                                seller?._id.toString()
+                                                                                ) && (
+                                                                                        <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                                                                                )}
                                                                         </div>
 
                                                                         <div className="flex justify-center items-start flex-col w-full">
