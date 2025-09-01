@@ -1,9 +1,20 @@
 import React, { useState } from "react";
 import { FaBorderAll, FaHeart, FaKey, FaList, FaSignOutAlt } from "react-icons/fa";
 import { IoIosHome, IoMdChatbubbles } from "react-icons/io";
-import { Link, Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { customer_logout, userReset } from "../store/reducers/authReducer";
+import { cartReset } from "../store/reducers/cartReducer";
 const Dashboard = () => {
+        const navigate = useNavigate();
         const [filterShow, setFilterShow] = useState(false);
+        const dispatch = useDispatch();
+        const logOut = async () => {
+                dispatch(customer_logout());
+                dispatch(userReset());
+                dispatch(cartReset());
+                navigate("/");
+        };
         return (
                 <div>
                         <div className="bg-slate-200 mt-5">
@@ -70,11 +81,14 @@ const Dashboard = () => {
                                                                         </Link>
                                                                 </li>
 
-                                                                <li className="cursor-pointer flex justify-start items-center gap-2 py-2">
+                                                                <li
+                                                                        onClick={logOut}
+                                                                        className="cursor-pointer flex justify-start items-center gap-2 py-2"
+                                                                >
                                                                         <span className="text-xl">
                                                                                 <FaSignOutAlt />
                                                                         </span>
-                                                                        <Link to="/dashboard" className="block ">
+                                                                        <Link to="#" className="block ">
                                                                                 Logout
                                                                         </Link>
                                                                 </li>

@@ -67,7 +67,13 @@ const customer_login = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "User login successfully", { customer, token }));
 });
 
+const customer_logout = asyncHandler(async (req, res, next) => {
+        res.clearCookie("customerToken");
+        res.status(200).json(new ApiResponse(200, "User logout successfully"));
+});
+
 export default {
         customer_register,
         customer_login,
+        customer_logout,
 };

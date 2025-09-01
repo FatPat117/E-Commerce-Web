@@ -7,7 +7,6 @@ export const add_to_cart = createAsyncThunk("cart/add_to_cart", async (data, { f
                 const response = await api.post("/cart/add-to-cart", data, {
                         withCredentials: true,
                 });
-                // console.log(response.data);
                 return fulfillWithValue(response.data);
         } catch (error) {
                 return rejectWithValue(error.response.data.message);
@@ -22,7 +21,6 @@ export const get_cart_products = createAsyncThunk(
                         const response = await api.get(`/cart/get-cart-products/${userId}`, {
                                 withCredentials: true,
                         });
-                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -38,7 +36,6 @@ export const delete_cart_product = createAsyncThunk(
                         const response = await api.delete(`/cart/delete-cart-product/${id}`, {
                                 withCredentials: true,
                         });
-                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -55,7 +52,6 @@ export const quantity_increment = createAsyncThunk(
                                 quantity,
                                 withCredentials: true,
                         });
-                        console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -72,7 +68,6 @@ export const quantity_decrement = createAsyncThunk(
                                 quantity,
                                 withCredentials: true,
                         });
-                        console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -88,7 +83,6 @@ export const add_to_wishlist = createAsyncThunk(
                         const response = await api.post(`/cart/add-to-wishlist`, info, {
                                 withCredentials: true,
                         });
-                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -104,7 +98,6 @@ export const get_wishlist_products = createAsyncThunk(
                         const response = await api.get(`/cart/get-wishlist-products/${userId}`, {
                                 withCredentials: true,
                         });
-                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -120,7 +113,7 @@ export const remove_wishlist_product = createAsyncThunk(
                         const response = await api.delete(`/cart/remove-wishlist-product/${wishlistId}`, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -147,6 +140,13 @@ const cartReducer = createSlice({
                 messageClear(state) {
                         state.errorMessage = "";
                         state.successMessage = "";
+                },
+                cartReset(state) {
+                        state.cartProducts = [];
+                        state.cartProductsTotal = 0;
+                        state.wishlistProducts = [];
+                        state.wishlistProductsTotal = 0;
+                        state.price = 0;
                 },
         },
         extraReducers: (builder) => {
@@ -279,4 +279,4 @@ const cartReducer = createSlice({
 
 export default cartReducer.reducer;
 
-export const { messageClear } = cartReducer.actions;
+export const { messageClear, cartReset } = cartReducer.actions;

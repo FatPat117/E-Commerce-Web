@@ -36,6 +36,23 @@ export const customer_login = createAsyncThunk(
         }
 );
 
+// customer logout
+export const customer_logout = createAsyncThunk(
+        "auth/customer_logout",
+        async (data, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.post("/customer/customer-logout", data, {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+                        localStorage.removeItem("customerToken");
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 // Generate jwt token
 const decodeToken = (token) => {
         if (token) {
@@ -56,6 +73,11 @@ const authReducer = createSlice({
         },
         reducers: {
                 messageClear(state) {
+                        state.errorMessage = "";
+                        state.successMessage = "";
+                },
+                userReset(state) {
+                        state.userInfo = null;
                         state.errorMessage = "";
                         state.successMessage = "";
                 },
@@ -94,4 +116,4 @@ const authReducer = createSlice({
 
 export default authReducer.reducer;
 
-export const { messageClear } = authReducer.actions;
+export const { messageClear, userReset } = authReducer.actions;
