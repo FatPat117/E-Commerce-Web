@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineMessage, AiOutlinePlus } from "react-icons/ai";
 import { GrEmoji } from "react-icons/gr";
@@ -19,7 +19,7 @@ const Chat = () => {
         const [text, setText] = useState("");
         const [receiverMessage, setReceiverMessage] = useState("");
         const [activeSeller, setActiveSeller] = useState([]);
-
+        const scrollRef = useRef(null);
         useEffect(() => {
                 socket.emit("add_user", userInfo.id, userInfo);
         }, [userInfo]);
@@ -61,6 +61,11 @@ const Chat = () => {
                         }
                 }
         }, [receiverMessage]);
+
+        // Scroll
+        useEffect(() => {
+                scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, [receiverMessage, friendMessages]);
         return (
                 <div className="bg-white p-3 rounded-md">
                         <div className="w-full flex">
@@ -121,6 +126,7 @@ const Chat = () => {
                                                                                         return (
                                                                                                 <div
                                                                                                         key={idx}
+                                                                                                        ref={scrollRef}
                                                                                                         className="w-full flex gap-2 justify-start items-center text-[14px]"
                                                                                                 >
                                                                                                         <img
@@ -142,6 +148,7 @@ const Chat = () => {
                                                                                         return (
                                                                                                 <div
                                                                                                         key={idx}
+                                                                                                        ref={scrollRef}
                                                                                                         className="w-full flex gap-2 justify-end items-center text-[14px]"
                                                                                                 >
                                                                                                         <img

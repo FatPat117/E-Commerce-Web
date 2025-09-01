@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaList } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
@@ -14,7 +14,6 @@ import {
 import { socket } from "../../utils/utils";
 const SellerToCustomer = () => {
         const { customerId } = useParams();
-
         const dispatch = useDispatch();
         const { userInfo } = useSelector((state) => state.auth);
         const { customers, messages, currentCustomer, successMessage } = useSelector((state) => state.chat);
@@ -22,7 +21,7 @@ const SellerToCustomer = () => {
         const [show, setShow] = useState(false);
         const [receiverMessage, setReceiverMessage] = useState("");
         const [activeCustomer, setActiveCustomer] = useState([]);
-
+        const scrollRef = useRef(null);
         useEffect(() => {
                 dispatch(get_customers(userInfo?._id));
         }, [userInfo?.id]);
@@ -74,6 +73,10 @@ const SellerToCustomer = () => {
                 }
         }, [receiverMessage]);
 
+        // Scroll
+        useEffect(() => {
+                scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, [receiverMessage, messages]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md  h-[calc(100vh-140px)]">
@@ -184,6 +187,7 @@ const SellerToCustomer = () => {
                                                                                                 <div
                                                                                                         key={idx}
                                                                                                         className="w-full flex justify-start items-center"
+                                                                                                        ref={scrollRef}
                                                                                                 >
                                                                                                         <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
                                                                                                                 <div>
@@ -209,6 +213,7 @@ const SellerToCustomer = () => {
                                                                                                 <div
                                                                                                         key={idx}
                                                                                                         className="w-full flex justify-end items-center"
+                                                                                                        ref={scrollRef}
                                                                                                 >
                                                                                                         <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
                                                                                                                 <div className="flex justify-center items-start flex-col w-full bg-red-500 shadow-md shadow-red-500/50 text-white py-1 px-2 rounded-sm ">
