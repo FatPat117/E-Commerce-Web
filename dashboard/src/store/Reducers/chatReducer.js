@@ -58,7 +58,7 @@ export const get_sellers = createAsyncThunk(
                         const response = await api.get(`/chat/admin/get-sellers`, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
 
                         return fulfillWithValue(response.data);
                 } catch (error) {

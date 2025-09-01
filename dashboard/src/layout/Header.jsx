@@ -35,7 +35,7 @@ const Header = ({ showSidebar, setShowSidebar }) => {
                                                                         {userInfo?.role}
                                                                 </span>
                                                         </div>
-                                                        {userInfo.role == "admin" ? (
+                                                        {userInfo?.role == "admin" ? (
                                                                 <img
                                                                         src="/images/admin.jpg"
                                                                         alt="avatar"
