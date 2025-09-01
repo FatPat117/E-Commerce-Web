@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { AiOutlineMessage, AiOutlinePlus } from "react-icons/ai";
 import { GrEmoji } from "react-icons/gr";
 import { IoSend } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import io from "socket.io-client";
-import { add_friend, send_message } from "../../store/reducers/chatReducer";
-
+import { add_friend, messageClear, send_message, updateMessage } from "../../store/reducers/chatReducer";
 // chỉ tạo socket 1 lần
 const socket = io("http://localhost:5000", {
         transports: ["websocket"], // giúp ổn định hơn
@@ -17,7 +17,7 @@ const Chat = () => {
         const { userInfo } = useSelector((state) => state.auth);
         const { myFriends, friendMessages, currentFriend } = useSelector((state) => state.chat);
         const [text, setText] = useState("");
-        const [receiverMessage, setReceiverMessage] = useState([]);
+        const [receiverMessage, setReceiverMessage] = useState("");
         const [activeSeller, setActiveSeller] = useState([]);
 
         useEffect(() => {
@@ -37,13 +37,23 @@ const Chat = () => {
 
         useEffect(() => {
                 socket.on("seller_message", (message) => {
-                        setReceiverMessage([...receiverMessage, message]);
+                        setReceiverMessage(message);
                 });
                 socket.on("activeSeller", (allSeller) => {
                         setActiveSeller(allSeller);
                 });
         }, []);
-        console.log(activeSeller);
+
+        useEffect(() => {
+                if (receiverMessage) {
+                        if (sellerId == receiverMessage.senderId && userInfo?.id == receiverMessage.receiverId) {
+                                dispatch(updateMessage(receiverMessage));
+                        } else {
+                                toast.success(receiverMessage?.senderName + " " + "Send A message");
+                                dispatch(messageClear());
+                        }
+                }
+        }, [receiverMessage]);
         return (
                 <div className="bg-white p-3 rounded-md">
                         <div className="w-full flex">

@@ -84,11 +84,12 @@ const addSeller = (sellerId, sellerInfo, socketId) => {
 };
 
 const findCustomer = (customerId) => {
-        return allCustomer.find((customer) => customer.customerId === customerId);
+        return allCustomer.find((customer) => customer.customerId.toString() == customerId.toString());
 };
 
 const remove = (socketId) => {
         allCustomer = allCustomer.filter((customer) => customer.socketId != socketId);
+        allSeller = allSeller.filter((seller) => seller.socketId != socketId);
 };
 
 io.on("connection", (socket) => {
