@@ -182,4 +182,18 @@ const get_customer_messages = asyncHandler(async (req, res, next) => {
                 .status(200)
                 .json(new ApiResponse(200, "Messages fetched successfully", { messages, currentCustomer }));
 });
-export default { add_customer_friend, send_message_to_seller, get_customers, get_customer_messages };
+
+const send_message_to_customer = asyncHandler(async (req, res, next) => {
+        const { senderId, receiverId, text, shopName } = req.body;
+        console.log(senderId, receiverId, text, shopName);
+
+        return res.status(200).json(new ApiResponse(200, "Message sent successfully", { message }));
+});
+
+export default {
+        add_customer_friend,
+        send_message_to_seller,
+        get_customers,
+        get_customer_messages,
+        send_message_to_customer,
+};
