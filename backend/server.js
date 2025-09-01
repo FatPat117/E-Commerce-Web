@@ -67,6 +67,8 @@ const io = new Server(server, {
 
 let allCustomer = [];
 let allSeller = [];
+let admin = {};
+
 const addUser = (customerId, userInfo, socketId) => {
         const checkUser = allCustomer.some((user) => user.customerId.toString() == customerId.toString());
         if (!checkUser) {
@@ -105,6 +107,16 @@ io.on("connection", (socket) => {
         socket.on("add_seller", (sellerId, sellerInfo) => {
                 addSeller(sellerId, sellerInfo, socket.id);
                 io.emit("activeSeller", allSeller);
+        });
+
+        socket.on("add_admin", (adminInfo) => {
+                if (adminInfo) {
+                        delete adminInfo["email"];
+                        let admin = adminInfo;
+                        admin["socketId"] = socket.id;
+                        io.emit("activeCustomer", allCustomer);
+                        io.emit("activeSeller", allSeller);
+                }
         });
 
         socket.on("send_seller_message", (message) => {

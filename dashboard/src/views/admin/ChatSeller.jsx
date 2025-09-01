@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FaList } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { get_sellers } from "../../store/Reducers/chatReducer";
 
 const ChatSeller = () => {
         const dispatch = useDispatch();
-
+        const { sellers } = useSelector((state) => state.chat);
         const [show, setShow] = useState(false);
         const sellerId = 65;
         useEffect(() => {
@@ -34,28 +34,31 @@ const ChatSeller = () => {
                                                         </div>
 
                                                         {/* Chat list */}
-                                                        <div
-                                                                className={
-                                                                        "h-[60px] flex items-center justify-start gap-3 text-white p-2 rounded-md cursor-pointer bg-[#8288ed]"
-                                                                }
-                                                        >
-                                                                <div className="relative">
-                                                                        <img
-                                                                                src="/images/admin.jpg"
-                                                                                alt="avatar"
-                                                                                className="w-[38px] h-[38px] rounded-full border-white border-2 max-w-[38px] p-[2px] "
-                                                                        />
-                                                                        <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
-                                                                </div>
+                                                        {sellers?.map((seller, idx) => (
+                                                                <div
+                                                                        key={idx}
+                                                                        className={
+                                                                                "h-[60px] flex items-center justify-start gap-3 text-white p-2 rounded-md cursor-pointer bg-[#8288ed]"
+                                                                        }
+                                                                >
+                                                                        <div className="relative">
+                                                                                <img
+                                                                                        src={seller.image}
+                                                                                        alt="avatar"
+                                                                                        className="w-[38px] h-[38px] rounded-full border-white border-2 max-w-[38px] p-[2px] "
+                                                                                />
+                                                                                <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                                                                        </div>
 
-                                                                <div className="flex justify-center items-start flex-col w-full">
-                                                                        <div className="flex justify-between items-center w-full">
-                                                                                <h2 className="text-base font-semibold">
-                                                                                        Pitachiti
-                                                                                </h2>
+                                                                        <div className="flex justify-center items-start flex-col w-full">
+                                                                                <div className="flex justify-between items-center w-full">
+                                                                                        <h2 className="text-base font-semibold">
+                                                                                                {seller?.name}
+                                                                                        </h2>
+                                                                                </div>
                                                                         </div>
                                                                 </div>
-                                                        </div>
+                                                        ))}
                                                 </div>
                                         </div>
 
