@@ -83,6 +83,10 @@ const addSeller = (sellerId, sellerInfo, socketId) => {
         return allSeller;
 };
 
+const findCustomer = (customerId) => {
+        return allCustomer.find((customer) => customer.customerId === customerId);
+};
+
 io.on("connection", (socket) => {
         socket.on("add_user", (customerId, userInfo) => {
                 addUser(customerId, userInfo, socket.id);
@@ -92,9 +96,14 @@ io.on("connection", (socket) => {
                 addSeller(sellerId, sellerInfo, socket.id);
         });
 
-        socket.on("disconnect", () => {
-                console.log("❌ Client disconnected:", socket.id);
+        socket.on("send_seller_message", (message) => {
+                const customer = findCustomer(message.receiverId);
+                if (customer) {
+                        socket.to(customer.socketId).emit("seller_message", message);
+                }
         });
+
+        socket.on("disconnect", () => {});
 });
 
 // Start server

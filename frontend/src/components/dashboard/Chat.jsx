@@ -17,6 +17,8 @@ const Chat = () => {
         const { userInfo } = useSelector((state) => state.auth);
         const { myFriends, friendMessages, currentFriend } = useSelector((state) => state.chat);
         const [text, setText] = useState("");
+        const [receiverMessage, setReceiverMessage] = useState([]);
+
         useEffect(() => {
                 socket.emit("add_user", userInfo.id, userInfo);
         }, [userInfo]);
@@ -31,6 +33,13 @@ const Chat = () => {
                 dispatch(send_message({ userId: userInfo?.id, sellerId: sellerId, text, name: userInfo?.name }));
                 setText("");
         };
+
+        useEffect(() => {
+                socket.on("seller_message", (message) => {
+                        setReceiverMessage([...receiverMessage, message]);
+                });
+        }, []);
+
         return (
                 <div className="bg-white p-3 rounded-md">
                         <div className="w-full flex">

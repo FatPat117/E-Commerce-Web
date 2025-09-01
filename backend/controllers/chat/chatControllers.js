@@ -184,8 +184,53 @@ const get_customer_messages = asyncHandler(async (req, res, next) => {
 });
 
 const send_message_to_customer = asyncHandler(async (req, res, next) => {
-        const { senderId, receiverId, text, shopName } = req.body;
-        console.log(senderId, receiverId, text, shopName);
+        const { senderId, receiverId, text, name } = req.body;
+
+        // Create message
+        const message = await SellerCustomerMessage.create({
+                senderId: senderId,
+                receiverId: receiverId,
+                message: text,
+                senderName: name,
+        });
+
+        // Make the top position seller for recent message (User)
+        const data = await SellerCustomer.findOne({
+                myId: new mongoose.Types.ObjectId(senderId),
+        });
+
+        let myFriends = data.myFriends;
+        let index = myFriends?.findIndex((friend) => friend.friendId.toString() === receiverId.toString());
+
+        while (index > 0) {
+                let temp = myFriends[index];
+                myFriends[index] = myFriends[index - 1];
+                myFriends[index - 1] = temp;
+                index--;
+        }
+        await SellerCustomer.updateOne(
+                { myId: new mongoose.Types.ObjectId(senderId) },
+                { $set: { myFriends: myFriends } }
+        );
+
+        // Make the top position user for recent message (Seller)
+        const data2 = await SellerCustomer.findOne({
+                myId: new mongoose.Types.ObjectId(receiverId),
+        });
+
+        let myFriends2 = data2.myFriends;
+        let index2 = myFriends2?.findIndex((friend) => friend.friendId.toString() === senderId.toString());
+
+        while (index2 > 0) {
+                let temp = myFriends2[index2];
+                myFriends2[index2] = myFriends2[index2 - 1];
+                myFriends2[index2 - 1] = temp;
+                index2--;
+        }
+        await SellerCustomer.updateOne(
+                { myId: new mongoose.Types.ObjectId(receiverId) },
+                { $set: { myFriends: myFriends2 } }
+        );
 
         return res.status(200).json(new ApiResponse(200, "Message sent successfully", { message }));
 });

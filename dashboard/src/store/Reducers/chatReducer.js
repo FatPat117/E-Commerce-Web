@@ -26,7 +26,7 @@ export const get_customer_messages = createAsyncThunk(
                         const response = await api.get(`/chat/seller/get-customer-messages/${customerId}`, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -42,7 +42,7 @@ export const send_message = createAsyncThunk(
                         const response = await api.post(`/chat/seller/send-message-to-customer`, data, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -74,12 +74,33 @@ const chatReducer = createSlice({
         },
         // Customer register
         extraReducers: (builder) => {
+                // get customer
                 builder.addCase(get_customers.fulfilled, (state, action) => {
                         state.customers = action.payload.data.customers;
                 });
+
+                // Get customer Message
                 builder.addCase(get_customer_messages.fulfilled, (state, action) => {
                         state.messages = action.payload.data.messages;
                         state.currentCustomer = action.payload.data.currentCustomer;
+                });
+
+                builder.addCase(send_message.fulfilled, (state, action) => {
+                        let tempFriends = state.customers;
+                        let index = tempFriends.findIndex(
+                                (friend) =>
+                                        friend.friendId.toString() === action.payload.data.message.receiverId.toString()
+                        );
+                        while (index > 0) {
+                                let temp = tempFriends[index];
+                                tempFriends[index] = tempFriends[index - 1];
+                                tempFriends[index - 1] = temp;
+                                index--;
+                        }
+                        state.customers = tempFriends;
+
+                        state.messages = [...state.messages, action.payload.data.message];
+                        state.successMessage = action.payload.message;
                 });
         },
 });
