@@ -235,10 +235,20 @@ const send_message_to_customer = asyncHandler(async (req, res, next) => {
         return res.status(200).json(new ApiResponse(200, "Message sent successfully", { message }));
 });
 
+const get_sellers = asyncHandler(async (req, res, next) => {
+        const sellers = await Seller.find();
+
+        if (sellers.length == 0) {
+                return next(new ApiError(404, "Sellers not found"));
+        }
+        return res.status(200).json(new ApiResponse(200, "Sellers fetched successfully", { sellers }));
+});
+
 export default {
         add_customer_friend,
         send_message_to_seller,
         get_customers,
         get_customer_messages,
         send_message_to_customer,
+        get_sellers,
 };

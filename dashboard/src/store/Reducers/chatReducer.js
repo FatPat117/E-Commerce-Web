@@ -50,6 +50,23 @@ export const send_message = createAsyncThunk(
         }
 );
 
+// Get sellers
+export const get_sellers = createAsyncThunk(
+        "chat/get_sellers",
+        async (sellerId, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/chat/admin/get-sellers`, {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const chatReducer = createSlice({
         name: "chat",
         initialState: {
@@ -104,6 +121,11 @@ const chatReducer = createSlice({
 
                         state.messages = [...state.messages, action.payload.data.message];
                         state.successMessage = action.payload.message;
+                });
+
+                // Get seller
+                builder.addCase(get_sellers.fulfilled, (state, action) => {
+                        state.sellers = action.payload.data.sellers;
                 });
         },
 });

@@ -12,4 +12,7 @@ router.get("/seller/get-customers/:sellerId", chatControllers.get_customers);
 router.get("/seller/get-customer-messages/:customerId", authMiddleware, chatControllers.get_customer_messages);
 router.post("/seller/send-message-to-customer", authMiddleware, chatControllers.send_message_to_customer);
 
+// Admin
+router.get("/admin/get-sellers", chatControllers.get_sellers);
+
 export default router;
