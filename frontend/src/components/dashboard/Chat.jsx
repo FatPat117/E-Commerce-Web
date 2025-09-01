@@ -18,6 +18,7 @@ const Chat = () => {
         const { myFriends, friendMessages, currentFriend } = useSelector((state) => state.chat);
         const [text, setText] = useState("");
         const [receiverMessage, setReceiverMessage] = useState([]);
+        const [activeSeller, setActiveSeller] = useState([]);
 
         useEffect(() => {
                 socket.emit("add_user", userInfo.id, userInfo);
@@ -38,8 +39,11 @@ const Chat = () => {
                 socket.on("seller_message", (message) => {
                         setReceiverMessage([...receiverMessage, message]);
                 });
+                socket.on("activeSeller", (allSeller) => {
+                        setActiveSeller(allSeller);
+                });
         }, []);
-
+        console.log(activeSeller);
         return (
                 <div className="bg-white p-3 rounded-md">
                         <div className="w-full flex">
@@ -58,7 +62,13 @@ const Chat = () => {
                                                                 className={`flex gap-2 justify-start items-center pl-2 py-[5px]`}
                                                         >
                                                                 <div className="w-[30px] h-[30px] rounded-full relative">
-                                                                        <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
+                                                                        {activeSeller?.some(
+                                                                                (seller) =>
+                                                                                        seller.sellerId.toString() ==
+                                                                                        friend.friendId.toString()
+                                                                        ) ? (
+                                                                                <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
+                                                                        ) : null}
 
                                                                         <img src={friend.image} alt="object-contain" />
                                                                 </div>
@@ -72,8 +82,13 @@ const Chat = () => {
                                                 <div className="w-full h-full">
                                                         <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
                                                                 <div className="w-[30px] h-[30px] rounded-full relative">
-                                                                        <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
-
+                                                                        {activeSeller?.some(
+                                                                                (seller) =>
+                                                                                        seller.sellerId.toString() ==
+                                                                                        currentFriend.friendId.toString()
+                                                                        ) ? (
+                                                                                <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
+                                                                        ) : null}
                                                                         <img src={currentFriend?.image} alt="" />
                                                                 </div>
                                                                 <span>{currentFriend?.shopName}</span>

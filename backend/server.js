@@ -65,10 +65,10 @@ const io = new Server(server, {
         },
 });
 
-const allCustomer = [];
-const allSeller = [];
+let allCustomer = [];
+let allSeller = [];
 const addUser = (customerId, userInfo, socketId) => {
-        const checkUser = allCustomer.some((user) => user.customerId === customerId);
+        const checkUser = allCustomer.some((user) => user.customerId.toString() == customerId.toString());
         if (!checkUser) {
                 allCustomer.push({ customerId, userInfo, socketId });
         }
@@ -76,7 +76,7 @@ const addUser = (customerId, userInfo, socketId) => {
 };
 
 const addSeller = (sellerId, sellerInfo, socketId) => {
-        const checkSeller = allSeller.some((seller) => seller.sellerId === sellerId);
+        const checkSeller = allSeller.some((seller) => seller.sellerId.toString() == sellerId.toString());
         if (!checkSeller) {
                 allSeller.push({ sellerId, sellerInfo, socketId });
         }
@@ -87,23 +87,35 @@ const findCustomer = (customerId) => {
         return allCustomer.find((customer) => customer.customerId === customerId);
 };
 
+const remove = (socketId) => {
+        allCustomer = allCustomer.filter((customer) => customer.socketId != socketId);
+};
+
 io.on("connection", (socket) => {
         socket.on("add_user", (customerId, userInfo) => {
                 addUser(customerId, userInfo, socket.id);
+                io.emit("activeCustomer", allCustomer);
         });
 
         socket.on("add_seller", (sellerId, sellerInfo) => {
                 addSeller(sellerId, sellerInfo, socket.id);
+                io.emit("activeSeller", allSeller);
         });
 
         socket.on("send_seller_message", (message) => {
                 const customer = findCustomer(message.receiverId);
+
                 if (customer) {
                         socket.to(customer.socketId).emit("seller_message", message);
                 }
         });
 
-        socket.on("disconnect", () => {});
+        socket.on("disconnect", () => {
+                console.log("❌ Client disconnected:", socket.id);
+                remove(socket.id);
+                io.emit("activeSeller", allSeller);
+                io.emit("activeCustomer", allCustomer);
+        });
 });
 
 // Start server
