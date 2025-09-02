@@ -8,7 +8,7 @@ const ChatSeller = () => {
         const { userInfo } = useSelector((state) => state.auth);
         const { sellerId } = useParams();
         const dispatch = useDispatch();
-        const { sellers, activeSeller } = useSelector((state) => state.chat);
+        const { sellers, activeSeller, successMessage, sellerAdminMessage } = useSelector((state) => state.chat);
         const [show, setShow] = useState(false);
         const [text, setText] = useState("");
         useEffect(() => {
@@ -89,21 +89,32 @@ const ChatSeller = () => {
                                         <div className="w-full md:w-[calc(100%-200px)] md:pl-4">
                                                 {/* Top */}
                                                 <div className="flex justify-between items-center">
-                                                        {sellerId && (
-                                                                <div className="flex justify-start items-center gap-3">
-                                                                        <div className="relative">
-                                                                                <img
-                                                                                        src="/images/admin.jpg"
-                                                                                        alt="avatar"
-                                                                                        className="w-[45px] h-[45px] rounded-full border-green-500 border-2 max-w-[45px] p-[2px] "
-                                                                                />
-                                                                                <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
-                                                                        </div>
-                                                                        <h2 className="text-base text-white font-semibold">
-                                                                                Pitachiti
-                                                                        </h2>
-                                                                </div>
-                                                        )}
+                                                        {sellerId &&
+                                                                sellers?.map((seller, idx) => {
+                                                                        if (
+                                                                                seller?._id.toString() ==
+                                                                                sellerId.toString()
+                                                                        ) {
+                                                                                return (
+                                                                                        <div className="flex justify-start items-center gap-3">
+                                                                                                <div className="relative">
+                                                                                                        <img
+                                                                                                                src={
+                                                                                                                        seller?.image ||
+                                                                                                                        "/images/admin.jpg"
+                                                                                                                }
+                                                                                                                alt="avatar"
+                                                                                                                className="w-[45px] h-[45px] rounded-full border-green-500 border-2 max-w-[45px] p-[2px] "
+                                                                                                        />
+                                                                                                        <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                                                                                                </div>
+                                                                                                <h2 className="text-base text-white font-semibold">
+                                                                                                        {seller?.name}
+                                                                                                </h2>
+                                                                                        </div>
+                                                                                );
+                                                                        } else return null;
+                                                                })}
 
                                                         <div className="w-[35px] flex md:hidden h-[35px] rounded-sm bg-blue-500 shadow-lg hover:shadow-blue-500/50 hover:shadow-md hover:bg-blue-400 transition-colors duration-300 text-white cursor-pointer justify-between items-center ">
                                                                 <span
@@ -119,11 +130,14 @@ const ChatSeller = () => {
                                                 <div className="py-4 ">
                                                         <div className="bg-[#475569] h-[calc(100vh-300px)] rounded-md p-3 overflow-y-auto">
                                                                 {sellerId ? (
-                                                                        [1, 2, 3].map((data, idx) => {
+                                                                        sellerAdminMessage?.map((data, idx) => {
                                                                                 if (data.senderId == sellerId) {
                                                                                         return (
                                                                                                 //     {/* Other Message   */}
-                                                                                                <div className="w-full flex justify-start items-center">
+                                                                                                <div
+                                                                                                        key={idx}
+                                                                                                        className="w-full flex justify-start items-center"
+                                                                                                >
                                                                                                         <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
                                                                                                                 <div>
                                                                                                                         <img
@@ -134,38 +148,39 @@ const ChatSeller = () => {
                                                                                                                 </div>
                                                                                                                 <div className="flex justify-center items-start flex-col w-full bg-blue-500 shadow-md shadow-blue-500/50 text-white py-1 px-2 rounded-sm ">
                                                                                                                         <span>
-                                                                                                                                How
-                                                                                                                                are
-                                                                                                                                you
-                                                                                                                                ?{" "}
+                                                                                                                                {
+                                                                                                                                        data?.message
+                                                                                                                                }
                                                                                                                         </span>
                                                                                                                 </div>
                                                                                                         </div>
                                                                                                 </div>
                                                                                         );
-                                                                                }
-                                                                                return (
-                                                                                        //  {/* My  Message */}
-                                                                                        <div className="w-full flex justify-end items-center">
-                                                                                                <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
-                                                                                                        <div className="flex justify-center items-start flex-col w-full bg-red-500 shadow-md shadow-red-500/50 text-white py-1 px-2 rounded-sm ">
-                                                                                                                <span>
-                                                                                                                        How
-                                                                                                                        are
-                                                                                                                        you
-                                                                                                                        ?{" "}
-                                                                                                                </span>
-                                                                                                        </div>
-                                                                                                        <div>
-                                                                                                                <img
-                                                                                                                        src="/images/admin.jpg"
-                                                                                                                        alt="avatar"
-                                                                                                                        className="w-[38px] h-[38px] rounded-full border-white border-2 max-w-[38px] p-[3px] "
-                                                                                                                />
+                                                                                } else
+                                                                                        return (
+                                                                                                //  {/* My  Message */}
+                                                                                                <div
+                                                                                                        key={idx}
+                                                                                                        className="w-full flex justify-end items-center"
+                                                                                                >
+                                                                                                        <div className="flex justify-start items-start gap-2 md:px-3 py-2 max-w-full lg:max-w-[85%]">
+                                                                                                                <div className="flex justify-center items-start flex-col w-full bg-red-500 shadow-md shadow-red-500/50 text-white py-1 px-2 rounded-sm ">
+                                                                                                                        <span>
+                                                                                                                                {
+                                                                                                                                        data?.message
+                                                                                                                                }
+                                                                                                                        </span>
+                                                                                                                </div>
+                                                                                                                <div>
+                                                                                                                        <img
+                                                                                                                                src="/images/admin.jpg"
+                                                                                                                                alt="avatar"
+                                                                                                                                className="w-[38px] h-[38px] rounded-full border-white border-2 max-w-[38px] p-[3px] "
+                                                                                                                        />
+                                                                                                                </div>
                                                                                                         </div>
                                                                                                 </div>
-                                                                                        </div>
-                                                                                );
+                                                                                        );
                                                                         })
                                                                 ) : (
                                                                         <div className="flex justify-center items-center h-full">

@@ -75,7 +75,7 @@ export const send_message_admin_to_seller = createAsyncThunk(
                         const response = await api.post(`/chat/admin/send-message-to-seller`, data, {
                                 withCredentials: true,
                         });
-                        // console.log(response.data);
+                        console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -148,6 +148,12 @@ const chatReducer = createSlice({
                 // Get seller
                 builder.addCase(get_sellers.fulfilled, (state, action) => {
                         state.sellers = action.payload.data.sellers;
+                });
+
+                // Send message from admin to seller
+                builder.addCase(send_message_admin_to_seller.fulfilled, (state, action) => {
+                        state.sellerAdminMessage = [...state.sellerAdminMessage, action.payload.data.message];
+                        state.successMessage = action.payload.message;
                 });
         },
 });

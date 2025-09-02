@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import AdminSellerMessage from "../../models/chat/adminSellerMessage.js";
 import SellerCustomerMessage from "../../models/chat/sellerCustomerMessageModel.js";
 import SellerCustomer from "../../models/chat/sellerCustomerModel.js";
 import Customer from "../../models/customerModel.js";
@@ -245,7 +246,11 @@ const get_sellers = asyncHandler(async (req, res, next) => {
 });
 
 const send_message_admin_to_seller = asyncHandler(async (req, res, next) => {
-        console.log(req.body);
+        const { senderId, receiverId, text, name } = req.body;
+
+        const message = await AdminSellerMessage.create({ senderId, receiverId, message: text, senderName: name });
+
+        return res.status(200).json(new ApiResponse(200, "Message sent successfully", { message }));
 });
 
 export default {
