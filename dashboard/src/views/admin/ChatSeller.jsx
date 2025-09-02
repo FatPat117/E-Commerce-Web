@@ -3,12 +3,14 @@ import { FaList } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { get_sellers, send_message_admin_to_seller } from "../../store/Reducers/chatReducer";
+import { get_admin_messages, get_sellers, send_message_admin_to_seller } from "../../store/Reducers/chatReducer";
 const ChatSeller = () => {
         const { userInfo } = useSelector((state) => state.auth);
         const { sellerId } = useParams();
         const dispatch = useDispatch();
-        const { sellers, activeSeller, successMessage, sellerAdminMessage } = useSelector((state) => state.chat);
+        const { sellers, activeSeller, successMessage, sellerAdminMessage, currentSeller } = useSelector(
+                (state) => state.chat
+        );
         const [show, setShow] = useState(false);
         const [text, setText] = useState("");
         useEffect(() => {
@@ -28,6 +30,12 @@ const ChatSeller = () => {
                 );
                 setText("");
         };
+
+        useEffect(() => {
+                if (sellerId) {
+                        dispatch(get_admin_messages(sellerId));
+                }
+        }, []);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md  h-[calc(100vh-140px)]">
@@ -89,32 +97,24 @@ const ChatSeller = () => {
                                         <div className="w-full md:w-[calc(100%-200px)] md:pl-4">
                                                 {/* Top */}
                                                 <div className="flex justify-between items-center">
-                                                        {sellerId &&
-                                                                sellers?.map((seller, idx) => {
-                                                                        if (
-                                                                                seller?._id.toString() ==
-                                                                                sellerId.toString()
-                                                                        ) {
-                                                                                return (
-                                                                                        <div className="flex justify-start items-center gap-3">
-                                                                                                <div className="relative">
-                                                                                                        <img
-                                                                                                                src={
-                                                                                                                        seller?.image ||
-                                                                                                                        "/images/admin.jpg"
-                                                                                                                }
-                                                                                                                alt="avatar"
-                                                                                                                className="w-[45px] h-[45px] rounded-full border-green-500 border-2 max-w-[45px] p-[2px] "
-                                                                                                        />
-                                                                                                        <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
-                                                                                                </div>
-                                                                                                <h2 className="text-base text-white font-semibold">
-                                                                                                        {seller?.name}
-                                                                                                </h2>
-                                                                                        </div>
-                                                                                );
-                                                                        } else return null;
-                                                                })}
+                                                        {sellerId && currentSeller && (
+                                                                <div className="flex justify-start items-center gap-3">
+                                                                        <div className="relative">
+                                                                                <img
+                                                                                        src={
+                                                                                                currentSeller?.image ||
+                                                                                                "/images/admin.jpg"
+                                                                                        }
+                                                                                        alt="avatar"
+                                                                                        className="w-[45px] h-[45px] rounded-full border-green-500 border-2 max-w-[45px] p-[2px] "
+                                                                                />
+                                                                                <div className="w-[10px] h-[10px] bg-green-500 rounded-full absolute right-0 bottom-0"></div>
+                                                                        </div>
+                                                                        <h2 className="text-base text-white font-semibold">
+                                                                                {currentSeller?.name}
+                                                                        </h2>
+                                                                </div>
+                                                        )}
 
                                                         <div className="w-[35px] flex md:hidden h-[35px] rounded-sm bg-blue-500 shadow-lg hover:shadow-blue-500/50 hover:shadow-md hover:bg-blue-400 transition-colors duration-300 text-white cursor-pointer justify-between items-center ">
                                                                 <span
