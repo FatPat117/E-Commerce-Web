@@ -36,12 +36,21 @@ const Chat = () => {
         };
 
         useEffect(() => {
-                socket.on("seller_message", (message) => {
+                const handleSellerMessage = (message) => {
                         setReceiverMessage(message);
-                });
-                socket.on("activeSeller", (allSeller) => {
+                };
+
+                const handleActiveSeller = (allSeller) => {
                         setActiveSeller(allSeller);
-                });
+                };
+
+                socket.on("seller_message", handleSellerMessage);
+                socket.on("activeSeller", handleActiveSeller);
+
+                return () => {
+                        socket.off("seller_message", handleSellerMessage);
+                        socket.off("activeSeller", handleActiveSeller);
+                };
         }, []);
 
         useEffect(() => {

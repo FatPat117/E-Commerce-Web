@@ -91,7 +91,7 @@ export const get_admin_messages = createAsyncThunk(
                         const response = await api.get(`/chat/admin/get-admin-messages/${sellerId}`, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -143,6 +143,9 @@ const chatReducer = createSlice({
                 },
                 updateCustomer(state, action) {
                         state.activeCustomer = action.payload;
+                },
+                updateAdminMessage(state, action) {
+                        state.sellerAdminMessage = [...state.sellerAdminMessage, action.payload];
                 },
         },
         // Customer register
@@ -202,4 +205,4 @@ const chatReducer = createSlice({
 
 export default chatReducer.reducer;
 
-export const { messageClear, updateMessage, updateSellers, updateCustomer } = chatReducer.actions;
+export const { messageClear, updateMessage, updateSellers, updateCustomer, updateAdminMessage } = chatReducer.actions;

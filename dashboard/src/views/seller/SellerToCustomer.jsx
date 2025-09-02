@@ -54,12 +54,21 @@ const SellerToCustomer = () => {
         }, [successMessage]);
 
         useEffect(() => {
-                socket.on("customer_message", (message) => {
+                const handleCustomerMessage = (message) => {
                         setReceiverMessage(message);
-                });
-                socket.on("activeCustomer", (allCustomer) => {
+                };
+
+                const handleActiveCustomer = (allCustomer) => {
                         setActiveCustomer(allCustomer);
-                });
+                };
+
+                socket.on("customer_message", handleCustomerMessage);
+                socket.on("activeCustomer", handleActiveCustomer);
+
+                return () => {
+                        socket.off("customer_message", handleCustomerMessage);
+                        socket.off("activeCustomer", handleActiveCustomer);
+                };
         }, []);
 
         useEffect(() => {

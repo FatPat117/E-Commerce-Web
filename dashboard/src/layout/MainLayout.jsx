@@ -19,12 +19,21 @@ const MainLayout = () => {
         }, [userInfo]);
 
         useEffect(() => {
-                socket.on("activeSeller", (allSeller) => {
+                const handleActiveSeller = (allSeller) => {
                         dispatch(updateSellers(allSeller));
-                });
-                socket.on("activeCustomer", (admin) => {
+                };
+
+                const handleActiveCustomer = (admin) => {
                         dispatch(updateCustomer(admin));
-                });
+                };
+
+                socket.on("activeSeller", handleActiveSeller);
+                socket.on("activeCustomer", handleActiveCustomer);
+
+                return () => {
+                        socket.off("activeSeller", handleActiveSeller);
+                        socket.off("activeCustomer", handleActiveCustomer);
+                };
         }, []);
         return (
                 <div className="bg-[#cdcae9] w-full min-h-screen">

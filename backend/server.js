@@ -112,13 +112,14 @@ io.on("connection", (socket) => {
         socket.on("add_admin", (adminInfo) => {
                 if (adminInfo) {
                         delete adminInfo["email"];
-                        let admin = adminInfo;
+                        admin = adminInfo;
                         admin["socketId"] = socket.id;
                         io.emit("activeCustomer", allCustomer);
                         io.emit("activeSeller", allSeller);
                 }
         });
 
+        // seller send to customer
         socket.on("send_seller_message", (message) => {
                 const customer = findCustomer(message.receiverId);
 
@@ -127,6 +128,7 @@ io.on("connection", (socket) => {
                 }
         });
 
+        // customer send to seller
         socket.on("send_customer_message", (message) => {
                 const seller = findSeller(message.receiverId);
 
@@ -135,6 +137,14 @@ io.on("connection", (socket) => {
                 }
         });
 
+        // admin send to seller
+        socket.on("send_message_admin_to_seller", (message) => {
+                const seller = findSeller(message.receiverId);
+
+                if (seller) {
+                        socket.to(seller.socketId).emit("received_admin_message", message);
+                }
+        });
         socket.on("disconnect", () => {
                 console.log("❌ Client disconnected:", socket.id);
                 remove(socket.id);

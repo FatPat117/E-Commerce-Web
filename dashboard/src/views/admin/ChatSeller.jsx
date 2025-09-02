@@ -3,12 +3,20 @@ import { FaList } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { get_admin_messages, get_sellers, send_message_admin_to_seller } from "../../store/Reducers/chatReducer";
+import {
+        get_admin_messages,
+        get_sellers,
+        messageClear,
+        send_message_admin_to_seller,
+} from "../../store/Reducers/chatReducer";
+import { socket } from "../../utils/utils";
 const ChatSeller = () => {
         const { userInfo } = useSelector((state) => state.auth);
         const { sellerId } = useParams();
         const dispatch = useDispatch();
-        const { sellers, activeSeller, sellerAdminMessage, currentSeller } = useSelector((state) => state.chat);
+        const { sellers, activeSeller, sellerAdminMessage, currentSeller, successMessage } = useSelector(
+                (state) => state.chat
+        );
         const [show, setShow] = useState(false);
         const [text, setText] = useState("");
         useEffect(() => {
@@ -34,6 +42,12 @@ const ChatSeller = () => {
                         dispatch(get_admin_messages(sellerId));
                 }
         }, [sellerId]);
+        useEffect(() => {
+                if (successMessage) {
+                        socket.emit("send_message_admin_to_seller", sellerAdminMessage[sellerAdminMessage.length - 1]);
+                        dispatch(messageClear());
+                }
+        }, [successMessage]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md  h-[calc(100vh-140px)]">

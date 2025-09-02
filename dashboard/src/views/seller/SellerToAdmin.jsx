@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { get_seller_messages, send_message_admin_to_seller } from "../../store/Reducers/chatReducer";
+import {
+        get_seller_messages,
+        send_message_admin_to_seller,
+        updateAdminMessage,
+} from "../../store/Reducers/chatReducer";
+import { socket } from "../../utils/utils";
 const SellerToAdmin = () => {
         const dispatch = useDispatch();
         const [text, setText] = useState("");
         const { userInfo } = useSelector((state) => state.auth);
-        const { sellers, activeSeller, sellerAdminMessage, currentSeller } = useSelector((state) => state.chat);
+        const { sellerAdminMessage } = useSelector((state) => state.chat);
 
         const sendMessage = (e) => {
                 e.preventDefault();
@@ -22,6 +27,18 @@ const SellerToAdmin = () => {
         };
         useEffect(() => {
                 dispatch(get_seller_messages(""));
+        }, []);
+
+        useEffect(() => {
+                const handleAdminMessage = (message) => {
+                        dispatch(updateAdminMessage(message));
+                };
+
+                socket.on("received_admin_message", handleAdminMessage);
+
+                return () => {
+                        socket.off("received_admin_message", handleAdminMessage);
+                };
         }, []);
 
         return (
