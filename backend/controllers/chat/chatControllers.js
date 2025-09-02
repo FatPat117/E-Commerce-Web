@@ -269,6 +269,16 @@ const get_admin_messages = asyncHandler(async (req, res, next) => {
 
         return res.status(200).json(new ApiResponse(200, "Messages fetched successfully", { messages, seller }));
 });
+
+const get_seller_messages = asyncHandler(async (req, res, next) => {
+        const receiverId = "";
+        const adminId = req?._id;
+        const messages = await AdminSellerMessage.find({
+                $or: [{ senderId: adminId }, { receiverId: adminId }],
+        });
+
+        return res.status(200).json(new ApiResponse(200, "Messages fetched successfully", { messages }));
+});
 export default {
         add_customer_friend,
         send_message_to_seller,
@@ -278,4 +288,5 @@ export default {
         get_sellers,
         send_message_admin_to_seller,
         get_admin_messages,
+        get_seller_messages,
 };

@@ -1,6 +1,29 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { get_seller_messages, send_message_admin_to_seller } from "../../store/Reducers/chatReducer";
 const SellerToAdmin = () => {
+        const dispatch = useDispatch();
+        const [text, setText] = useState("");
+        const { userInfo } = useSelector((state) => state.auth);
+        const { sellers, activeSeller, sellerAdminMessage, currentSeller } = useSelector((state) => state.chat);
+
+        const sendMessage = (e) => {
+                e.preventDefault();
+                if (!text) return;
+                dispatch(
+                        send_message_admin_to_seller({
+                                senderId: userInfo?._id,
+                                receiverId: "",
+                                text,
+                                name: userInfo?.name,
+                        })
+                );
+                setText("");
+        };
+        useEffect(() => {
+                dispatch(get_seller_messages(""));
+        }, []);
+
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md  h-[calc(100vh-140px)]">
@@ -63,8 +86,10 @@ const SellerToAdmin = () => {
                                                 </div>
 
                                                 {/* Button  */}
-                                                <form action="" className="flex gap-3">
+                                                <form action="" className="flex gap-3" onSubmit={sendMessage}>
                                                         <input
+                                                                value={text}
+                                                                onChange={(e) => setText(e.target.value)}
                                                                 type="text"
                                                                 name=""
                                                                 id=""

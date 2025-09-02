@@ -75,6 +75,7 @@ export const send_message_admin_to_seller = createAsyncThunk(
                         const response = await api.post(`/chat/admin/send-message-to-seller`, data, {
                                 withCredentials: true,
                         });
+                        console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -90,7 +91,23 @@ export const get_admin_messages = createAsyncThunk(
                         const response = await api.get(`/chat/admin/get-admin-messages/${sellerId}`, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Get admin message from seller
+export const get_seller_messages = createAsyncThunk(
+        "chat/get_seller_messages",
+        async (_, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/chat/seller/get-seller-messages`, {
+                                withCredentials: true,
+                        });
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -173,6 +190,12 @@ const chatReducer = createSlice({
                 // Get admin message
                 builder.addCase(get_admin_messages.fulfilled, (state, action) => {
                         state.sellerAdminMessage = action.payload.data.messages;
+                        state.currentSeller = action.payload.data.seller;
+                });
+
+                // Get seller message
+                builder.addCase(get_seller_messages.fulfilled, (state, action) => {
+                        state.sellerMessages = action.payload.data.messages;
                         state.currentSeller = action.payload.data.seller;
                 });
         },

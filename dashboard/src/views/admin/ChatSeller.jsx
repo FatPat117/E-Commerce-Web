@@ -8,9 +8,7 @@ const ChatSeller = () => {
         const { userInfo } = useSelector((state) => state.auth);
         const { sellerId } = useParams();
         const dispatch = useDispatch();
-        const { sellers, activeSeller, successMessage, sellerAdminMessage, currentSeller } = useSelector(
-                (state) => state.chat
-        );
+        const { sellers, activeSeller, sellerAdminMessage, currentSeller } = useSelector((state) => state.chat);
         const [show, setShow] = useState(false);
         const [text, setText] = useState("");
         useEffect(() => {

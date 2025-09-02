@@ -9,6 +9,7 @@ router.post("/customer/send-message-to-seller", chatControllers.send_message_to_
 
 // Seller
 router.get("/seller/get-customers/:sellerId", chatControllers.get_customers);
+router.get("/seller/get-seller-messages", authMiddleware, chatControllers.get_seller_messages);
 router.get("/seller/get-customer-messages/:customerId", authMiddleware, chatControllers.get_customer_messages);
 router.post("/seller/send-message-to-customer", authMiddleware, chatControllers.send_message_to_customer);
 
