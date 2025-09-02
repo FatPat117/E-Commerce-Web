@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { get_active_sellers } from "../../store/Reducers/sellerReducer";
 import Pagination from "../Pagination";
 const Sellers = () => {
-        const { sellers, totalSeller, loader } = useSelector((state) => state.seller);
+        const { sellers, totalSeller } = useSelector((state) => state.seller);
         const dispatch = useDispatch();
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");

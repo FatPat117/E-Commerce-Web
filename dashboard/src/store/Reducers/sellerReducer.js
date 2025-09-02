@@ -44,7 +44,7 @@ export const seller_status_update = createAsyncThunk(
                         const response = await api.patch(`/seller/status-update/${data.sellerId}`, data, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -70,6 +70,26 @@ export const get_active_sellers = createAsyncThunk(
                 }
         }
 );
+
+// Get deactive seller
+export const get_deactive_sellers = createAsyncThunk(
+        "seller/get_deactive_sellers",
+        async ({ perPage, page, searchValue }, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(
+                                `/seller/deactive-sellers?perPage=${perPage}&page=${page}&searchValue=${searchValue}`,
+                                {
+                                        withCredentials: true,
+                                }
+                        );
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const sellerReducer = createSlice({
         name: "seller",
         initialState: {
@@ -141,6 +161,21 @@ const sellerReducer = createSlice({
                         state.totalSeller = action.payload.data.totalSeller;
                 });
                 builder.addCase(get_active_sellers.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Get deactive seller
+                builder.addCase(get_deactive_sellers.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_deactive_sellers.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.sellers = action.payload.data.sellers;
+                        state.totalSeller = action.payload.data.totalSeller;
+                });
+                builder.addCase(get_deactive_sellers.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

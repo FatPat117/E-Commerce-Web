@@ -58,7 +58,7 @@ const get_seller = asyncHandler(async (req, res, next) => {
 
 const seller_status_update = asyncHandler(async (req, res, next) => {
         const { sellerId } = req.params;
-        const { status } = req.body.data;
+        const { status } = req.body;
 
         //check if sellerID is vaild
         const existedSeller = await Seller.findById(sellerId);
@@ -69,11 +69,13 @@ const seller_status_update = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "Seller status updated successfully", { seller }));
 });
 
+// Get active seller
 const get_active_sellers = asyncHandler(async (req, res, next) => {
         let { page, perPage, searchValue } = req.query;
         page = parseInt(page);
         perPage = parseInt(perPage);
         const skipPage = perPage * (page - 1);
+
         let sellers;
         let totalSeller;
 
@@ -108,4 +110,45 @@ const get_active_sellers = asyncHandler(async (req, res, next) => {
 
         res.status(200).json(new ApiResponse(200, "", { sellers, totalSeller }));
 });
-export default { get_seller_request, get_seller, seller_status_update, get_active_sellers };
+
+// Get deactive seller
+const get_deactive_sellers = asyncHandler(async (req, res, next) => {
+        let { page, perPage, searchValue } = req.query;
+        page = parseInt(page);
+        perPage = parseInt(perPage);
+        const skipPage = perPage * (page - 1);
+        let sellers;
+        let totalSeller;
+
+        if (searchValue !== "" && perPage !== "" && page !== "") {
+                sellers = await Seller.find({
+                        name: { $regex: searchValue, $options: "i" },
+                        status: "deactive",
+                })
+                        .skip(skipPage)
+                        .limit(parseInt(perPage))
+                        .sort({ createdAt: -1 });
+
+                totalSeller = await Seller.countDocuments({
+                        name: { $regex: searchValue, $options: "i" },
+                        status: "deactive",
+                });
+        } else if (searchValue === "" && perPage !== "" && page !== "") {
+                sellers = await Seller.find({ status: "deactive" })
+                        .skip(skipPage)
+                        .limit(parseInt(perPage))
+                        .sort({ createdAt: -1 });
+
+                totalSeller = await Seller.countDocuments({ status: "deactive" });
+        } else {
+                sellers = await Seller.find({ status: "deactive" });
+                totalSeller = await Seller.countDocuments({ status: "deactive" });
+        }
+
+        if (!sellers) {
+                throw new ApiError(404, "Seller not found");
+        }
+
+        res.status(200).json(new ApiResponse(200, "", { sellers, totalSeller }));
+});
+export default { get_seller_request, get_seller, seller_status_update, get_active_sellers, get_deactive_sellers };
