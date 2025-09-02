@@ -12,7 +12,7 @@ export const get_seller_request = createAsyncThunk(
                                         withCredentials: true,
                                 }
                         );
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -41,8 +41,7 @@ export const seller_status_update = createAsyncThunk(
         "seller/seller_status_update",
         async (data, { fulfillWithValue, rejectWithValue }) => {
                 try {
-                        const response = await api.patch(`/seller/status-update/${data.sellerId}`, {
-                                data,
+                        const response = await api.patch(`/seller/status-update/${data.sellerId}`, data, {
                                 withCredentials: true,
                         });
                         console.log(response.data);
@@ -53,6 +52,24 @@ export const seller_status_update = createAsyncThunk(
         }
 );
 
+// Get active seller
+export const get_active_sellers = createAsyncThunk(
+        "seller/get_active_sellers",
+        async ({ perPage, page, searchValue }, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(
+                                `/seller/active-sellers?perPage=${perPage}&page=${page}&searchValue=${searchValue}`,
+                                {
+                                        withCredentials: true,
+                                }
+                        );
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
 const sellerReducer = createSlice({
         name: "seller",
         initialState: {

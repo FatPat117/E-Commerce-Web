@@ -30,8 +30,8 @@ const get_seller_request = asyncHandler(async (req, res) => {
 
                 totalSeller = await Seller.countDocuments({ status: "pending" });
         } else {
-                sellers = await Seller.find({ status: "pending" });
-                totalSeller = await Seller.countDocuments({ status: "pending" });
+                sellers = await Seller.find({ status: "active" });
+                totalSeller = await Seller.countDocuments({ status: "active" });
         }
 
         if (!sellers) {
@@ -68,4 +68,40 @@ const seller_status_update = asyncHandler(async (req, res, next) => {
 
         res.status(200).json(new ApiResponse(200, "Seller status updated successfully", { seller }));
 });
-export default { get_seller_request, get_seller, seller_status_update };
+
+const get_active_sellers = asyncHandler(async (req, res, next) => {
+        const { page, perPage, searchValue } = req.query;
+        page = parseInt(page);
+        perPage = parseInt(perPage);
+        const skipPage = perPage * (page - 1);
+        let sellers;
+        if (searchValue !== "" && perPage !== "" && page !== "") {
+                sellers = await Seller.find({
+                        name: { $regex: searchValue, $options: "i" },
+                        status: "active",
+                })
+                        .skip(skipPage)
+                        .limit(parseInt(perPage))
+                        .sort({ createdAt: -1 });
+
+                totalSeller = await Seller.countDocuments({
+                        name: { $regex: searchValue, $options: "i" },
+                        status: "pending",
+                });
+        } else if (searchValue === "" && perPage !== "" && page !== "") {
+                sellers = await Seller.find({ status: "active" })
+                        .skip(skipPage)
+                        .limit(parseInt(perPage))
+                        .sort({ createdAt: -1 });
+
+                totalSeller = await Seller.countDocuments({ status: "active" });
+        } else {
+                sellers = await Seller.find({ status: "pending" });
+                totalSeller = await Seller.countDocuments({ status: "pending" });
+        }
+
+        if (!sellers) {
+                throw new ApiError(404, "Seller not found");
+        }
+});
+export default { get_seller_request, get_seller, seller_status_update, get_active_sellers };

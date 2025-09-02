@@ -120,7 +120,10 @@ const ChatSeller = () => {
                                                                 >
                                                                         <div className="relative">
                                                                                 <img
-                                                                                        src={seller.image}
+                                                                                        src={
+                                                                                                seller.image ||
+                                                                                                "/images/admin.jpg"
+                                                                                        }
                                                                                         alt="avatar"
                                                                                         className="w-[38px] h-[38px] rounded-full border-white border-2 max-w-[38px] p-[2px] "
                                                                                 />

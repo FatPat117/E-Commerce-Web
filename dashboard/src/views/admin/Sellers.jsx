@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEye } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { get_active_sellers } from "../../store/Reducers/sellerReducer";
 import Pagination from "../Pagination";
 const Sellers = () => {
+        const dispatch = useDispatch();
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
         const [perPage, setPerPage] = useState(5);
-        const [showAddCategory, setShowAddCategory] = useState(false);
+
+        useEffect(() => {
+                const obj = {
+                        searchValue,
+                        perPage: parseInt(perPage),
+                        page: parseInt(currentPage),
+                };
+
+                dispatch(get_active_sellers(obj));
+        }, [searchValue, currentPage, perPage]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <h1 className="text-[20px] mb-3 font-bold">Seller</h1>
