@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FaEye } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { get_active_sellers } from "../../store/Reducers/sellerReducer";
 import Pagination from "../Pagination";
 const Sellers = () => {
+        const { sellers, totalSeller, loader } = useSelector((state) => state.seller);
         const dispatch = useDispatch();
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
@@ -38,8 +39,10 @@ const Sellers = () => {
                                                 <option value="20">20</option>
                                         </select>
                                         <input
+                                                value={searchValue}
+                                                onChange={(e) => setSearchValue(e.target.value)}
                                                 type="text"
-                                                placeholder="search"
+                                                placeholder="Search Name..."
                                                 className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                         />
                                 </div>
@@ -68,7 +71,7 @@ const Sellers = () => {
                                                                         Email
                                                                 </th>
                                                                 <th scope="col" className="py-3 px-4">
-                                                                        Devision
+                                                                        Status
                                                                 </th>
                                                                 <th scope="col" className="py-3 px-4">
                                                                         District
@@ -80,21 +83,21 @@ const Sellers = () => {
                                                 </thead>
                                                 {/* <tbody className="text-center"> */}
                                                 <tbody className="">
-                                                        {[1, 2, 3, 4, 5].map((data, idx) => {
+                                                        {sellers.map((data, idx) => {
                                                                 return (
                                                                         <tr key={idx} className="border-b">
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        {data}
+                                                                                        {idx + 1}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
                                                                                         <img
-                                                                                                src={`/category/${data}.jpg`}
+                                                                                                src={data?.image}
                                                                                                 alt="category-image"
                                                                                                 className="w-[45px] h-[45px] object-cover"
                                                                                         />
@@ -103,45 +106,48 @@ const Sellers = () => {
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Pitachiti
+                                                                                        {data?.name}
                                                                                 </td>
 
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Shopname
+                                                                                        {data?.shopInfo?.shopName}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Email
+                                                                                        {data?.payment}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Devision
+                                                                                        {data?.email}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        District
+                                                                                        {data?.status}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Action
+                                                                                        {data?.shopInfo?.district}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        <div className="flex items-center justify-center gap-4">
-                                                                                                <Link className="p-[8px]  bg-green-500 rounded-md hover:shadow-lg hover:shadow-green-500/50">
+                                                                                        <div className="flex items-start justify-start gap-4">
+                                                                                                <Link
+                                                                                                        to={`/admin/dashboard/seller/details/${data?._id}`}
+                                                                                                        className="p-[8px]  bg-green-500 rounded-md hover:shadow-lg hover:shadow-green-500/50"
+                                                                                                >
                                                                                                         <FaEye />
                                                                                                 </Link>
                                                                                         </div>
@@ -154,15 +160,17 @@ const Sellers = () => {
                                 </div>
 
                                 {/* Pagination */}
-                                <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
-                                        <Pagination
-                                                pageNumber={currentPage}
-                                                setPageNumber={setCurrentPage}
-                                                totalItem={50}
-                                                perPage={perPage}
-                                                showPage={3}
-                                        />
-                                </div>
+                                {totalSeller <= parseInt(perPage) ? null : (
+                                        <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
+                                                <Pagination
+                                                        pageNumber={currentPage}
+                                                        setPageNumber={setCurrentPage}
+                                                        totalItem={totalSeller}
+                                                        perPage={perPage}
+                                                        showPage={3}
+                                                />
+                                        </div>
+                                )}
                         </div>
                 </div>
         );

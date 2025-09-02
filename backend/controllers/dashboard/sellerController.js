@@ -70,11 +70,13 @@ const seller_status_update = asyncHandler(async (req, res, next) => {
 });
 
 const get_active_sellers = asyncHandler(async (req, res, next) => {
-        const { page, perPage, searchValue } = req.query;
+        let { page, perPage, searchValue } = req.query;
         page = parseInt(page);
         perPage = parseInt(perPage);
         const skipPage = perPage * (page - 1);
         let sellers;
+        let totalSeller;
+
         if (searchValue !== "" && perPage !== "" && page !== "") {
                 sellers = await Seller.find({
                         name: { $regex: searchValue, $options: "i" },
@@ -86,7 +88,7 @@ const get_active_sellers = asyncHandler(async (req, res, next) => {
 
                 totalSeller = await Seller.countDocuments({
                         name: { $regex: searchValue, $options: "i" },
-                        status: "pending",
+                        status: "active",
                 });
         } else if (searchValue === "" && perPage !== "" && page !== "") {
                 sellers = await Seller.find({ status: "active" })
@@ -96,12 +98,14 @@ const get_active_sellers = asyncHandler(async (req, res, next) => {
 
                 totalSeller = await Seller.countDocuments({ status: "active" });
         } else {
-                sellers = await Seller.find({ status: "pending" });
-                totalSeller = await Seller.countDocuments({ status: "pending" });
+                sellers = await Seller.find({ status: "active" });
+                totalSeller = await Seller.countDocuments({ status: "active" });
         }
 
         if (!sellers) {
                 throw new ApiError(404, "Seller not found");
         }
+
+        res.status(200).json(new ApiResponse(200, "", { sellers, totalSeller }));
 });
 export default { get_seller_request, get_seller, seller_status_update, get_active_sellers };

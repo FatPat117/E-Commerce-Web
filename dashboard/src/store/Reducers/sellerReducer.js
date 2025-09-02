@@ -63,7 +63,7 @@ export const get_active_sellers = createAsyncThunk(
                                         withCredentials: true,
                                 }
                         );
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -126,6 +126,21 @@ const sellerReducer = createSlice({
                         state.seller = action.payload.data.seller;
                 });
                 builder.addCase(seller_status_update.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Get active seller
+                builder.addCase(get_active_sellers.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_active_sellers.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.sellers = action.payload.data.sellers;
+                        state.totalSeller = action.payload.data.totalSeller;
+                });
+                builder.addCase(get_active_sellers.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
