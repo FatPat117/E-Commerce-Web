@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { BsArrowDownSquare } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { get_admin_orders } from "../../store/Reducers/orderReducer";
 import Pagination from "../Pagination";
 const Orders = () => {
         const dispatch = useDispatch();
+        const { myOrders, totalOrder } = useSelector((state) => state.order);
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
         const [perPage, setPerPage] = useState(5);
@@ -68,72 +69,87 @@ const Orders = () => {
                                                 </div>
 
                                                 {/* Items */}
-                                                <div className="text-[#d0d2d6]  ">
-                                                        <div className="flex justify-between items-start border-b border-slate-700">
-                                                                <div className="py-3 w-[25%] font-medium text-sm whitespace-nowrap">
-                                                                        #12321312
-                                                                </div>
-                                                                <div className="py-3 w-[13%] font-medium text-sm whitespace-nowrap">
-                                                                        $545
-                                                                </div>
-                                                                <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
-                                                                        Pending
-                                                                </div>
-                                                                <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
-                                                                        Pending
-                                                                </div>
-                                                                <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
-                                                                        <Link
-                                                                                to={`/admin/dashboard/order/details/${12321312}`}
-                                                                        >
-                                                                                View
-                                                                        </Link>
-                                                                </div>
-                                                                <div
-                                                                        onClick={() => setShowOrders(!showOrders)}
-                                                                        className="py-3 w-[8%] font-medium text-sm whitespace-nowrap"
-                                                                >
-                                                                        <BsArrowDownSquare size={20} />
-                                                                </div>
-                                                        </div>
-
-                                                        {/* The same orders from a OrderId */}
-                                                        <div
-                                                                className={
-                                                                        showOrders
-                                                                                ? "block border-b border-slate-700 bg-[#8288ed]"
-                                                                                : "hidden"
-                                                                }
-                                                        >
-                                                                <div className="flex justify-start items-start border-b border-slate-700">
-                                                                        <div className="py-3 w-[25%] font-medium text-sm whitespace-nowrap pl-3">
-                                                                                #123
+                                                {myOrders?.map((data, idx) => (
+                                                        <div key={idx} className="text-[#d0d2d6]  ">
+                                                                <div className="flex justify-between items-start border-b border-slate-700">
+                                                                        <div className="py-3 w-[25%] font-medium text-sm whitespace-nowrap">
+                                                                                #{data?._id}
                                                                         </div>
                                                                         <div className="py-3 w-[13%] font-medium text-sm whitespace-nowrap">
-                                                                                $54
+                                                                                ${data?.price}
                                                                         </div>
                                                                         <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
-                                                                                Pending
+                                                                                {data?.paymentStatus}
                                                                         </div>
                                                                         <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
-                                                                                Pending
+                                                                                {data?.deliveryStatus}
+                                                                        </div>
+                                                                        <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
+                                                                                <Link
+                                                                                        to={`/admin/dashboard/order/details/${data?._id}`}
+                                                                                >
+                                                                                        View
+                                                                                </Link>
+                                                                        </div>
+                                                                        <div
+                                                                                onClick={() => setShowOrders(data?._id)}
+                                                                                className="py-3 w-[8%] font-medium text-sm whitespace-nowrap"
+                                                                        >
+                                                                                <BsArrowDownSquare size={20} />
                                                                         </div>
                                                                 </div>
+
+                                                                {/* The same orders from a OrderId */}
+                                                                <div
+                                                                        className={
+                                                                                showOrders === data?._id
+                                                                                        ? "block border-b border-slate-700 bg-[#8288ed]"
+                                                                                        : "hidden"
+                                                                        }
+                                                                >
+                                                                        {data?.order?.map((o, idx) => {
+                                                                                return (
+                                                                                        <div
+                                                                                                key={idx}
+                                                                                                className="flex justify-start items-start border-b border-slate-700"
+                                                                                        >
+                                                                                                <div className="py-3 w-[25%] font-medium text-sm whitespace-nowrap pl-3">
+                                                                                                        #{o?._id}
+                                                                                                </div>
+                                                                                                <div className="py-3 w-[13%] font-medium text-sm whitespace-nowrap">
+                                                                                                        ${o?.price}
+                                                                                                </div>
+                                                                                                <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
+                                                                                                        {
+                                                                                                                o?.paymentStatus
+                                                                                                        }
+                                                                                                </div>
+                                                                                                <div className="py-3 w-[18%] font-medium text-sm whitespace-nowrap">
+                                                                                                        {
+                                                                                                                o?.deliveryStatus
+                                                                                                        }
+                                                                                                </div>
+                                                                                        </div>
+                                                                                );
+                                                                        })}
+                                                                </div>
                                                         </div>
-                                                </div>
+                                                ))}
                                         </div>
                                 </div>
 
                                 {/* Pagination */}
-                                <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
-                                        <Pagination
-                                                pageNumber={currentPage}
-                                                setPageNumber={setCurrentPage}
-                                                totalItem={50}
-                                                perPage={perPage}
-                                                showPage={3}
-                                        />
-                                </div>
+                                {totalOrder <= perPage ? null : (
+                                        <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
+                                                <Pagination
+                                                        pageNumber={currentPage}
+                                                        setPageNumber={setCurrentPage}
+                                                        totalItem={totalOrder}
+                                                        perPage={perPage}
+                                                        showPage={3}
+                                                />
+                                        </div>
+                                )}
                         </div>
                 </div>
         );

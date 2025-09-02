@@ -12,7 +12,7 @@ export const get_admin_orders = createAsyncThunk(
                                         withCredentials: true,
                                 }
                         );
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -37,7 +37,19 @@ const orderReducer = createSlice({
                 },
         },
         extraReducers: (builder) => {
-                // Add product
+                // Get admin orders
+                builder.addCase(get_admin_orders.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_admin_orders.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.myOrders = action.payload.data.orders;
+                        state.totalOrder = action.payload.data.totalOrder;
+                });
+                builder.addCase(get_admin_orders.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
         },
 });
 

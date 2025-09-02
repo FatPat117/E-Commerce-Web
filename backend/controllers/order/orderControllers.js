@@ -178,9 +178,50 @@ const get_order_details = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "", { order }));
 });
 
+const get_admin_orders = asyncHandler(async (req, res, next) => {
+        let { perPage, page, searchValue } = req.query;
+        perPage = parseInt(perPage, 10);
+        page = parseInt(page, 10);
+        searchValue = searchValue || "";
+        const skipPage = perPage * (page - 1);
+        let orders;
+        let totalOrder;
+
+        // Find all orders
+        orders = await CustomerOrder.aggregate([
+                {
+                        $lookup: {
+                                from: "authorders",
+                                localField: "_id",
+                                foreignField: "orderId",
+                                as: "order",
+                        },
+                },
+        ])
+                .skip(skipPage)
+                .limit(perPage)
+                .sort({ createdAt: -1 });
+
+        // console.log(orders);
+
+        totalOrder = await CustomerOrder.aggregate([
+                {
+                        $lookup: {
+                                from: "authorders",
+                                localField: "_id",
+                                foreignField: "orderId",
+                                as: "order",
+                        },
+                },
+        ]);
+
+        res.status(200).json(new ApiResponse(200, "", { orders, totalOrder: totalOrder.length }));
+});
+
 export default {
         place_order,
         get_dashboard_data,
         get_order,
         get_order_details,
+        get_admin_orders,
 };
