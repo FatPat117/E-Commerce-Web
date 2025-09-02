@@ -13,6 +13,7 @@ router.get("/seller/get-customer-messages/:customerId", authMiddleware, chatCont
 router.post("/seller/send-message-to-customer", authMiddleware, chatControllers.send_message_to_customer);
 
 // Admin
-router.get("/admin/get-sellers", chatControllers.get_sellers);
+router.get("/admin/get-sellers", authMiddleware, chatControllers.get_sellers);
+router.post("/admin/send-message-to-seller", authMiddleware, chatControllers.send_message_admin_to_seller);
 
 export default router;

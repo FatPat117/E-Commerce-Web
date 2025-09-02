@@ -244,6 +244,10 @@ const get_sellers = asyncHandler(async (req, res, next) => {
         return res.status(200).json(new ApiResponse(200, "Sellers fetched successfully", { sellers }));
 });
 
+const send_message_admin_to_seller = asyncHandler(async (req, res, next) => {
+        console.log(req.body);
+});
+
 export default {
         add_customer_friend,
         send_message_to_seller,
@@ -251,4 +255,5 @@ export default {
         get_customer_messages,
         send_message_to_customer,
         get_sellers,
+        send_message_admin_to_seller,
 };

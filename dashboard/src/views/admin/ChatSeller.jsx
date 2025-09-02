@@ -3,16 +3,31 @@ import { FaList } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { get_sellers } from "../../store/Reducers/chatReducer";
+import { get_sellers, send_message_admin_to_seller } from "../../store/Reducers/chatReducer";
 const ChatSeller = () => {
+        const { userInfo } = useSelector((state) => state.auth);
         const { sellerId } = useParams();
         const dispatch = useDispatch();
         const { sellers, activeSeller } = useSelector((state) => state.chat);
         const [show, setShow] = useState(false);
-        console.log(sellerId);
+        const [text, setText] = useState("");
         useEffect(() => {
                 dispatch(get_sellers());
         }, []);
+
+        const sendMessage = (e) => {
+                e.preventDefault();
+                if (!text || !sellerId) return;
+                dispatch(
+                        send_message_admin_to_seller({
+                                senderId: userInfo?._id,
+                                receiverId: sellerId,
+                                text,
+                                name: "Admin Support",
+                        })
+                );
+                setText("");
+        };
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md  h-[calc(100vh-140px)]">
@@ -163,8 +178,11 @@ const ChatSeller = () => {
                                                 </div>
 
                                                 {/* Button  */}
-                                                <form action="" className="flex gap-3">
+                                                <form action="" className="flex gap-3" onSubmit={sendMessage}>
                                                         <input
+                                                                value={text}
+                                                                onChange={(e) => setText(e.target.value)}
+                                                                readOnly={sellerId ? false : true}
                                                                 type="text"
                                                                 name=""
                                                                 id=""
@@ -172,7 +190,14 @@ const ChatSeller = () => {
                                                                 className="w-full flex justify-between items-center px-2 py-3 border-2 border-slate-700 focus:border-white focus:outline-none rounded-md outline-none text-[#d0d2d6] bg-transparent font-medium"
                                                         />
 
-                                                        <button className=" bg-[#06b6d4] hover:shadow-cyan-500/50 hover:bg-[#06b6d4]/90 shadow-md  py-3 cursor-pointer ] rounded-md  font-semibold w-[75px] h-[45px] text-white flex justify-center items-center">
+                                                        <button
+                                                                disabled={sellerId ? false : true}
+                                                                className={` bg-[#06b6d4] hover:shadow-cyan-500/50 hover:bg-[#06b6d4]/90 shadow-md  py-3 rounded-md  font-semibold w-[75px] h-[45px] text-white flex justify-center items-center ${
+                                                                        sellerId
+                                                                                ? "cursor-pointer"
+                                                                                : "cursor-not-allowed"
+                                                                }`}
+                                                        >
                                                                 Send
                                                         </button>
                                                 </form>
