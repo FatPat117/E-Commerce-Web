@@ -91,7 +91,7 @@ export const get_admin_messages = createAsyncThunk(
                         const response = await api.get(`/chat/admin/get-admin-messages/${sellerId}`, {
                                 withCredentials: true,
                         });
-                        // console.log(response.data);
+                        console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -195,8 +195,7 @@ const chatReducer = createSlice({
 
                 // Get seller message
                 builder.addCase(get_seller_messages.fulfilled, (state, action) => {
-                        state.sellerMessages = action.payload.data.messages;
-                        state.currentSeller = action.payload.data.seller;
+                        state.sellerAdminMessage = action.payload.data.messages;
                 });
         },
 });

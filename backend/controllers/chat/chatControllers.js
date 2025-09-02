@@ -256,10 +256,11 @@ const send_message_admin_to_seller = asyncHandler(async (req, res, next) => {
 const get_admin_messages = asyncHandler(async (req, res, next) => {
         const { sellerId } = req.params;
         const adminId = req?._id;
+
         const messages = await AdminSellerMessage.find({
                 $or: [
-                        { senderId: adminId, receiverId: sellerId },
-                        { senderId: sellerId, receiverId: adminId },
+                        { senderId: adminId, $or: [{ receiverId: sellerId }, { receiverId: "" }] },
+                        { senderId: sellerId, $or: [{ receiverId: adminId }, { receiverId: "" }] },
                 ],
         });
         const seller = await Seller.findById(sellerId);
