@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
         get_seller_messages,
@@ -8,6 +8,7 @@ import {
 } from "../../store/Reducers/chatReducer";
 import { socket } from "../../utils/utils";
 const SellerToAdmin = () => {
+        const scrollRef = useRef(null);
         const dispatch = useDispatch();
         const [text, setText] = useState("");
         const { userInfo } = useSelector((state) => state.auth);
@@ -49,6 +50,10 @@ const SellerToAdmin = () => {
                 };
         }, []);
 
+        // Scroll
+        useEffect(() => {
+                scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, [sellerAdminMessage]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md  h-[calc(100vh-140px)]">
@@ -81,6 +86,7 @@ const SellerToAdmin = () => {
                                                                                 return (
                                                                                         //       {/* My  Message */}
                                                                                         <div
+                                                                                                ref={scrollRef}
                                                                                                 key={idx}
                                                                                                 className="w-full flex justify-end items-center"
                                                                                         >
@@ -108,6 +114,7 @@ const SellerToAdmin = () => {
                                                                                 return (
                                                                                         //        {/* Other Message   */}
                                                                                         <div
+                                                                                                ref={scrollRef}
                                                                                                 key={idx}
                                                                                                 className="w-full flex justify-start items-center"
                                                                                         >

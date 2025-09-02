@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaList } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
@@ -13,6 +13,7 @@ import {
 } from "../../store/Reducers/chatReducer";
 import { socket } from "../../utils/utils";
 const ChatSeller = () => {
+        const scrollRef = useRef(null);
         const { userInfo } = useSelector((state) => state.auth);
         const { sellerId } = useParams();
         const dispatch = useDispatch();
@@ -79,6 +80,11 @@ const ChatSeller = () => {
                         }
                 }
         }, [receiverMessage]);
+
+        // Scroll
+        useEffect(() => {
+                scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, [receiverMessage, sellerAdminMessage]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md  h-[calc(100vh-140px)]">
@@ -181,6 +187,7 @@ const ChatSeller = () => {
                                                                                         return (
                                                                                                 //     {/* Other Message   */}
                                                                                                 <div
+                                                                                                        ref={scrollRef}
                                                                                                         key={idx}
                                                                                                         className="w-full flex justify-start items-center"
                                                                                                 >
@@ -206,6 +213,7 @@ const ChatSeller = () => {
                                                                                         return (
                                                                                                 //  {/* My  Message */}
                                                                                                 <div
+                                                                                                        ref={scrollRef}
                                                                                                         key={idx}
                                                                                                         className="w-full flex justify-end items-center"
                                                                                                 >
