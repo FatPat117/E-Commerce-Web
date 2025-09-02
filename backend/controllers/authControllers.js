@@ -210,4 +210,23 @@ const profile_info_update = asyncHandler(async (req, res, next) => {
 
         res.status(200).json(new ApiResponse(200, "User profile info updated successfully", { seller }));
 });
-export default { admin_login, getUser, seller_register, seller_login, profile_image_upload, profile_info_update };
+
+const logout = asyncHandler(async (req, res, next) => {
+        const cookieOptions = {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        };
+        res.clearCookie("accessToken", cookieOptions);
+        res.status(200).json(new ApiResponse(200, "Logout successful"));
+});
+export default {
+        admin_login,
+        getUser,
+        seller_register,
+        seller_login,
+        profile_image_upload,
+        profile_info_update,
+        logout,
+};

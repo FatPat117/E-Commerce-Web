@@ -114,6 +114,29 @@ export const profile_info_update = createAsyncThunk(
         }
 );
 
+// Logout
+export const logout = createAsyncThunk(
+        "auth/logout",
+        async ({ navigate, role }, { rejectWithValue, fulfillWithValue }) => {
+                try {
+                        const response = await api.post("/auth/logout", {
+                                withCredentials: true,
+                        });
+                        // console.log(response.data);
+                        localStorage.removeItem("accessToken");
+                        if (role == "admin") {
+                                navigate("/admin/login");
+                        } else {
+                                navigate("/login");
+                        }
+                        return fulfillWithValue(response.data); // trả về data
+                } catch (err) {
+                        // console.log(err.response.data.message);
+                        return rejectWithValue(err.response.data.message); // trả về message
+                }
+        }
+);
+
 const returnRole = (token) => {
         if (token) {
                 const decodedToken = jwtDecode(token);

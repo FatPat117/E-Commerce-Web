@@ -2,19 +2,24 @@ import React, { useEffect, useState } from "react";
 import { BiLogOutCircle } from "react-icons/bi";
 import { FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getNav } from "../navigation";
-
+import { logout } from "../store/Reducers/authReducer";
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
+        const navigate = useNavigate();
+        const dispatch = useDispatch();
         const { pathname } = useLocation();
         const [allNav, setAllNav] = useState([]);
-        const dispatch = useDispatch();
+
         const { role } = useSelector((state) => state.auth);
         useEffect(() => {
                 const navs = getNav(role);
                 setAllNav(navs);
         }, [role]);
 
+        const Logout = () => {
+                dispatch(logout({ navigate, role }));
+        };
         return (
                 <>
                         {/* Overlay */}
@@ -63,13 +68,13 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                                                 ))}
 
                                                 <li>
-                                                        <Link
-                                                                to="/"
-                                                                className="text-[#030811] font-bold duration-200 px-[12px] py-[12px] rounded-md flex justify-start text-md md:text-lg items-center gap-3 hover:pl-6 transition-all w-full mb-1"
+                                                        <button
+                                                                onClick={Logout}
+                                                                className="cursor-pointer text-[#030811] font-bold duration-200 px-[12px] py-[12px] rounded-md flex justify-start text-md md:text-lg items-center gap-3 hover:pl-6 transition-all w-full mb-1"
                                                         >
                                                                 <BiLogOutCircle />
                                                                 <span>Logout</span>
-                                                        </Link>
+                                                        </button>
                                                 </li>
                                         </ul>
                                 </div>
