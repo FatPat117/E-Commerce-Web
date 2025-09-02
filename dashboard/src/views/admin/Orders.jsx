@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsArrowDownSquare } from "react-icons/bs";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { get_admin_orders } from "../../store/Reducers/orderReducer";
 import Pagination from "../Pagination";
 const Orders = () => {
+        const dispatch = useDispatch();
         const [currentPage, setCurrentPage] = useState(1);
         const [searchValue, setSearchValue] = useState("");
         const [perPage, setPerPage] = useState(5);
         const [showOrders, setShowOrders] = useState(false);
+
+        useEffect(() => {
+                dispatch(get_admin_orders({ perPage: parseInt(perPage), page: parseInt(currentPage), searchValue }));
+        }, [perPage, currentPage, searchValue]);
 
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -26,6 +33,8 @@ const Orders = () => {
                                                 <option value="20">20</option>
                                         </select>
                                         <input
+                                                value={searchValue}
+                                                onChange={(e) => setSearchValue(e.target.value)}
                                                 type="text"
                                                 placeholder="search"
                                                 className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden cursor-pointer outline-none"
