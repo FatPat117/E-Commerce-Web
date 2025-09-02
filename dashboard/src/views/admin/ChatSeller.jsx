@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaList } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +9,7 @@ import {
         get_sellers,
         messageClear,
         send_message_admin_to_seller,
+        updateSellerMessage,
 } from "../../store/Reducers/chatReducer";
 import { socket } from "../../utils/utils";
 const ChatSeller = () => {
@@ -19,6 +21,8 @@ const ChatSeller = () => {
         );
         const [show, setShow] = useState(false);
         const [text, setText] = useState("");
+        const [receiverMessage, setReceiverMessage] = useState(null);
+
         useEffect(() => {
                 dispatch(get_sellers());
         }, []);
@@ -28,7 +32,7 @@ const ChatSeller = () => {
                 if (!text || !sellerId) return;
                 dispatch(
                         send_message_admin_to_seller({
-                                senderId: userInfo?._id,
+                                senderId: userInfo?._id || "",
                                 receiverId: sellerId,
                                 text,
                                 name: "Admin Support",
@@ -42,12 +46,39 @@ const ChatSeller = () => {
                         dispatch(get_admin_messages(sellerId));
                 }
         }, [sellerId]);
+
         useEffect(() => {
                 if (successMessage) {
                         socket.emit("send_message_admin_to_seller", sellerAdminMessage[sellerAdminMessage.length - 1]);
                         dispatch(messageClear());
                 }
         }, [successMessage]);
+
+        useEffect(() => {
+                const handleCustomerMessage = (message) => {
+                        setReceiverMessage(message);
+                };
+
+                socket.on("received_seller_message", handleCustomerMessage);
+
+                return () => {
+                        socket.off("received_seller_message", handleCustomerMessage);
+                };
+        }, []);
+
+        useEffect(() => {
+                if (receiverMessage) {
+                        if (
+                                sellerId == receiverMessage.senderId &&
+                                (userInfo?._id == receiverMessage.receiverId || receiverMessage.receiverId == "")
+                        ) {
+                                dispatch(updateSellerMessage(receiverMessage));
+                        } else {
+                                toast.success(receiverMessage?.senderName + " " + "Send A message");
+                                dispatch(messageClear());
+                        }
+                }
+        }, [receiverMessage]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md  h-[calc(100vh-140px)]">

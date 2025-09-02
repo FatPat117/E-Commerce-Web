@@ -145,6 +145,14 @@ io.on("connection", (socket) => {
                         socket.to(seller.socketId).emit("received_admin_message", message);
                 }
         });
+
+        // seller to admin
+        socket.on("send_message_seller_to_admin", (message) => {
+                if (admin) {
+                        socket.to(admin.socketId).emit("received_seller_message", message);
+                }
+        });
+
         socket.on("disconnect", () => {
                 console.log("❌ Client disconnected:", socket.id);
                 remove(socket.id);
