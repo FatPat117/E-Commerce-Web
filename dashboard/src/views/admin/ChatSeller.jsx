@@ -35,7 +35,7 @@ const ChatSeller = () => {
                 if (sellerId) {
                         dispatch(get_admin_messages(sellerId));
                 }
-        }, []);
+        }, [sellerId]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md  h-[calc(100vh-140px)]">
@@ -62,9 +62,12 @@ const ChatSeller = () => {
                                                                 <Link
                                                                         to={`/admin/dashboard/chat-seller/${seller._id}`}
                                                                         key={idx}
-                                                                        className={
-                                                                                "h-[60px] flex items-center justify-start gap-3 text-white p-2 rounded-md cursor-pointer bg-[#8288ed]"
-                                                                        }
+                                                                        className={`h-[60px] flex items-center justify-start gap-3 text-white p-2 rounded-md cursor-pointer ${
+                                                                                currentSeller?._id.toString() ==
+                                                                                seller?._id.toString()
+                                                                                        ? "bg-[#8288ed]"
+                                                                                        : "bg-transparent"
+                                                                        }`}
                                                                 >
                                                                         <div className="relative">
                                                                                 <img
