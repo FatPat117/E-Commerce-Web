@@ -75,6 +75,22 @@ export const get_seller_orders = createAsyncThunk(
         }
 );
 
+// Get admin order details
+export const get_seller_order_details = createAsyncThunk(
+        "order/get_seller_order_details",
+        async (orderId, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/order/seller/order-details/${orderId}`, {
+                                withCredentials: true,
+                        });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const orderReducer = createSlice({
         name: "order",
         initialState: {
@@ -142,6 +158,19 @@ const orderReducer = createSlice({
                         state.totalOrder = action.payload.data.totalOrder;
                 });
                 builder.addCase(get_seller_orders.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Get Seller order details
+                builder.addCase(get_seller_order_details.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_seller_order_details.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.order = action.payload.data.order;
+                });
+                builder.addCase(get_seller_order_details.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
