@@ -62,8 +62,8 @@ const Orders = () => {
                                                                 <div className="py-3 w-[18%] font-bold text-md">
                                                                         Action
                                                                 </div>
-                                                                <div className="py-3 w-[8%] font-bold">
-                                                                        <BsArrowDownSquare size={20} />
+                                                                <div className="py-3 w-[8%] font-bold flex items-center gap-2">
+                                                                        <BsArrowDownSquare size={20} /> sellers
                                                                 </div>
                                                         </div>
                                                 </div>
@@ -93,9 +93,9 @@ const Orders = () => {
                                                                         </div>
                                                                         <div
                                                                                 onClick={() => setShowOrders(data?._id)}
-                                                                                className="py-3 w-[8%] font-medium text-sm whitespace-nowrap"
+                                                                                className="py-3 w-[8%] font-medium text-sm whitespace-nowrap flex items-center gap-2"
                                                                         >
-                                                                                <BsArrowDownSquare size={20} />
+                                                                                <BsArrowDownSquare size={20} /> Sellers
                                                                         </div>
                                                                 </div>
 

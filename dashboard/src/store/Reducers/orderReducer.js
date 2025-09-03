@@ -20,7 +20,7 @@ export const get_admin_orders = createAsyncThunk(
         }
 );
 
-// Get order details
+// Get admin order details
 export const get_admin_order_details = createAsyncThunk(
         "order/get_admin_order_details",
         async (orderId, { fulfillWithValue, rejectWithValue }) => {
@@ -28,6 +28,26 @@ export const get_admin_order_details = createAsyncThunk(
                         const response = await api.get(`/order/admin/order-details/${orderId}`, {
                                 withCredentials: true,
                         });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Update admin order details delivery status
+export const admin_order_status_update = createAsyncThunk(
+        "order/admin_order_status_update",
+        async ({ orderId, deliveryStatus }, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.patch(
+                                `/order/admin/order-status/${orderId}`,
+                                { deliveryStatus },
+                                {
+                                        withCredentials: true,
+                                }
+                        );
                         // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
@@ -76,6 +96,19 @@ const orderReducer = createSlice({
                         state.order = action.payload.data.order;
                 });
                 builder.addCase(get_admin_order_details.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Update admin order details delivery status
+                builder.addCase(admin_order_status_update.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(admin_order_status_update.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(admin_order_status_update.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

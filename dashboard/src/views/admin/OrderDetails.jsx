@@ -1,16 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { get_admin_order_details } from "../../store/Reducers/orderReducer";
+import { admin_order_status_update, get_admin_order_details, messageClear } from "../../store/Reducers/orderReducer";
 const OrderDetails = () => {
         const { orderId } = useParams();
-        const { order } = useSelector((state) => state.order);
+        const { order, errorMessage } = useSelector((state) => state.order);
+        const { successMessage } = useSelector((state) => state.order);
+        const [status, setStatus] = useState("");
         const dispatch = useDispatch();
 
         useEffect(() => {
                 dispatch(get_admin_order_details(orderId));
         }, [dispatch, orderId]);
 
+        const statusUpdate = (e) => {
+                dispatch(admin_order_status_update({ orderId, deliveryStatus: e.target.value }));
+                setStatus(e.target.value);
+        };
+
+        useEffect(() => {
+                setStatus(order?.deliveryStatus);
+        }, [order]);
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                } else if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md ">
@@ -19,6 +40,8 @@ const OrderDetails = () => {
                                         <h2 className="text-xl text-[#d0d2d6] font-semibold">Order Details</h2>
 
                                         <select
+                                                value={status}
+                                                onChange={statusUpdate}
                                                 name=""
                                                 id=""
                                                 className="px-4 py-2 focus:border-indigo-500 outline-none bg-[#475569] border border-slate-700 rounded-md text-[#d0d2d6]"
@@ -122,89 +145,81 @@ const OrderDetails = () => {
                                                 <div className="w-[70%]">
                                                         <div className="pl-3">
                                                                 <div className="mt-4 flex flex-col bg-[#8288ed] rounded-md p-4">
-                                                                        {/* Items  1 */}
-                                                                        <div className="text-[#d0d2d6]">
-                                                                                <div className="flex justify-start items-center gap-3">
-                                                                                        <h2>Seller 1 Order: </h2>{" "}
-                                                                                        <span>Pending</span>
-                                                                                </div>
+                                                                        {/* Items   */}
 
-                                                                                <div className=" flex flex-col gap-4 bg-[#8288ed] rounded-lg p-2 py-1 ">
-                                                                                        <div className="text-[#d0d2d6] ">
-                                                                                                <div className="flex gap-3 text-md bg-[#8288ed] rounded-lg p-2">
-                                                                                                        <img
-                                                                                                                className="w-[50px] h-[50px] object-cover"
-                                                                                                                src="/category/1.jpg"
-                                                                                                                alt="product-image"
-                                                                                                        />
+                                                                        {order?.order?.map((data, idx) => (
+                                                                                <div
+                                                                                        key={idx}
+                                                                                        className="text-[#d0d2d6] border border-slate-100 rounded-sm p-2"
+                                                                                >
+                                                                                        <div className="flex justify-start items-center gap-3 ">
+                                                                                                <h2>
+                                                                                                        Seller {idx + 1}{" "}
+                                                                                                        Order:{" "}
+                                                                                                </h2>{" "}
+                                                                                                <span>
+                                                                                                        {
+                                                                                                                data?.deliveryStatus
+                                                                                                        }
+                                                                                                </span>
+                                                                                        </div>
 
-                                                                                                        <div>
-                                                                                                                <h2>
-                                                                                                                        Product
-                                                                                                                        Name
-                                                                                                                </h2>
-                                                                                                                <p>
-                                                                                                                        <span>
-                                                                                                                                Brand
-                                                                                                                                :{" "}
-                                                                                                                        </span>
-                                                                                                                        <span>
-                                                                                                                                Easy
-                                                                                                                                ||
-                                                                                                                        </span>
-                                                                                                                        <span className="text-lg">
-                                                                                                                                {" "}
-                                                                                                                                Quantity:
-                                                                                                                                2
-                                                                                                                        </span>
-                                                                                                                </p>
-                                                                                                        </div>
-                                                                                                </div>
+                                                                                        <div className=" flex flex-col gap-4 bg-[#8288ed] rounded-lg p-2 py-1 ">
+                                                                                                {data?.products?.map(
+                                                                                                        (
+                                                                                                                product,
+                                                                                                                idx
+                                                                                                        ) => (
+                                                                                                                <div
+                                                                                                                        key={
+                                                                                                                                idx
+                                                                                                                        }
+                                                                                                                        className="text-[#d0d2d6] "
+                                                                                                                >
+                                                                                                                        <div className="flex gap-3 text-md bg-[#8288ed] rounded-lg p-2">
+                                                                                                                                <img
+                                                                                                                                        className="w-[50px] h-[50px] object-cover"
+                                                                                                                                        src={
+                                                                                                                                                product
+                                                                                                                                                        ?.images[0] ||
+                                                                                                                                                "/category/1.jpg"
+                                                                                                                                        }
+                                                                                                                                        alt="product-image"
+                                                                                                                                />
+
+                                                                                                                                <div>
+                                                                                                                                        <h2>
+                                                                                                                                                {
+                                                                                                                                                        product?.name
+                                                                                                                                                }
+                                                                                                                                        </h2>
+                                                                                                                                        <p>
+                                                                                                                                                <span>
+                                                                                                                                                        Brand
+                                                                                                                                                        :{" "}
+                                                                                                                                                </span>
+                                                                                                                                                <span>
+                                                                                                                                                        {
+                                                                                                                                                                product?.brand
+                                                                                                                                                        }{" "}
+                                                                                                                                                        ||
+                                                                                                                                                </span>
+                                                                                                                                                <span className="text-lg">
+                                                                                                                                                        {" "}
+                                                                                                                                                        Quantity:
+                                                                                                                                                        {
+                                                                                                                                                                product?.quantity
+                                                                                                                                                        }
+                                                                                                                                                </span>
+                                                                                                                                        </p>
+                                                                                                                                </div>
+                                                                                                                        </div>
+                                                                                                                </div>
+                                                                                                        )
+                                                                                                )}
                                                                                         </div>
                                                                                 </div>
-                                                                        </div>
-
-                                                                        {/* Items  2*/}
-                                                                        <div className="text-[#d0d2d6]">
-                                                                                <div className="flex justify-start items-center gap-3">
-                                                                                        <h2>Seller 1 Order: </h2>{" "}
-                                                                                        <span>Pending</span>
-                                                                                </div>
-
-                                                                                <div className=" flex flex-col gap-4 bg-[#8288ed] rounded-lg p-2 py-1 ">
-                                                                                        <div className="text-[#d0d2d6] ">
-                                                                                                <div className="flex gap-3 text-md bg-[#8288ed] rounded-lg p-2">
-                                                                                                        <img
-                                                                                                                className="w-[50px] h-[50px] object-cover"
-                                                                                                                src="/category/1.jpg"
-                                                                                                                alt="product-image"
-                                                                                                        />
-
-                                                                                                        <div>
-                                                                                                                <h2>
-                                                                                                                        Product
-                                                                                                                        Name
-                                                                                                                </h2>
-                                                                                                                <p>
-                                                                                                                        <span>
-                                                                                                                                Brand
-                                                                                                                                :{" "}
-                                                                                                                        </span>
-                                                                                                                        <span>
-                                                                                                                                Easy
-                                                                                                                                ||
-                                                                                                                        </span>
-                                                                                                                        <span className="text-lg">
-                                                                                                                                {" "}
-                                                                                                                                Quantity:
-                                                                                                                                2
-                                                                                                                        </span>
-                                                                                                                </p>
-                                                                                                        </div>
-                                                                                                </div>
-                                                                                        </div>
-                                                                                </div>
-                                                                        </div>
+                                                                        ))}
                                                                 </div>
                                                         </div>
                                                 </div>
