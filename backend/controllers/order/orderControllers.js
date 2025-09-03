@@ -280,6 +280,22 @@ const get_seller_order_details = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "", { order }));
 });
 
+const seller_order_status_update = asyncHandler(async (req, res, next) => {
+        const { orderId } = req.params;
+        const { deliveryStatus } = req.body;
+        console.log(orderId, deliveryStatus);
+        const order = await AuthOrder.findByIdAndUpdate(orderId, {
+                deliveryStatus: deliveryStatus,
+        });
+        if (!order) {
+                return next(new ApiError(404, "Order not updated"));
+        }
+        res.status(200).json(
+                new ApiResponse(200, "Order status updated successfully", {
+                        message: "Order status updated successfully",
+                })
+        );
+});
 export default {
         place_order,
         get_dashboard_data,
@@ -290,4 +306,5 @@ export default {
         admin_order_status_update,
         get_seller_orders,
         get_seller_order_details,
+        seller_order_status_update,
 };

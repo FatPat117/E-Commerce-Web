@@ -1,15 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { get_seller_order_details } from "../../store/Reducers/orderReducer";
-
+import { get_seller_order_details, messageClear, seller_order_status_update } from "../../store/Reducers/orderReducer";
 const OrderDetails = () => {
         const { orderId } = useParams();
-        const { order } = useSelector((state) => state.order);
+        const { order, successMessage, errorMessage } = useSelector((state) => state.order);
         const dispatch = useDispatch();
+        const [status, setStatus] = useState("");
         useEffect(() => {
                 dispatch(get_seller_order_details(orderId));
         }, [orderId]);
+
+        const statusUpdate = (e) => {
+                dispatch(seller_order_status_update({ orderId, deliveryStatus: e.target.value }));
+                setStatus(e.target.value);
+        };
+
+        useEffect(() => {
+                setStatus(order?.deliveryStatus);
+        }, [order]);
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                } else if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
 
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -19,6 +39,8 @@ const OrderDetails = () => {
                                         <h2 className="text-xl text-[#d0d2d6] font-semibold">Order Details</h2>
 
                                         <select
+                                                value={status}
+                                                onChange={statusUpdate}
                                                 name=""
                                                 id=""
                                                 className="px-4 py-2 focus:border-indigo-500 outline-none bg-[#475569] border border-slate-700 rounded-md text-[#d0d2d6]"

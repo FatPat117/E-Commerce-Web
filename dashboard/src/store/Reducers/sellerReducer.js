@@ -90,6 +90,22 @@ export const get_deactive_sellers = createAsyncThunk(
         }
 );
 
+// create stripe connect
+export const create_stripe_connect_account = createAsyncThunk(
+        "seller/create_stripe_connect_account",
+        async (_, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.post(`/payment/create-stripe-connect-account`, {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const sellerReducer = createSlice({
         name: "seller",
         initialState: {

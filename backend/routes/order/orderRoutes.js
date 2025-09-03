@@ -16,4 +16,5 @@ router.patch("/admin/order-status/:orderId", orderControllers.admin_order_status
 // Seller
 router.get("/seller/orders/:sellerId", orderControllers.get_seller_orders);
 router.get("/seller/order-details/:orderId", orderControllers.get_seller_order_details);
+router.patch("/seller/order-status/:orderId", orderControllers.seller_order_status_update);
 export default router;

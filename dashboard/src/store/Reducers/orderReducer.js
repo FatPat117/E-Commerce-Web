@@ -91,6 +91,26 @@ export const get_seller_order_details = createAsyncThunk(
         }
 );
 
+// Update seller order details delivery status
+export const seller_order_status_update = createAsyncThunk(
+        "order/seller_order_status_update",
+        async ({ orderId, deliveryStatus }, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.patch(
+                                `/order/seller/order-status/${orderId}`,
+                                { deliveryStatus },
+                                {
+                                        withCredentials: true,
+                                }
+                        );
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const orderReducer = createSlice({
         name: "order",
         initialState: {
@@ -171,6 +191,19 @@ const orderReducer = createSlice({
                         state.order = action.payload.data.order;
                 });
                 builder.addCase(get_seller_order_details.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Update seller order details delivery status
+                builder.addCase(seller_order_status_update.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(seller_order_status_update.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(seller_order_status_update.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

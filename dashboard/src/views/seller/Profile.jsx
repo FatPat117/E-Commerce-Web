@@ -9,8 +9,8 @@ import {
         profile_image_upload,
         profile_info_update,
 } from "../../store/Reducers/authReducer";
+import { create_stripe_connect_account } from "../../store/Reducers/sellerReducer";
 import { overrideStyle } from "../../utils/utils";
-
 const Profile = () => {
         const dispatch = useDispatch();
         const { userInfo, successMessage, errorMessage, loader } = useSelector((state) => state.auth);
@@ -59,6 +59,10 @@ const Profile = () => {
         const UpdateProfile = (e) => {
                 e.preventDefault();
                 dispatch(profile_info_update(state));
+        };
+
+        const createStripeConnectAccount = () => {
+                dispatch(create_stripe_connect_account());
         };
 
         return (
@@ -148,8 +152,13 @@ const Profile = () => {
                                                                                                 {userInfo.payment}
                                                                                         </span>
                                                                                 ) : (
-                                                                                        <span className="bg-red-500 text-white px-2 py-1 rounded-lg cursor-pointer">
-                                                                                                {userInfo.payment}
+                                                                                        <span
+                                                                                                onClick={
+                                                                                                        createStripeConnectAccount
+                                                                                                }
+                                                                                                className="bg-red-500 text-white px-2 py-1 rounded-lg cursor-pointer"
+                                                                                        >
+                                                                                                Click to active
                                                                                         </span>
                                                                                 )}
                                                                         </p>
