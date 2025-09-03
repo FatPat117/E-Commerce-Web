@@ -13,4 +13,6 @@ router.get("/admin/orders", orderControllers.get_admin_orders);
 router.get("/admin/order-details/:orderId", orderControllers.get_admin_order_details);
 router.patch("/admin/order-status/:orderId", orderControllers.admin_order_status_update);
 
+// Seller
+router.get("/seller/orders/:sellerId", orderControllers.get_seller_orders);
 export default router;

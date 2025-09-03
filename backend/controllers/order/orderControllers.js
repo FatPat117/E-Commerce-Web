@@ -250,6 +250,26 @@ const admin_order_status_update = asyncHandler(async (req, res, next) => {
         );
 });
 
+const get_seller_orders = asyncHandler(async (req, res, next) => {
+        const { sellerId } = req.params;
+        let { perPage, page, searchValue } = req.query;
+        perPage = parseInt(perPage, 10);
+        page = parseInt(page, 10);
+        searchValue = searchValue || "";
+        let skipPage = perPage * (page - 1);
+
+        const orders = await AuthOrder.find({ sellerId: new mongoose.Types.ObjectId(sellerId) })
+                .skip(skipPage)
+                .limit(perPage)
+                .sort({ createdAt: -1 });
+
+        if (!orders) {
+                return next(new ApiError(404, "No orders found"));
+        }
+        const totalOrder = await AuthOrder.find({ sellerId: new mongoose.Types.ObjectId(sellerId) }).countDocuments();
+        res.status(200).json(new ApiResponse(200, "", { orders, totalOrder }));
+});
+
 export default {
         place_order,
         get_dashboard_data,
@@ -258,4 +278,5 @@ export default {
         get_admin_orders,
         get_admin_order_details,
         admin_order_status_update,
+        get_seller_orders,
 };

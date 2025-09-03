@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
-// Add product
+// Get admin Seller
 export const get_admin_orders = createAsyncThunk(
         "order/get_admin_orders",
         async ({ perPage, page, searchValue }, { fulfillWithValue, rejectWithValue }) => {
@@ -44,6 +44,25 @@ export const admin_order_status_update = createAsyncThunk(
                         const response = await api.patch(
                                 `/order/admin/order-status/${orderId}`,
                                 { deliveryStatus },
+                                {
+                                        withCredentials: true,
+                                }
+                        );
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Get seller orders
+export const get_seller_orders = createAsyncThunk(
+        "order/get_seller_orders",
+        async ({ perPage, page, searchValue, sellerId }, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(
+                                `/order/seller/orders/${sellerId}?perPage=${perPage}&page=${page}&searchValue=${searchValue}`,
                                 {
                                         withCredentials: true,
                                 }
@@ -109,6 +128,20 @@ const orderReducer = createSlice({
                         state.successMessage = action.payload.message;
                 });
                 builder.addCase(admin_order_status_update.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Get seller orders
+                builder.addCase(get_seller_orders.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_seller_orders.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.myOrders = action.payload.data.orders;
+                        state.totalOrder = action.payload.data.totalOrder;
+                });
+                builder.addCase(get_seller_orders.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
