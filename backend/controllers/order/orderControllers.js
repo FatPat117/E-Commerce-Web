@@ -202,8 +202,6 @@ const get_admin_orders = asyncHandler(async (req, res, next) => {
                 .limit(perPage)
                 .sort({ createdAt: -1 });
 
-        // console.log(orders);
-
         totalOrder = await CustomerOrder.aggregate([
                 {
                         $lookup: {
@@ -218,10 +216,28 @@ const get_admin_orders = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "", { orders, totalOrder: totalOrder.length }));
 });
 
+const get_admin_order_details = asyncHandler(async (req, res, next) => {
+        const { orderId } = req.params;
+
+        const order = await CustomerOrder.aggregate([
+                { $match: { _id: new mongoose.Types.ObjectId(orderId) } },
+                {
+                        $lookup: {
+                                from: "authorders",
+                                localField: "_id",
+                                foreignField: "orderId",
+                                as: "order",
+                        },
+                },
+        ]);
+        res.status(200).json(new ApiResponse(200, "", { order: order[0] }));
+});
+
 export default {
         place_order,
         get_dashboard_data,
         get_order,
         get_order_details,
         get_admin_orders,
+        get_admin_order_details,
 };

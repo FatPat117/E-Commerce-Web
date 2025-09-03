@@ -10,5 +10,6 @@ router.get("/get-dashboard-data/:userId", orderControllers.get_dashboard_data);
 
 //  Admin
 router.get("/admin/orders", orderControllers.get_admin_orders);
+router.get("/admin/order-details/:orderId", orderControllers.get_admin_order_details);
 
 export default router;
