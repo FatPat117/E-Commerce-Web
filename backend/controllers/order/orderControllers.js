@@ -1,5 +1,7 @@
+import dotenv from "dotenv";
 import moment from "moment/moment.js";
 import mongoose from "mongoose";
+import Stripe from "stripe";
 import AuthOrder from "../../models/authOrder.js";
 import Cart from "../../models/cartModel.js";
 import Customer from "../../models/customerModel.js";
@@ -7,7 +9,8 @@ import CustomerOrder from "../../models/customerOrder.js";
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
-
+dotenv.config();
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const paymentCheck = async (id) => {
         const order = await CustomerOrder.findById(id);
 
@@ -296,6 +299,22 @@ const seller_order_status_update = asyncHandler(async (req, res, next) => {
                 })
         );
 });
+
+const create_payment_intent = asyncHandler(async (req, res, next) => {
+        const { orderId, price } = req.body;
+        const payment = await stripe.paymentIntents.create({
+                amount: price * 100,
+                currency: "usd",
+                automatic_payment_methods: {
+                        enabled: true,
+                },
+        });
+
+        if (!payment) return next(new ApiError(400, "Payment intent not created"));
+        res.status(200).json(
+                new ApiResponse(200, "Payment intent created successfully", { clientSecret: payment.client_secret })
+        );
+});
 export default {
         place_order,
         get_dashboard_data,
@@ -307,4 +326,5 @@ export default {
         get_seller_orders,
         get_seller_order_details,
         seller_order_status_update,
+        create_payment_intent,
 };

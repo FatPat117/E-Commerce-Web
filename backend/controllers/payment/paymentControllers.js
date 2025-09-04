@@ -9,6 +9,7 @@ import asyncHandler from "../../utils/asyncHandler.js";
 dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+// khởi tạo và kích hoạt tài khoản Stripe
 const create_stripe_connect_account = asyncHandler(async (req, res, next) => {
         const id = req?._id;
 
