@@ -8,6 +8,7 @@ import Orders from "./components/dashboard/Orders";
 import Wishlist from "./components/dashboard/Wishlist";
 import Cart from "./pages/Cart";
 import CategoryShop from "./pages/CategoryShop";
+import ConfirmOrders from "./pages/ConfirmOrders";
 import Dashboard from "./pages/Dashboard";
 import Details from "./pages/Details";
 import Home from "./pages/Home";
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
                                 ],
                         },
                 ],
+        },
+        {
+                path: "/order/confirm",
+                element: <ConfirmOrders />,
         },
 ]);
 const App = () => {

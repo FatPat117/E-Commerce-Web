@@ -6,6 +6,8 @@ import AuthOrder from "../../models/authOrder.js";
 import Cart from "../../models/cartModel.js";
 import Customer from "../../models/customerModel.js";
 import CustomerOrder from "../../models/customerOrder.js";
+import MyShopWallet from "../../models/myShopWallet.js";
+import SellerWallet from "../../models/sellerWallet.js";
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
@@ -315,6 +317,36 @@ const create_payment_intent = asyncHandler(async (req, res, next) => {
                 new ApiResponse(200, "Payment intent created successfully", { clientSecret: payment.client_secret })
         );
 });
+
+const confirm_payment = asyncHandler(async (req, res, next) => {
+        const { orderId } = req.params;
+        const order = await CustomerOrder.findByIdAndUpdate(orderId, { paymentStatus: "paid" });
+        const authOrder = await AuthOrder.updateMany(
+                { orderId: new mongoose.Types.ObjectId(orderId) },
+                { paymentStatus: "paid", deliveryStatus: "pending" }
+        );
+        const customerOrder = await CustomerOrder.findById(orderId);
+        const authOrders = await AuthOrder.find({ orderId: new mongoose.Types.ObjectId(orderId) });
+        const time = moment(Date.now()).format("l");
+        const splitTime = time.split("/");
+
+        await MyShopWallet.create({
+                amount: customerOrder.price,
+                month: splitTime[0],
+                year: splitTime[2],
+        });
+
+        for (let i = 0; i < authOrders.length; i++) {
+                await SellerWallet.create({
+                        sellerId: new mongoose.Types.ObjectId(authOrders[i].sellerId),
+                        amount: authOrders[i].price,
+                        month: splitTime[0],
+                        year: splitTime[2],
+                });
+        }
+
+        res.status(200).json(new ApiResponse(200, "Payment confirmed successfully", { order }));
+});
 export default {
         place_order,
         get_dashboard_data,
@@ -327,4 +359,5 @@ export default {
         get_seller_order_details,
         seller_order_status_update,
         create_payment_intent,
+        confirm_payment,
 };

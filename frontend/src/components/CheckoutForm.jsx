@@ -1,6 +1,6 @@
 import { LinkAuthenticationElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useEffect, useState } from "react";
-const CheckoutForm = (orderId) => {
+const CheckoutForm = ({ orderId }) => {
         useEffect(() => {
                 localStorage.setItem("orderId", orderId);
         }, [orderId]);
