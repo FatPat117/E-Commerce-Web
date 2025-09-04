@@ -112,6 +112,27 @@ export const create_stripe_connect_account = createAsyncThunk(
         }
 );
 
+// active stripe account
+export const active_stripe_connect_account = createAsyncThunk(
+        "seller/active_stripe_connect_account",
+        async (activeCode, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.patch(
+                                `/payment/active-stripe-connect-account/${activeCode}`,
+                                {},
+                                {
+                                        withCredentials: true,
+                                }
+                        );
+                        console.log(response.data);
+
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const sellerReducer = createSlice({
         name: "seller",
         initialState: {
@@ -198,6 +219,20 @@ const sellerReducer = createSlice({
                         state.totalSeller = action.payload.data.totalSeller;
                 });
                 builder.addCase(get_deactive_sellers.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // active stripe account
+
+                builder.addCase(active_stripe_connect_account.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(active_stripe_connect_account.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                });
+                builder.addCase(active_stripe_connect_account.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

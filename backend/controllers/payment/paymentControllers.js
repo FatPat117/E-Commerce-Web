@@ -1,15 +1,17 @@
 import dotenv from "dotenv";
 import Stripe from "stripe";
 import { v4 as uuidv4 } from "uuid";
+import Seller from "../../models/sellerModel.js";
 import StripeModel from "../../models/stripeModel.js";
+import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
-
 dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const create_stripe_connect_account = asyncHandler(async (req, res, next) => {
         const id = req?._id;
+
         const uid = uuidv4();
 
         // Xoá stripe cũ nếu tồn tại
@@ -48,6 +50,22 @@ const create_stripe_connect_account = asyncHandler(async (req, res, next) => {
         );
 });
 
+const active_stripe_connect_account = asyncHandler(async (req, res, next) => {
+        const { activeCode } = req.params;
+        const id = req?._id;
+
+        const userStripeInfo = await StripeModel.findOne({ code: activeCode });
+
+        if (!userStripeInfo) {
+                return next(new ApiError(400, "Stripe connect account not found"));
+        }
+
+        await Seller.findByIdAndUpdate(id, { payment: "active" });
+
+        res.status(200).json(new ApiResponse(200, "Payment activated successfully", { success: true }));
+});
+
 export default {
         create_stripe_connect_account,
+        active_stripe_connect_account,
 };

@@ -3,6 +3,7 @@ import { BiLogOutCircle } from "react-icons/bi";
 import { FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
 import { getNav } from "../navigation";
 import { logout } from "../store/Reducers/authReducer";
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
@@ -37,8 +38,8 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
                                 }`}
                         >
                                 <div className="h-[70px] flex justify-center items-center">
-                                        <Link to="/" className="w-[180px] h-[60px]">
-                                                <img src="/images/logo.png" alt="logo" className="w-full h-full" />
+                                        <Link to="#" className="w-[180px] h-[60px]">
+                                                <img src={logo} alt="logo" className="w-full h-full" />
                                         </Link>
                                 </div>
 
