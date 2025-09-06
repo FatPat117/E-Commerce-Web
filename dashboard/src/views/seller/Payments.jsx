@@ -30,23 +30,6 @@ const Payments = () => {
         const [amount, setAmount] = useState(0);
         const array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-        const Row = ({ index, style }) => {
-                return (
-                        <div style={style} className="flex text-sm border-b border-gray-300 text-white font-semibold ">
-                                <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
-                                <div className="w-[25%] p-2 whitespace-nowrap">${pendingWithdraws[index]?.amount}</div>
-                                <div className="w-[25%] p-2 whitespace-nowrap">
-                                        <span className="py-[2px] px-[5px] bg-slate-300 text-blue-500 rounded-md text-sm">
-                                                {pendingWithdraws[index]?.status}
-                                        </span>
-                                </div>
-                                <div className="w-[25%] p-2 whitespace-nowrap">
-                                        {moment(pendingWithdraws[index]?.createdAt).format("DD MMM YYYY")}
-                                </div>
-                        </div>
-                );
-        };
-
         useEffect(() => {
                 dispatch(get_seller_payment_details(userInfo?._id));
         }, [userInfo?._id]);
@@ -74,6 +57,40 @@ const Payments = () => {
                         dispatch(messageClear());
                 }
         }, [successMessage, errorMessage]);
+
+        const PendingRow = ({ index, style }) => {
+                return (
+                        <div style={style} className="flex text-sm border-b border-gray-300 text-white font-semibold ">
+                                <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">${pendingWithdraws[index]?.amount}</div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">
+                                        <span className="py-[2px] px-[5px] bg-slate-300 text-blue-500 rounded-md text-sm">
+                                                {pendingWithdraws[index]?.status}
+                                        </span>
+                                </div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">
+                                        {moment(pendingWithdraws[index]?.createdAt).format("DD MMM YYYY")}
+                                </div>
+                        </div>
+                );
+        };
+
+        const SuccessRow = ({ index, style }) => {
+                return (
+                        <div style={style} className="flex text-sm border-b border-gray-300 text-white font-semibold ">
+                                <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">${successWithdraws[index]?.amount}</div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">
+                                        <span className="py-[2px] px-[5px] bg-slate-300 text-blue-500 rounded-md text-sm">
+                                                {successWithdraws[index]?.status}
+                                        </span>
+                                </div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">
+                                        {moment(successWithdraws[index]?.createdAt).format("DD MMM YYYY")}
+                                </div>
+                        </div>
+                );
+        };
         return (
                 <div className="px-2 md:px-7 py-5">
                         {/* First Part: Total Sales, Products, Sellers, Orders */}
@@ -182,7 +199,7 @@ const Payments = () => {
                                                                 itemSize={37}
                                                                 outerElementType={outerElementType}
                                                         >
-                                                                {Row}
+                                                                {PendingRow}
                                                         </List>
                                                 </div>
                                         </div>
@@ -208,11 +225,11 @@ const Payments = () => {
                                                         style={{ minWidth: "340px" }}
                                                         className="List"
                                                         height={350}
-                                                        itemCount={array.length}
+                                                        itemCount={successWithdraws.length}
                                                         itemSize={37}
                                                         outerElementType={outerElementType}
                                                 >
-                                                        {Row}
+                                                        {SuccessRow}
                                                 </List>
                                         </div>
                                 </div>
