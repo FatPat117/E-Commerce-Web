@@ -1,7 +1,8 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { MdCurrencyExchange } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import { FixedSizeList as List } from "react-window";
-
+import { get_seller_payment_details } from "../../store/Reducers/paymentReducer";
 function handleOnWheel({ deltaY }) {
         console.log(deltaY);
 }
@@ -10,6 +11,10 @@ const outerElementType = forwardRef((props, ref) => {
         return <div ref={ref} {...props} onWheel={handleOnWheel} />;
 });
 const Payments = () => {
+        const dispatch = useDispatch();
+        const { userInfo } = useSelector((state) => state.auth);
+        const { pendingWithdraws, successWithdraws, totalAmount, withdrawAmount, pendingAmount, availableAmount } =
+                useSelector((state) => state.payment);
         const array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
         const Row = ({ index, style }) => {
@@ -27,6 +32,10 @@ const Payments = () => {
                 );
         };
 
+        useEffect(() => {
+                dispatch(get_seller_payment_details(userInfo?._id));
+        }, [userInfo?._id]);
+
         return (
                 <div className="px-2 md:px-7 py-5">
                         {/* First Part: Total Sales, Products, Sellers, Orders */}
@@ -34,7 +43,7 @@ const Payments = () => {
                                 {/* Total Sales */}
                                 <div className="flex justify-between items-center p-5 bg-[#fae8e8] rounded-md gap-3">
                                         <div className="flex flex-col justify-center items-start text-[#5c5a5a]">
-                                                <h2 className="text-xl lg:text-3xl font-bold">$3434</h2>
+                                                <h2 className="text-xl lg:text-3xl font-bold">${totalAmount}</h2>
                                                 <span className="text-md font-medium">Total Sales</span>
                                         </div>
 
@@ -46,7 +55,7 @@ const Payments = () => {
                                 {/* Products */}
                                 <div className="flex justify-between items-center p-5 bg-[#fde2ff] rounded-md gap-3">
                                         <div className="flex flex-col justify-center items-start text-[#5c5a5a]">
-                                                <h2 className="text-xl lg:text-3xl font-bold">150</h2>
+                                                <h2 className="text-xl lg:text-3xl font-bold">${availableAmount}</h2>
                                                 <span className="text-md font-medium">Available Amount</span>
                                         </div>
 
@@ -58,7 +67,7 @@ const Payments = () => {
                                 {/* Sellers */}
                                 <div className="flex justify-between items-center p-5 bg-[#e9feea] rounded-md gap-3">
                                         <div className="flex flex-col justify-center items-start text-[#5c5a5a]">
-                                                <h2 className="text-xl lg:text-3xl font-bold">60</h2>
+                                                <h2 className="text-xl lg:text-3xl font-bold">${withdrawAmount}</h2>
                                                 <span className="text-md font-medium">Withdraw Amount</span>
                                         </div>
 
@@ -70,7 +79,7 @@ const Payments = () => {
                                 {/* Orders */}
                                 <div className="flex justify-between items-center p-5 bg-[#ecebff] rounded-md gap-3">
                                         <div className="flex flex-col justify-center items-start text-[#5c5a5a]">
-                                                <h2 className="text-xl lg:text-3xl font-bold">44</h2>
+                                                <h2 className="text-xl lg:text-3xl font-bold">${pendingAmount}</h2>
                                                 <span className="text-md font-medium">Pending Amount</span>
                                         </div>
 

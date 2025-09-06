@@ -1,8 +1,11 @@
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import Stripe from "stripe";
 import { v4 as uuidv4 } from "uuid";
 import Seller from "../../models/sellerModel.js";
+import SellerWallet from "../../models/sellerWallet.js";
 import StripeModel from "../../models/stripeModel.js";
+import WithDrawRequest from "../../models/withdrawRequestModel.js";
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
@@ -66,7 +69,43 @@ const active_stripe_connect_account = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "Payment activated successfully", { success: true }));
 });
 
+const seller_payment_details = asyncHandler(async (req, res, next) => {
+        const { sellerId } = req.params;
+
+        const payments = await SellerWallet.find({ sellerId: new mongoose.Types.ObjectId(sellerId) });
+
+        const pendingWithdraws = await WithDrawRequest.find({
+                sellerId: new mongoose.Types.ObjectId(sellerId),
+                status: "pending",
+        });
+
+        const successWithdraws = await WithDrawRequest.find({
+                sellerId: new mongoose.Types.ObjectId(sellerId),
+                status: "success",
+        });
+
+        const pendingAmount = pendingWithdraws.reduce((sum, cur) => sum + (cur.amount || 0), 0);
+        const withdrawAmount = successWithdraws.reduce((sum, cur) => sum + (cur.amount || 0), 0);
+        const totalAmount = payments.reduce((sum, cur) => sum + (cur.amount || 0), 0);
+
+        let availableAmount = 0;
+        if (totalAmount > 0) {
+                availableAmount = totalAmount - pendingAmount - withdrawAmount;
+        }
+        res.status(200).json(
+                new ApiResponse(200, "Payment details fetched successfully", {
+                        payments,
+                        pendingWithdraws,
+                        successWithdraws,
+                        pendingAmount,
+                        withdrawAmount,
+                        totalAmount,
+                        availableAmount,
+                })
+        );
+});
 export default {
         create_stripe_connect_account,
         active_stripe_connect_account,
+        seller_payment_details,
 };

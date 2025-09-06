@@ -9,4 +9,5 @@ router.patch(
         authMiddleware,
         paymentControllers.active_stripe_connect_account
 );
+router.get("/seller-payment-details/:sellerId", authMiddleware, paymentControllers.seller_payment_details);
 export default router;
