@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { forwardRef, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { MdCurrencyExchange } from "react-icons/md";
@@ -33,13 +34,15 @@ const Payments = () => {
                 return (
                         <div style={style} className="flex text-sm border-b border-gray-300 text-white font-semibold ">
                                 <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
-                                <div className="w-[25%] p-2 whitespace-nowrap">$43434</div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">${pendingWithdraws[index]?.amount}</div>
                                 <div className="w-[25%] p-2 whitespace-nowrap">
                                         <span className="py-[2px] px-[5px] bg-slate-300 text-blue-500 rounded-md text-sm">
-                                                Pending
+                                                {pendingWithdraws[index]?.status}
                                         </span>
                                 </div>
-                                <div className="w-[25%] p-2 whitespace-nowrap">25 Oct 2024</div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">
+                                        {moment(pendingWithdraws[index]?.createdAt).format("DD MMM YYYY")}
+                                </div>
                         </div>
                 );
         };
@@ -175,7 +178,7 @@ const Payments = () => {
                                                                 style={{ minWidth: "340px" }}
                                                                 className="List"
                                                                 height={350}
-                                                                itemCount={array.length}
+                                                                itemCount={pendingWithdraws?.length}
                                                                 itemSize={37}
                                                                 outerElementType={outerElementType}
                                                         >
