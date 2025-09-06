@@ -9,6 +9,22 @@ export const get_seller_payment_details = createAsyncThunk(
                         const response = await api.get(`/payment/seller-payment-details/${sellerId}`, {
                                 withCredentials: true,
                         });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Seller Send payment requests
+export const send_withdraw_request = createAsyncThunk(
+        "payment/send_withdraw_request",
+        async (sellerId, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.post(`/payment/withdraw-request`, sellerId, {
+                                withCredentials: true,
+                        });
                         console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
@@ -51,6 +67,22 @@ const paymentReducer = createSlice({
                         state.totalAmount = action.payload.data.totalAmount;
                 });
                 builder.addCase(get_seller_payment_details.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Send withdraw Request
+                builder.addCase(send_withdraw_request.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(send_withdraw_request.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.pendingWithdraws = [...state.pendingWithdraws, action.payload.data.withdraw];
+                        state.availableAmount = state.availableAmount - action.payload.data.withdraw.amount;
+                        state.pendingAmount = action.payload.data.withdraw.amount;
+                });
+                builder.addCase(send_withdraw_request.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

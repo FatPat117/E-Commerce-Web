@@ -1,8 +1,9 @@
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { MdCurrencyExchange } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { FixedSizeList as List } from "react-window";
-import { get_seller_payment_details } from "../../store/Reducers/paymentReducer";
+import { get_seller_payment_details, messageClear, send_withdraw_request } from "../../store/Reducers/paymentReducer";
 function handleOnWheel({ deltaY }) {
         console.log(deltaY);
 }
@@ -13,8 +14,19 @@ const outerElementType = forwardRef((props, ref) => {
 const Payments = () => {
         const dispatch = useDispatch();
         const { userInfo } = useSelector((state) => state.auth);
-        const { pendingWithdraws, successWithdraws, totalAmount, withdrawAmount, pendingAmount, availableAmount } =
-                useSelector((state) => state.payment);
+        const {
+                pendingWithdraws,
+                successWithdraws,
+                totalAmount,
+                withdrawAmount,
+                pendingAmount,
+                availableAmount,
+                loader,
+                successMessage,
+                errorMessage,
+        } = useSelector((state) => state.payment);
+
+        const [amount, setAmount] = useState(0);
         const array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
         const Row = ({ index, style }) => {
@@ -36,6 +48,29 @@ const Payments = () => {
                 dispatch(get_seller_payment_details(userInfo?._id));
         }, [userInfo?._id]);
 
+        const sendRequest = (e) => {
+                e.preventDefault();
+                if (amount != 0 && amount <= availableAmount) {
+                        dispatch(send_withdraw_request({ amount, sellerId: userInfo?._id }));
+                } else if (amount == 0) {
+                        toast.error("Amount request is greater than 0");
+                } else {
+                        toast.error("Amount request is greater than available amount");
+                }
+
+                setAmount(0);
+        };
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
         return (
                 <div className="px-2 md:px-7 py-5">
                         {/* First Part: Total Sales, Products, Sellers, Orders */}
@@ -97,10 +132,12 @@ const Payments = () => {
 
                                         {/* Request amount */}
                                         <div className="pt-5">
-                                                <form action="">
+                                                <form onSubmit={sendRequest}>
                                                         <div className="flex gap-8 flex-wrap items-center">
                                                                 <input
                                                                         min={0}
+                                                                        value={amount}
+                                                                        onChange={(e) => setAmount(e.target.value)}
                                                                         type="number"
                                                                         name="amount"
                                                                         placeholder="Amount"
@@ -109,8 +146,11 @@ const Payments = () => {
 
                                                                 {/* button */}
                                                                 <div className=" text-center rounded-lg px-10 py-3  bg-red-500 w-[20%]  hover:shadow-red-500/50 hover:shadow-md hover:bg-red-400 transition-colors duration-300 text-white cursor-pointer ">
-                                                                        <button className="cursor-pointer">
-                                                                                Submit
+                                                                        <button
+                                                                                disable={loader}
+                                                                                className="cursor-pointer"
+                                                                        >
+                                                                                {loader ? "Loading..." : "Submit"}
                                                                         </button>
                                                                 </div>
                                                         </div>

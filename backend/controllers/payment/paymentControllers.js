@@ -104,8 +104,23 @@ const seller_payment_details = asyncHandler(async (req, res, next) => {
                 })
         );
 });
+
+const withdraw_request = asyncHandler(async (req, res, next) => {
+        const { amount, sellerId } = req.body;
+
+        const withdraw = await WithDrawRequest.create({
+                amount: parseInt(amount),
+                sellerId: new mongoose.Types.ObjectId(sellerId),
+        });
+
+        if (!withdraw) {
+                return next(new ApiError(400, "Withdraw request not created"));
+        }
+        res.status(201).json(new ApiResponse(201, "Withdraw request created successfully", { withdraw }));
+});
 export default {
         create_stripe_connect_account,
         active_stripe_connect_account,
         seller_payment_details,
+        withdraw_request,
 };
