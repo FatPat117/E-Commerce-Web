@@ -118,9 +118,18 @@ const withdraw_request = asyncHandler(async (req, res, next) => {
         }
         res.status(201).json(new ApiResponse(201, "Withdraw request created successfully", { withdraw }));
 });
+
+const admin_request_payment = asyncHandler(async (req, res, next) => {
+        const withdrawRequest = await WithDrawRequest.find({ status: "pending" });
+        if (!withdrawRequest) {
+                return next(new ApiError(400, "No withdraw request found"));
+        }
+        res.status(200).json(new ApiResponse(200, "", { withdrawRequest }));
+});
 export default {
         create_stripe_connect_account,
         active_stripe_connect_account,
         seller_payment_details,
         withdraw_request,
+        admin_request_payment,
 };

@@ -1,5 +1,8 @@
-import React, { forwardRef } from "react";
+import moment from "moment";
+import React, { forwardRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FixedSizeList as List } from "react-window";
+import { get_admin_request_payment } from "../../store/Reducers/paymentReducer";
 function handleOnWheel({ deltaY }) {
         console.log(deltaY);
 }
@@ -9,19 +12,21 @@ const outerElementType = forwardRef((props, ref) => {
 });
 
 const PaymentRequest = () => {
-        const array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
+        const dispatch = useDispatch();
+        const { pendingWithdraws } = useSelector((state) => state.payment);
         const Row = ({ index, style }) => {
                 return (
                         <div style={style} className="flex text-sm border-b border-gray-300 text-white font-semibold ">
                                 <div className="w-[25%] p-2 whitespace-nowrap">{index + 1}</div>
-                                <div className="w-[25%] p-2 whitespace-nowrap">$43434</div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">${pendingWithdraws[index]?.amount}</div>
                                 <div className="w-[25%] p-2 whitespace-nowrap">
                                         <span className="py-[2px] px-[5px] bg-slate-300 text-blue-500 rounded-md text-sm">
-                                                Pending
+                                                {pendingWithdraws[index]?.status}
                                         </span>
                                 </div>
-                                <div className="w-[25%] p-2 whitespace-nowrap">25 Oct 2024</div>
+                                <div className="w-[25%] p-2 whitespace-nowrap">
+                                        {moment(pendingWithdraws[index]?.createdAt).format("DD MMM YYYY")}
+                                </div>
                                 <div className="w-[25%] p-2 whitespace-nowrap">
                                         <button className="bg-indigo-500 shadow-lg hover:shadow-indigo-500/50 px-3 py-[2px] cursor-pointer text-white rounded-md text-sm">
                                                 Confirm
@@ -30,6 +35,10 @@ const PaymentRequest = () => {
                         </div>
                 );
         };
+
+        useEffect(() => {
+                dispatch(get_admin_request_payment());
+        }, []);
 
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -51,7 +60,7 @@ const PaymentRequest = () => {
                                                         style={{ minWidth: "340px" }}
                                                         className="List"
                                                         height={350}
-                                                        itemCount={array.length}
+                                                        itemCount={pendingWithdraws?.length}
                                                         itemSize={37}
                                                         outerElementType={outerElementType}
                                                 >

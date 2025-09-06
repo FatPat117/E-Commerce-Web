@@ -25,7 +25,7 @@ export const send_withdraw_request = createAsyncThunk(
                         const response = await api.post(`/payment/withdraw-request`, sellerId, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -33,6 +33,20 @@ export const send_withdraw_request = createAsyncThunk(
         }
 );
 
+export const get_admin_request_payment = createAsyncThunk(
+        "payment/get_admin_request_payment",
+        async (_, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(`/payment/admin-request-payment`, {
+                                withCredentials: true,
+                        });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
 const paymentReducer = createSlice({
         name: "payment",
         initialState: {
@@ -83,6 +97,19 @@ const paymentReducer = createSlice({
                         state.pendingAmount = action.payload.data.withdraw.amount;
                 });
                 builder.addCase(send_withdraw_request.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Get admin request withdraw
+                builder.addCase(get_admin_request_payment.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_admin_request_payment.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.pendingWithdraws = action.payload.data.withdrawRequest;
+                });
+                builder.addCase(get_admin_request_payment.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

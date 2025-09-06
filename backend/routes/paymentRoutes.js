@@ -11,4 +11,7 @@ router.patch(
 );
 router.get("/seller-payment-details/:sellerId", authMiddleware, paymentControllers.seller_payment_details);
 router.post("/withdraw-request", authMiddleware, paymentControllers.withdraw_request);
+
+//  Admin
+router.get("/admin-request-payment", authMiddleware, paymentControllers.admin_request_payment);
 export default router;
