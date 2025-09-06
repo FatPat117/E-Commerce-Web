@@ -14,4 +14,5 @@ router.post("/withdraw-request", authMiddleware, paymentControllers.withdraw_req
 
 //  Admin
 router.get("/admin-request-payment", authMiddleware, paymentControllers.admin_request_payment);
+router.post("/confirm-payment-request", authMiddleware, paymentControllers.confirm_payment_request);
 export default router;

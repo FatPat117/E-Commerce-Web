@@ -126,10 +126,64 @@ const admin_request_payment = asyncHandler(async (req, res, next) => {
         }
         res.status(200).json(new ApiResponse(200, "", { withdrawRequest }));
 });
+
+const confirm_payment_request = asyncHandler(async (req, res, next) => {
+        const { paymentId } = req.body;
+
+        // 1. Lấy và cập nhật withdraw request
+        const payment = await WithDrawRequest.findByIdAndUpdate(paymentId, { status: "success" }, { new: true });
+
+        if (!payment) {
+                return next(new ApiError(400, "Payment request not found"));
+        }
+
+        // 2. Lấy Stripe account của seller
+        // const stripeModel = await StripeModel.findOne({
+        //         sellerId: new mongoose.Types.ObjectId(payment.sellerId),
+        // });
+
+        // if (!stripeModel) {
+        //         return next(new ApiError(400, "Stripe account not found"));
+        // }
+
+        // const stripeId = stripeModel.stripeId;
+
+        // // 3. Lấy thông tin account từ Stripe
+        // const account = await stripe.accounts.retrieve(stripeId);
+
+        // // 4. Check capability transfers
+        // if (!account.capabilities || account.capabilities.transfers !== "active") {
+        //         // Tạo account link onboarding để seller hoàn tất KYC
+        //         const accountLink = await stripe.accountLinks.create({
+        //                 account: stripeId,
+        //                 refresh_url: `http://localhost:3001/refresh`,
+        //                 return_url: `http://localhost:3001/success?paymentId=${paymentId}`,
+        //                 type: "account_onboarding",
+        //         });
+
+        //         return res.status(200).json(
+        //                 new ApiResponse(200, "Seller is not active. Redirect to onboarding.", {
+        //                         onboardingUrl: accountLink.url,
+        //                         paymentId: payment._id,
+        //                 })
+        //         );
+        // }
+
+        // // 5. Tạo transfer nếu seller đã active
+        // await stripe.transfers.create({
+        //         amount: parseInt(payment.amount) * 100, // cents
+        //         currency: "usd",
+        //         destination: stripeId,
+        // });
+
+        res.status(200).json(new ApiResponse(200, "Payment request confirmed successfully", { payment }));
+});
+
 export default {
         create_stripe_connect_account,
         active_stripe_connect_account,
         seller_payment_details,
         withdraw_request,
         admin_request_payment,
+        confirm_payment_request,
 };

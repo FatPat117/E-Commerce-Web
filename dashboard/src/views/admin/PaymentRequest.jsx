@@ -1,10 +1,11 @@
 import moment from "moment";
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { FixedSizeList as List } from "react-window";
-import { get_admin_request_payment } from "../../store/Reducers/paymentReducer";
+import { confirm_payment_request, get_admin_request_payment, messageClear } from "../../store/Reducers/paymentReducer";
 function handleOnWheel({ deltaY }) {
-        console.log(deltaY);
+        // console.log(deltaY);
 }
 
 const outerElementType = forwardRef((props, ref) => {
@@ -13,7 +14,9 @@ const outerElementType = forwardRef((props, ref) => {
 
 const PaymentRequest = () => {
         const dispatch = useDispatch();
-        const { pendingWithdraws } = useSelector((state) => state.payment);
+        const [paymentId, setPaymentId] = useState("");
+        const { pendingWithdraws, loader, successMessage, errorMessage } = useSelector((state) => state.payment);
+
         const Row = ({ index, style }) => {
                 return (
                         <div style={style} className="flex text-sm border-b border-gray-300 text-white font-semibold ">
@@ -28,8 +31,14 @@ const PaymentRequest = () => {
                                         {moment(pendingWithdraws[index]?.createdAt).format("DD MMM YYYY")}
                                 </div>
                                 <div className="w-[25%] p-2 whitespace-nowrap">
-                                        <button className="bg-indigo-500 shadow-lg hover:shadow-indigo-500/50 px-3 py-[2px] cursor-pointer text-white rounded-md text-sm">
-                                                Confirm
+                                        <button
+                                                disabled={loader}
+                                                onClick={() => confirmPaymentRequest(pendingWithdraws[index]._id)}
+                                                className="bg-indigo-500 shadow-lg hover:shadow-indigo-500/50 px-3 py-[2px] cursor-pointer text-white rounded-md text-sm"
+                                        >
+                                                {loader && paymentId == pendingWithdraws[index]._id
+                                                        ? "Loading..."
+                                                        : "Confirm"}
                                         </button>
                                 </div>
                         </div>
@@ -40,6 +49,21 @@ const PaymentRequest = () => {
                 dispatch(get_admin_request_payment());
         }, []);
 
+        const confirmPaymentRequest = (id) => {
+                setPaymentId(id);
+                dispatch(confirm_payment_request(id));
+        };
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md">

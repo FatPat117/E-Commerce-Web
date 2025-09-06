@@ -33,6 +33,7 @@ export const send_withdraw_request = createAsyncThunk(
         }
 );
 
+// Get admin_request_payment
 export const get_admin_request_payment = createAsyncThunk(
         "payment/get_admin_request_payment",
         async (_, { fulfillWithValue, rejectWithValue }) => {
@@ -47,6 +48,31 @@ export const get_admin_request_payment = createAsyncThunk(
                 }
         }
 );
+
+// Confirm payment request
+export const confirm_payment_request = createAsyncThunk(
+        "payment/confirm_payment_request",
+        async (paymentId, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.post(
+                                `/payment/confirm-payment-request`,
+                                { paymentId },
+                                {
+                                        withCredentials: true,
+                                }
+                        );
+
+                        if (response.data?.data?.onboardingUrl) {
+                                window.location.href = response.data.data.onboardingUrl;
+                        }
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        console.log(error);
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const paymentReducer = createSlice({
         name: "payment",
         initialState: {
@@ -110,6 +136,23 @@ const paymentReducer = createSlice({
                         state.pendingWithdraws = action.payload.data.withdrawRequest;
                 });
                 builder.addCase(get_admin_request_payment.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Confirm payment requested
+                builder.addCase(confirm_payment_request.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(confirm_payment_request.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        const temp = state.pendingWithdraws.filter(
+                                (data) => data._id.toString() != action.payload.data.payment?._id.toString()
+                        );
+                        state.pendingWithdraws = temp;
+                });
+                builder.addCase(confirm_payment_request.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
