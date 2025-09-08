@@ -6,6 +6,7 @@ import { IoIosArrowDown, IoMdPhonePortrait } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { get_cart_products, get_wishlist_products } from "../store/reducers/cartReducer";
 import { get_category } from "../store/reducers/homeReducer";
 const Header = () => {
         const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const Header = () => {
         useEffect(() => {
                 dispatch(get_category());
         }, []);
+
         const navigate = useNavigate();
         const { pathname } = useLocation();
         const [showSidebar, setShowSidebar] = useState(false);
@@ -33,6 +35,13 @@ const Header = () => {
                         navigate("/login");
                 }
         };
+
+        useEffect(() => {
+                if (userInfo) {
+                        dispatch(get_cart_products(userInfo?.id));
+                        dispatch(get_wishlist_products(userInfo?.id));
+                }
+        }, []);
         return (
                 <header className="w-full bg-white">
                         {/* Header top */}
