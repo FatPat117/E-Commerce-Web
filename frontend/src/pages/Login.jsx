@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -118,15 +117,23 @@ const Login = () => {
                                                                 <div className="h-[1px] bg-slate-300 w-[90%]"></div>
                                                         </div>
 
-                                                        {/* Login with facebook and Google */}
-                                                        <button className="px-8 w-full py-2 bg-indigo-500 shadow-md hover:shadow-indigo-500 text-white rounded-md cursor-pointer flex justify-center items-center gap-2 mb-3 md-lg:mt-5">
-                                                                <FaFacebookF />
-                                                                <span>Login With Facebook</span>
-                                                        </button>
-                                                        <button className="px-8 w-full py-2 bg-red-500 shadow-md hover:shadow-red-500 text-white rounded-md cursor-pointer flex justify-center items-center gap-2 mb-3 md-lg:mt-5">
-                                                                <FaGoogle />
-                                                                <span>Login With Google</span>
-                                                        </button>
+                                                        {/* Login as Seller */}
+                                                        <a
+                                                                href="http://localhost:3001/login"
+                                                                target="_blank"
+                                                                className="px-8 w-full py-2 bg-cyan-400 shadow-md hover:shadow-cyan-500/50 text-white rounded-md cursor-pointer flex justify-center items-center gap-2 mb-3 md-lg:mt-5 "
+                                                        >
+                                                                <span>Login As Seller</span>
+                                                        </a>
+
+                                                        {/* Register as Seller  */}
+                                                        <a
+                                                                href={"http://localhost:3001/register"}
+                                                                target="_blank"
+                                                                className="px-8 w-full py-2 bg-indigo-500 shadow-md hover:shadow-indigo-500 text-white rounded-md cursor-pointer flex justify-center items-center gap-2 mb-3"
+                                                        >
+                                                                <span>Register as Seller</span>
+                                                        </a>
                                                 </div>
 
                                                 <div className="text-center text-slate-600 pt-1">
