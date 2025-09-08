@@ -3,6 +3,7 @@ import dashboardControllers from "../../controllers/dashboard/dashboardControlle
 import authMiddleware from "../../middlewares/authMiddleware.js";
 const router = express.Router();
 
-router.get("/dashboard", authMiddleware, dashboardControllers.get_admin_dashboard_data);
+router.get("/admin-dashboard-data", authMiddleware, dashboardControllers.get_admin_dashboard_data);
+router.get("/seller-dashboard-data", authMiddleware, dashboardControllers.get_seller_dashboard_data);
 
 export default router;

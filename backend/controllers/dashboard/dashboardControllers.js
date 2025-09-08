@@ -1,8 +1,12 @@
+import mongoose from "mongoose";
+import AuthOrder from "../../models/authOrder.js";
 import AdminSellerMessage from "../../models/chat/adminSellerMessage.js";
+import SellerCustomerMessage from "../../models/chat/sellerCustomerMessageModel.js";
 import CustomerOrder from "../../models/customerOrder.js";
 import MyShopWallet from "../../models/myShopWallet.js";
 import Product from "../../models/productModel.js";
 import Seller from "../../models/sellerModel.js";
+import SellerWallet from "../../models/sellerWallet.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 
@@ -41,4 +45,45 @@ const get_admin_dashboard_data = asyncHandler(async (req, res) => {
         );
 });
 
-export default { get_admin_dashboard_data };
+const get_seller_dashboard_data = asyncHandler(async (req, res, next) => {
+        const id = req?._id;
+
+        const totalSale = await SellerWallet.aggregate([
+                {
+                        $match: { sellerId: new mongoose.Types.ObjectId(id) },
+                },
+                {
+                        $group: { _id: null, totalAmount: { $sum: "$amount" } },
+                },
+        ]);
+
+        const totalProduct = await Product.countDocuments({ sellerId: new mongoose.Types.ObjectId(id) });
+
+        const totalOrder = await AuthOrder.countDocuments({ sellerId: new mongoose.Types.ObjectId(id) });
+
+        const totalPendingOrder = await AuthOrder.countDocuments({
+                sellerId: new mongoose.Types.ObjectId(id),
+                deliveryStatus: "pending",
+        });
+
+        const messages = await SellerCustomerMessage.find({
+                $or: [{ senderId: new mongoose.Types.ObjectId(id) }, { receiverId: new mongoose.Types.ObjectId(id) }],
+        }).limit(3);
+
+        const recentOrders = await AuthOrder.find({ sellerId: new mongoose.Types.ObjectId(id) })
+                .sort({ createdAt: -1 })
+                .limit(5);
+
+        res.status(200).json(
+                new ApiResponse(200, "", {
+                        totalSale: totalSale[0]?.totalAmount ?? 0,
+                        totalProduct: totalProduct || 0,
+                        totalOrder: totalOrder || 0,
+                        totalPendingOrder: totalPendingOrder || 0,
+                        messages: messages || [],
+                        recentOrders: recentOrders || [],
+                })
+        );
+});
+
+export default { get_admin_dashboard_data, get_seller_dashboard_data };
