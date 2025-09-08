@@ -47,7 +47,7 @@ const Login = () => {
                                 </div>
                         )}
                         <div className="w-full flex justify-center items-center p-10">
-                                <div className="grid grid-cols-2 w-[60%] mx-auto bg-white rounded-sm">
+                                <div className="grid grid-cols-1 md-lg:grid-cols-2 w-[60%] mx-auto bg-white rounded-sm">
                                         <div className="p-8">
                                                 <div className=" md-lg:mb-10">
                                                         <h2 className="text-center w-full text-2xl text-slate-600 font-bold">
@@ -142,7 +142,7 @@ const Login = () => {
                                                 </div>
                                         </div>
 
-                                        <div className="w-full h-full py-4 pr-4">
+                                        <div className="hidden md-lg:block w-full h-full py-4 pr-4">
                                                 <img
                                                         src="/images/login.jpg"
                                                         alt="Login Images"

@@ -1,12 +1,17 @@
 import React from "react";
-import { FaFacebookF, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaFacebookF, FaGithub, FaInstagram, FaLinkedin, FaShoppingCart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 const Footer = () => {
+        const navigate = useNavigate();
+        const { userInfo } = useSelector((state) => state.auth);
+        const { cartProductsTotal, wishlistProductsTotal } = useSelector((state) => state.cart);
         return (
                 <footer className="bg-[#f3f6fa] mt-12">
                         <div className="w-[85%] mx-auto flex flex-wrap md:flex-nowrap border-b py-10 md-lg:pb-10 sm:pb-6 border-slate-300">
                                 {/* Logo */}
-                                <div className="md:w-3/12 lg:w-4/12 w-full">
+                                <div className="lg:w-3/12 lg:w-4/12 w-full">
                                         <div className="flex flex-col gap-3">
                                                 <img src="/images/logo.png" alt="Logo" className="w-[190px] h-[70px]" />
                                                 <ul className="flex flex-col gap-2 text-slate-600">
@@ -18,7 +23,7 @@ const Footer = () => {
                                 </div>
 
                                 {/*Links*/}
-                                <div className="md:w-5/12 w-full mt-6 lg:mt-0">
+                                <div className="lg:w-5/12 w-full mt-6 lg:mt-0">
                                         <div content="flex justify-center sm:justify-start mt-6 w-full">
                                                 {/* UseFul Links */}
                                                 <div>
@@ -114,6 +119,49 @@ const Footer = () => {
                         {/* Copy right */}
                         <div className="w-[90%] flex flex-wrap justify-center items-center mx-auto text-center text-sm text-slate-700 p-3 font-normal">
                                 <p>Copy right @2025: All rights reserved </p>
+                        </div>
+
+                        <div className=" block fixed md-lg:hidden w-[50px] h-[110px] bottom-3 right-2 bg-white rounded-full p-2 ">
+                                <div className="w-full h-full flex flex-col gap-3 justify-center items-center">
+                                        <div
+                                                className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]"
+                                                onClick={() => {
+                                                        if (userInfo) {
+                                                                navigate("/cart");
+                                                        } else {
+                                                                navigate("/login");
+                                                        }
+                                                }}
+                                        >
+                                                <span className="text-xl text-green-500">
+                                                        <FaShoppingCart />
+                                                </span>
+                                                {cartProductsTotal != 0 && (
+                                                        <div className="w-[17px] h-[17px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
+                                                                {cartProductsTotal}
+                                                        </div>
+                                                )}
+                                        </div>
+                                        <div
+                                                onClick={() => {
+                                                        if (userInfo) {
+                                                                navigate("/dashboard/my-wishlist");
+                                                        } else {
+                                                                navigate("/login");
+                                                        }
+                                                }}
+                                                className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]"
+                                        >
+                                                <span className="text-xl text-green-500">
+                                                        <FaHeart />
+                                                </span>
+                                                {wishlistProductsTotal != 0 && (
+                                                        <div className="w-[17px] h-[17px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px]">
+                                                                {wishlistProductsTotal}
+                                                        </div>
+                                                )}
+                                        </div>
+                                </div>
                         </div>
                 </footer>
         );

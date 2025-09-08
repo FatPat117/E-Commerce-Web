@@ -41,7 +41,7 @@ const Header = () => {
                         dispatch(get_cart_products(userInfo?.id));
                         dispatch(get_wishlist_products(userInfo?.id));
                 }
-        }, []);
+        }, [userInfo]);
         return (
                 <header className="w-full bg-white">
                         {/* Header top */}
