@@ -9,6 +9,7 @@ import globalErrorHandler, { notFound } from "./middlewares/error.js";
 import authRoutes from "./routes/authRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import categoryRoutes from "./routes/dashboard/categoryRoutes.js";
+import dashboardRoutes from "./routes/dashboard/dashboardRoutes.js";
 import productRoutes from "./routes/dashboard/productRoutes.js";
 import sellerRoutes from "./routes/dashboard/sellerRoutes.js";
 import cartRoutes from "./routes/home/cartRoutes.js";
@@ -55,6 +56,7 @@ app.use("/api/customer", customerRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/admin", dashboardRoutes);
 
 app.use(notFound);
 app.use(globalErrorHandler);

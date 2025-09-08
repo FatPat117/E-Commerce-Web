@@ -1,9 +1,23 @@
-import React, { useState } from "react";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { FaCartArrowDown, FaUsers } from "react-icons/fa";
 import { MdCurrencyExchange, MdProductionQuantityLimits } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import seller from "../../assets/seller.png";
+import { get_admin_dashboard_data } from "../../store/Reducers/dashboardReducer";
 const AdminDashboard = () => {
+        const dispatch = useDispatch();
+        const { totalSale, totalProduct, totalOrder, totalSeller, recentOrders, recentMessages } = useSelector(
+                (state) => state.dashboard
+        );
+        const { userInfo } = useSelector((state) => state.auth);
+
+        useEffect(() => {
+                dispatch(get_admin_dashboard_data());
+        }, []);
+
         const [state, setState] = useState({
                 series: [
                         {
@@ -84,7 +98,7 @@ const AdminDashboard = () => {
                                 {/* Total Sales */}
                                 <div className="flex justify-between items-center p-5 bg-[#fae8e8] rounded-md gap-3">
                                         <div className="flex flex-col justify-center items-start text-[#5c5a5a]">
-                                                <h2 className="text-xl lg:text-3xl font-bold">$3434</h2>
+                                                <h2 className="text-xl lg:text-3xl font-bold">${totalSale}</h2>
                                                 <span className="text-md font-medium">Total Sales</span>
                                         </div>
 
@@ -96,7 +110,7 @@ const AdminDashboard = () => {
                                 {/* Products */}
                                 <div className="flex justify-between items-center p-5 bg-[#fde2ff] rounded-md gap-3">
                                         <div className="flex flex-col justify-center items-start text-[#5c5a5a]">
-                                                <h2 className="text-xl lg:text-3xl font-bold">50</h2>
+                                                <h2 className="text-xl lg:text-3xl font-bold">${totalProduct}</h2>
                                                 <span className="text-md font-medium">Products</span>
                                         </div>
 
@@ -108,7 +122,7 @@ const AdminDashboard = () => {
                                 {/* Sellers */}
                                 <div className="flex justify-between items-center p-5 bg-[#e9feea] rounded-md gap-3">
                                         <div className="flex flex-col justify-center items-start text-[#5c5a5a]">
-                                                <h2 className="text-xl lg:text-3xl font-bold">60</h2>
+                                                <h2 className="text-xl lg:text-3xl font-bold">{totalSeller}</h2>
                                                 <span className="text-md font-medium">Sellers</span>
                                         </div>
 
@@ -120,7 +134,7 @@ const AdminDashboard = () => {
                                 {/* Orders */}
                                 <div className="flex justify-between items-center p-5 bg-[#ecebff] rounded-md gap-3">
                                         <div className="flex flex-col justify-center items-start text-[#5c5a5a]">
-                                                <h2 className="text-xl lg:text-3xl font-bold">44</h2>
+                                                <h2 className="text-xl lg:text-3xl font-bold">{totalOrder}</h2>
                                                 <span className="text-md font-medium">Orders</span>
                                         </div>
 
@@ -159,72 +173,60 @@ const AdminDashboard = () => {
                                                 {/* Chat Box */}
                                                 <div className="flex flex-col gap-2 pt-6 text-[#d0d2d6]">
                                                         <ol className="relative border-1 border-slate-500 ml-4">
-                                                                <li className="mb-3 ml-6">
-                                                                        <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] z-10 rounded-full">
-                                                                                <img
-                                                                                        src="/images/admin.jpg"
-                                                                                        alt="avatar"
-                                                                                        className="w-full rounded-full h-full shadow-lg"
-                                                                                />
-                                                                        </div>
-                                                                        <div className="p-3 bg-slate-800 rounded-lg border border-slate-500 shadow-sm">
-                                                                                <div className="flex justify-between items-center mb-2">
-                                                                                        <Link className="text-md font-normal">
-                                                                                                Admin
-                                                                                        </Link>
-                                                                                        <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
-                                                                                                2 days ago
-                                                                                        </time>
-                                                                                </div>
-                                                                                <div className="p-2 text-md font-normal bg-slate-700 rounded-lg border border-slate-800">
-                                                                                        <p>How are you</p>
-                                                                                </div>
-                                                                        </div>
-                                                                </li>
-                                                                <li className="mb-3 ml-6">
-                                                                        <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] z-10 rounded-full">
-                                                                                <img
-                                                                                        src="/images/admin.jpg"
-                                                                                        alt="avatar"
-                                                                                        className="w-full rounded-full h-full shadow-lg"
-                                                                                />
-                                                                        </div>
-                                                                        <div className="p-3 bg-slate-800 rounded-lg border border-slate-500 shadow-sm">
-                                                                                <div className="flex justify-between items-center mb-2">
-                                                                                        <Link className="text-md font-normal">
-                                                                                                Admin
-                                                                                        </Link>
-                                                                                        <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
-                                                                                                2 days ago
-                                                                                        </time>
-                                                                                </div>
-                                                                                <div className="p-2 text-md font-normal bg-slate-700 rounded-lg border border-slate-800">
-                                                                                        <p>How are you</p>
-                                                                                </div>
-                                                                        </div>
-                                                                </li>
-                                                                <li className="mb-3 ml-6">
-                                                                        <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] z-10 rounded-full">
-                                                                                <img
-                                                                                        src="/images/admin.jpg"
-                                                                                        alt="avatar"
-                                                                                        className="w-full rounded-full h-full shadow-lg"
-                                                                                />
-                                                                        </div>
-                                                                        <div className="p-3 bg-slate-800 rounded-lg border border-slate-500 shadow-sm">
-                                                                                <div className="flex justify-between items-center mb-2">
-                                                                                        <Link className="text-md font-normal">
-                                                                                                Admin
-                                                                                        </Link>
-                                                                                        <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
-                                                                                                2 days ago
-                                                                                        </time>
-                                                                                </div>
-                                                                                <div className="p-2 text-md font-normal bg-slate-700 rounded-lg border border-slate-800">
-                                                                                        <p>How are you</p>
-                                                                                </div>
-                                                                        </div>
-                                                                </li>
+                                                                {recentMessages?.map((message, idx) => {
+                                                                        return (
+                                                                                <li className="mb-3 ml-6" key={idx}>
+                                                                                        <div className="flex absolute -left-5 shadow-lg justify-center items-center w-10 h-10 p-[6px] bg-[#4c7fe2] z-10 rounded-full">
+                                                                                                {message.senderId.toString() ==
+                                                                                                userInfo?._id.toString() ? (
+                                                                                                        <img
+                                                                                                                src={
+                                                                                                                        "/images/admin.jpg"
+                                                                                                                }
+                                                                                                                alt="avatar"
+                                                                                                                className="w-full rounded-full h-full shadow-lg"
+                                                                                                        />
+                                                                                                ) : (
+                                                                                                        <img
+                                                                                                                src={
+                                                                                                                        seller ||
+                                                                                                                        "/images/admin.jpg"
+                                                                                                                }
+                                                                                                                alt="avatar"
+                                                                                                                className="w-full rounded-full h-full shadow-lg"
+                                                                                                        />
+                                                                                                )}
+                                                                                        </div>
+                                                                                        <div className="p-3 bg-slate-800 rounded-lg border border-slate-500 shadow-sm">
+                                                                                                <div className="flex justify-between items-center mb-2">
+                                                                                                        <Link className="text-md font-normal">
+                                                                                                                {
+                                                                                                                        message?.senderName
+                                                                                                                }
+                                                                                                        </Link>
+                                                                                                        <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
+                                                                                                                <time className="mb-1 text-sm font-normal sm:order-last sm:mb-0">
+                                                                                                                        {moment(
+                                                                                                                                message?.createdAt
+                                                                                                                        )
+                                                                                                                                .startOf(
+                                                                                                                                        "hour"
+                                                                                                                                )
+                                                                                                                                .fromNow()}
+                                                                                                                </time>
+                                                                                                        </time>
+                                                                                                </div>
+                                                                                                <div className="p-2 text-md font-normal bg-slate-700 rounded-lg border border-slate-800">
+                                                                                                        <p>
+                                                                                                                {
+                                                                                                                        message?.message
+                                                                                                                }
+                                                                                                        </p>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </li>
+                                                                        );
+                                                                })}
                                                         </ol>
                                                 </div>
                                         </div>
@@ -263,38 +265,42 @@ const AdminDashboard = () => {
                                                 </thead>
                                                 {/* <tbody className="text-center"> */}
                                                 <tbody className="">
-                                                        {[1, 2, 3, 4, 5].map((data, idx) => {
+                                                        {recentOrders?.map((data, idx) => {
                                                                 return (
                                                                         <tr key={idx} className="border-b">
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-3 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        #34343
+                                                                                        #{data?._id}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-3 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        $212
+                                                                                        ${data?.price}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-3 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Pending
+                                                                                        ${data?.paymentStatus}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-3 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Delivered
+                                                                                        ${data?.deliveryStatus}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-3 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        <Link>View</Link>
+                                                                                        <Link
+                                                                                                to={`/admin/dashboard/order/details/${data?._id}`}
+                                                                                        >
+                                                                                                View
+                                                                                        </Link>
                                                                                 </td>
                                                                         </tr>
                                                                 );
