@@ -93,6 +93,46 @@ const get_products = asyncHandler(async (req, res) => {
         res.status(200).json(new ApiResponse(200, "", { products, totalProduct }));
 });
 
+const get_discount_products = asyncHandler(async (req, res, next) => {
+        const id = req?._id;
+
+        let { perPage, page, searchValue } = req.query;
+        (perPage = parseInt(perPage)), (page = parseInt(page));
+        const skipPage = (page - 1) * perPage;
+        let products;
+        let totalProduct;
+        // search and pagination
+        if (searchValue?.trim() != "" && page != "" && perPage != "") {
+                products = await Product.find({
+                        $text: { $search: searchValue },
+                        sellerId: id,
+                        discount: { $gt: 0 },
+                })
+                        .skip(skipPage)
+                        .limit(parseInt(perPage));
+                totalProduct = await Product.countDocuments({
+                        $text: { $search: searchValue },
+                        sellerId: id,
+                        discount: { $gt: 0 },
+                });
+                // pagination
+        } else if (searchValue.trim() == "" && page && perPage) {
+                const skipPage = parseInt(perPage) * parseInt(page - 1);
+                products = await Product.find({ sellerId: id, discount: { $gt: 0 } })
+                        .skip(skipPage)
+                        .limit(parseInt(perPage));
+                totalProduct = await Product.countDocuments({ sellerId: id, discount: { $gt: 0 } });
+                // All
+        } else {
+                products = await Product.find({ sellerId: id, discount: { $gt: 0 } });
+                totalProduct = await Product.countDocuments({ sellerId: id, discount: { $gt: 0 } });
+        }
+
+        if (!products) throw new ApiError(404, "No products found");
+
+        res.status(200).json(new ApiResponse(200, "", { products, totalProduct }));
+});
+
 const get_product = asyncHandler(async (req, res, next) => {
         const { productId } = req.params;
 
@@ -169,4 +209,4 @@ const product_image_update = asyncHandler(async (req, res, next) => {
 
         res.status(200).json(new ApiResponse(200, "Product image updated successfully", { product }));
 });
-export default { add_product, get_products, get_product, update_product, product_image_update };
+export default { add_product, get_products, get_discount_products, get_product, update_product, product_image_update };

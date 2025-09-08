@@ -39,6 +39,25 @@ export const get_products = createAsyncThunk(
         }
 );
 
+// Get discount products
+export const get_discount_products = createAsyncThunk(
+        "product/get_discount_products",
+        async ({ perPage, page, searchValue }, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.get(
+                                `/product/discount-products?perPage=${perPage}&page=${page}&searchValue=${searchValue}`,
+                                {
+                                        withCredentials: true,
+                                }
+                        );
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 // get product by id
 export const get_product = createAsyncThunk(
         "product/get_product",
@@ -138,6 +157,21 @@ const productReducer = createSlice({
                         state.products = action.payload.data.products;
                 });
                 builder.addCase(get_products.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                //  get discount products
+                builder.addCase(get_discount_products.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_discount_products.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.totalProduct = action.payload.data.totalProduct;
+                        state.products = action.payload.data.products;
+                });
+                builder.addCase(get_discount_products.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

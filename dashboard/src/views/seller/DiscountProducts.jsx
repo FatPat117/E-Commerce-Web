@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { get_discount_products } from "../../store/Reducers/productReducer";
 import Search from "../components/Search";
 import Pagination from "../Pagination";
-
 const DiscountProducts = () => {
+        const dispatch = useDispatch();
+        const { userInfo } = useSelector((state) => state.auth);
+        const { products, totalProduct } = useSelector((state) => state.product);
         const [perPage, setPerPage] = useState(5);
         const [searchValue, setSearchValue] = useState("");
         const [currentPage, setCurrentPage] = useState(1);
+
+        useEffect(() => {
+                if (userInfo) {
+                        const obj = {
+                                page: parseInt(currentPage),
+                                searchValue: searchValue || "",
+                                perPage: parseInt(perPage),
+                        };
+                        dispatch(get_discount_products(obj));
+                }
+        }, [currentPage, perPage, searchValue]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <h1 className="text-[#000000] text-xl font-bold">Discount Products</h1>
@@ -56,21 +71,21 @@ const DiscountProducts = () => {
                                                 </thead>
                                                 {/* <tbody className="text-center"> */}
                                                 <tbody className="">
-                                                        {[1, 2, 3, 4, 5].map((data, idx) => {
+                                                        {products?.map((data, idx) => {
                                                                 return (
                                                                         <tr key={idx} className="border-b">
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        {data}
+                                                                                        {idx + 1}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
                                                                                         <img
-                                                                                                src={`/category/${data}.jpg`}
+                                                                                                src={data?.images[0]}
                                                                                                 alt="category-image"
                                                                                                 className="w-[45px] h-[45px] object-cover"
                                                                                         />
@@ -79,37 +94,37 @@ const DiscountProducts = () => {
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        TShirt
+                                                                                        {data?.name}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Category
+                                                                                        {data?.category}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Brand
+                                                                                        {data?.brand}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Price
+                                                                                        {data?.price}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Discount
+                                                                                        {data?.discount}
                                                                                 </td>
                                                                                 <td
                                                                                         scope="row"
                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                 >
-                                                                                        Stock
+                                                                                        {data?.stock}
                                                                                 </td>
 
                                                                                 <td
@@ -136,15 +151,17 @@ const DiscountProducts = () => {
                                 </div>
 
                                 {/* Pagination */}
-                                <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
-                                        <Pagination
-                                                pageNumber={currentPage}
-                                                setPageNumber={setCurrentPage}
-                                                totalItem={50}
-                                                perPage={perPage}
-                                                showPage={3}
-                                        />
-                                </div>
+                                {totalProduct >= perPage && (
+                                        <div className="w-full flex justify-end items-center mt-4 bottom-4 right-4">
+                                                <Pagination
+                                                        pageNumber={currentPage}
+                                                        setPageNumber={setCurrentPage}
+                                                        totalItem={totalProduct}
+                                                        perPage={perPage}
+                                                        showPage={3}
+                                                />
+                                        </div>
+                                )}
                         </div>
                 </div>
         );
