@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineMessage, AiOutlinePlus } from "react-icons/ai";
+import { FaList } from "react-icons/fa";
 import { GrEmoji } from "react-icons/gr";
 import { IoSend } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +20,7 @@ const Chat = () => {
         const [text, setText] = useState("");
         const [receiverMessage, setReceiverMessage] = useState("");
         const [activeSeller, setActiveSeller] = useState([]);
+        const [show, setShow] = useState(false);
         const scrollRef = useRef(null);
         useEffect(() => {
                 socket.emit("add_user", userInfo.id, userInfo);
@@ -77,8 +79,12 @@ const Chat = () => {
         }, [receiverMessage, friendMessages]);
         return (
                 <div className="bg-white p-3 rounded-md">
-                        <div className="w-full flex">
-                                <div className="w-[230px]">
+                        <div className="w-full flex relative">
+                                <div
+                                        className={`w-[230px] absolute md-lg:static bg-white h-full md-lg:h-auto  ${
+                                                show ? "-left-[0px]" : "-left-[350px]"
+                                        }`}
+                                >
                                         <div className="flex justify-center gap-3 items-center text-slate-600 text-xl h-[50px]">
                                                 <span>
                                                         <AiOutlineMessage />
@@ -88,6 +94,7 @@ const Chat = () => {
                                         <div className="w-full flex flex-col text-slate-600 py-4 h-[400px] pr-3">
                                                 {myFriends?.map((friend, idx) => (
                                                         <Link
+                                                                onClick={() => setShow(false)}
                                                                 key={idx}
                                                                 to={`/dashboard/chat/${friend.friendId}`}
                                                                 className={`flex gap-2 justify-start items-center pl-2 py-[5px]`}
@@ -108,21 +115,33 @@ const Chat = () => {
                                                 ))}
                                         </div>
                                 </div>
-                                <div className="w-[calc(100%-230px)]">
+                                <div className="md-lg:w-[calc(100%-230px)] w-full">
                                         {currentFriend ? (
                                                 <div className="w-full h-full">
-                                                        <div className="flex justify-start gap-3 items-center text-slate-600 text-xl h-[50px]">
-                                                                <div className="w-[30px] h-[30px] rounded-full relative">
-                                                                        {activeSeller?.some(
-                                                                                (seller) =>
-                                                                                        seller.sellerId.toString() ==
-                                                                                        currentFriend.friendId.toString()
-                                                                        ) ? (
-                                                                                <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
-                                                                        ) : null}
-                                                                        <img src={currentFriend?.image} alt="" />
+                                                        <div className="flex justify-between gap-3 items-center text-slate-600 text-xl h-[50px]">
+                                                                <div className="flex gap-2">
+                                                                        <div className="w-[30px] h-[30px] rounded-full relative">
+                                                                                {activeSeller?.some(
+                                                                                        (seller) =>
+                                                                                                seller.sellerId.toString() ==
+                                                                                                currentFriend.friendId.toString()
+                                                                                ) ? (
+                                                                                        <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute right-0 bottom-0"></div>
+                                                                                ) : null}
+                                                                                <img
+                                                                                        src={currentFriend?.image}
+                                                                                        alt=""
+                                                                                />
+                                                                        </div>
+                                                                        <span>{currentFriend?.shopName}</span>
                                                                 </div>
-                                                                <span>{currentFriend?.shopName}</span>
+
+                                                                <div
+                                                                        onClick={() => setShow(!show)}
+                                                                        className="w-[35px] h-[35px] flex md-lg:hidden cursor-pointer rounded-sm justify-center items-center bg-sky-500 text-white"
+                                                                >
+                                                                        <FaList />
+                                                                </div>
                                                         </div>
                                                         <div className="h-[400px] w-full bg-slate-100 p-3 rounded-md">
                                                                 <div className="w-full h-full overflow-y-auto flex flex-col gap-3">
@@ -212,7 +231,10 @@ const Chat = () => {
                                                         </form>
                                                 </div>
                                         ) : (
-                                                <div className="w-full h-full flex justify-center items-center text-lg ont-bold text-slate-600">
+                                                <div
+                                                        onClick={() => setShow(true)}
+                                                        className="w-full min-h-[400px] flex justify-center items-center text-lg ont-bold text-slate-600"
+                                                >
                                                         <span>select seller</span>
                                                 </div>
                                         )}
