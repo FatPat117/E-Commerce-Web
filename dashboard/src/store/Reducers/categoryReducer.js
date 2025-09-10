@@ -42,6 +42,25 @@ export const get_category = createAsyncThunk(
         }
 );
 
+// Update category
+export const update_category = createAsyncThunk(
+        "category/update_category",
+        async ({ name, image, categoryId }, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const formData = new FormData();
+                        formData.append("name", name);
+                        if (image) formData.append("image", image);
+                        const response = await api.patch(`/category/${categoryId}`, formData, {
+                                withCredentials: true,
+                        });
+                        console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
 const categoryReducer = createSlice({
         name: "category",
         initialState: {
@@ -83,6 +102,24 @@ const categoryReducer = createSlice({
                         state.categories = action.payload.data.category;
                 });
                 builder.addCase(get_category.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // update category
+                builder.addCase(update_category.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(update_category.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        const index = state.categories.findIndex((cat) => cat._id === action.payload.data.category._id);
+
+                        if (index != -1) {
+                                state.categories[index] = action.payload.data.category;
+                        }
+                });
+                builder.addCase(update_category.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

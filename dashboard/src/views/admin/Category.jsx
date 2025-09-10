@@ -4,7 +4,7 @@ import { FaEdit, FaImage, FaTimes, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
-import { add_category, get_category, messageClear } from "../../store/Reducers/categoryReducer";
+import { add_category, get_category, messageClear, update_category } from "../../store/Reducers/categoryReducer";
 import { overrideStyle } from "../../utils/utils";
 import Pagination from "../Pagination";
 import Search from "../components/Search";
@@ -12,7 +12,7 @@ const Category = () => {
         const { loader, errorMessage, successMessage, categories, totalCategory } = useSelector(
                 (state) => state.category
         );
-        console.log(categories);
+
         const dispatch = useDispatch();
 
         const [currentPage, setCurrentPage] = useState(1);
@@ -20,6 +20,8 @@ const Category = () => {
         const [perPage, setPerPage] = useState(5);
         const [showAddCategory, setShowAddCategory] = useState(false);
         const [imageShow, setImageShow] = useState("");
+        const [isEdit, setIsEdit] = useState(false);
+        const [editId, setEditId] = useState("");
 
         const [state, setState] = useState({
                 name: "",
@@ -38,9 +40,11 @@ const Category = () => {
                         setState({ ...state, image: files[0] });
                 }
         };
-        const AddCategory = (e) => {
+        const AddOrUpdateCategory = (e) => {
                 e.preventDefault();
-                dispatch(add_category(state));
+                if (isEdit) {
+                        dispatch(update_category({ name: state.name, image: state.image, categoryId: editId }));
+                } else dispatch(add_category(state));
         };
 
         useEffect(() => {
@@ -52,6 +56,8 @@ const Category = () => {
                                 image: "",
                         });
                         setImageShow("");
+                        setIsEdit(false);
+                        setEditId("");
                 }
                 if (errorMessage) {
                         toast.error(errorMessage);
@@ -67,6 +73,18 @@ const Category = () => {
                 };
                 dispatch(get_category(obj));
         }, [perPage, currentPage, searchValue]);
+
+        const handleEdit = (category) => {
+                setState({
+                        name: category.name,
+                        image: category.image,
+                });
+
+                setImageShow(category.image);
+                setEditId(category._id);
+                setIsEdit(true);
+                setShowAddCategory(true);
+        };
 
         return (
                 <div className="px-2 lg:px-7 pt-5">
@@ -149,7 +167,14 @@ const Category = () => {
                                                                                                         className="py-2 px-4 font-medium whitespace-nowrap"
                                                                                                 >
                                                                                                         <div className="flex items-center justify-start gap-4">
-                                                                                                                <Link className="p-[8px]  bg-yellow-500 rounded-md hover:shadow-lg hover:shadow-yellow-500/50">
+                                                                                                                <Link
+                                                                                                                        onClick={() =>
+                                                                                                                                handleEdit(
+                                                                                                                                        data
+                                                                                                                                )
+                                                                                                                        }
+                                                                                                                        className="p-[8px]  bg-yellow-500 rounded-md hover:shadow-lg hover:shadow-yellow-500/50"
+                                                                                                                >
                                                                                                                         <FaEdit />
                                                                                                                 </Link>
                                                                                                                 <Link className="p-[8px]  bg-red-500 rounded-md hover:shadow-lg hover:shadow-red-500/50">
@@ -187,7 +212,7 @@ const Category = () => {
                                                 <div className="bg-[#6a5fdf] h-screen lg:h-auto px-3 py-2 lg:rounded-md text-[#d0d2d6]">
                                                         <div className="flex justify-between items-center">
                                                                 <h1 className="text-[#d0dd26] font-semibold text-xl mb-4 w-full text-center">
-                                                                        Add category
+                                                                        {isEdit ? "Edit Category" : "Add Category"}
                                                                 </h1>
 
                                                                 {/* Close button */}
@@ -203,7 +228,7 @@ const Category = () => {
                                                                 </div>
                                                         </div>
 
-                                                        <form onSubmit={AddCategory}>
+                                                        <form onSubmit={AddOrUpdateCategory}>
                                                                 {/* Search Input */}
                                                                 <div className="flex flex-col w-full gap-1 mb-3">
                                                                         <label htmlFor="name">Category Name</label>
@@ -228,7 +253,7 @@ const Category = () => {
                                                                                         <img
                                                                                                 src={imageShow}
                                                                                                 alt="image"
-                                                                                                className="w-full h-full object-cover"
+                                                                                                className="w-full h-full object-contain"
                                                                                         />
                                                                                 ) : (
                                                                                         <>
@@ -264,6 +289,8 @@ const Category = () => {
                                                                                                         overrideStyle
                                                                                                 }
                                                                                         />
+                                                                                ) : isEdit ? (
+                                                                                        "Edit Category"
                                                                                 ) : (
                                                                                         "Add category"
                                                                                 )}

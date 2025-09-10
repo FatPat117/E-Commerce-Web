@@ -1,9 +1,12 @@
 import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
 import formidable from "formidable";
 import Category from "../../models/categoryModel.js";
 import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
+dotenv.config();
+
 const add_category = asyncHandler(async (req, res) => {
         const form = formidable();
         form.parse(req, async (err, fields, files) => {
@@ -71,4 +74,58 @@ const get_category = asyncHandler(async (req, res) => {
         );
 });
 
-export default { add_category, get_category };
+const update_category = asyncHandler(async (req, res) => {
+        const { categoryId } = req.params;
+
+        const parseForm = (req) => {
+                return new Promise((resolve, reject) => {
+                        const form = formidable({ multiples: true });
+                        form.parse(req, (err, fields, files) => {
+                                if (err) reject(err);
+                                resolve({ fields, files });
+                        });
+                });
+        };
+
+        const { fields, files } = await parseForm(req);
+        console.log(fields, files);
+        const name = fields?.name[0];
+
+        let imagePath;
+        if (files?.image) {
+                imagePath = files?.image[0] || "";
+        }
+
+        cloudinary.config({
+                cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+                api_key: process.env.CLOUDINARY_API_KEY,
+                api_secret: process.env.CLOUDINARY_API_SECRET,
+                secure: true,
+        });
+
+        // Find if category is exist
+        const category = await Category.findById(categoryId);
+        if (!category) {
+                throw new ApiError(404, "Category not found");
+        }
+
+        //        Delete image from cloudinary
+
+        const publicId = category.image.split("/").pop().split(".")[0];
+
+        await cloudinary.uploader.destroy(publicId);
+
+        // Upload new image to Cloudnary
+        let result;
+        if (imagePath)
+                result = await cloudinary.uploader.upload(imagePath.filepath, {
+                        folder: "categories",
+                        resource_type: "image",
+                });
+
+        category.name = name;
+        if (result) category.image = result.secure_url;
+        await category.save();
+        res.status(200).json(new ApiResponse(200, "Category updated successfully", { category }));
+});
+export default { add_category, get_category, update_category };

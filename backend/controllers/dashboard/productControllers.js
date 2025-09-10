@@ -73,7 +73,8 @@ const get_products = asyncHandler(async (req, res) => {
                         sellerId: id,
                 })
                         .skip(skipPage)
-                        .limit(parseInt(perPage));
+                        .limit(parseInt(perPage))
+                        .sort({ createdAt: -1 });
                 totalProduct = await Product.countDocuments({
                         $text: { $search: searchValue },
                         sellerId: id,
@@ -81,11 +82,14 @@ const get_products = asyncHandler(async (req, res) => {
                 // pagination
         } else if (searchValue.trim() == "" && page && perPage) {
                 const skipPage = parseInt(perPage) * parseInt(page - 1);
-                products = await Product.find({ sellerId: id }).skip(skipPage).limit(parseInt(perPage));
+                products = await Product.find({ sellerId: id })
+                        .skip(skipPage)
+                        .limit(parseInt(perPage))
+                        .sort({ createdAt: -1 });
                 totalProduct = await Product.countDocuments({ sellerId: id });
                 // All
         } else {
-                products = await Product.find({ sellerId: id });
+                products = await Product.find({ sellerId: id }).sort({ createdAt: -1 });
                 totalProduct = await Product.countDocuments({ sellerId: id });
         }
 

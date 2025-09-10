@@ -15,11 +15,14 @@ const Pagination = ({ pageNumber, setPageNumber, totalItem, perPage, showPage })
         if (startPage <= 0) {
                 startPage = 1;
         }
+        if (endPage > totalPage) {
+                endPage = totalPage;
+        }
 
         const createButton = () => {
                 const btns = [];
 
-                for (let i = startPage; i < endPage; i++) {
+                for (let i = startPage; i <= endPage; i++) {
                         btns.push(
                                 <li
                                         className={`w-[33px] h-[33px] rounded-full flex justify-center items-center cursor-pointer text-[#d0d2d6] transition-all duration-300  ${
