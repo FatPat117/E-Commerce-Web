@@ -25,7 +25,7 @@ export const get_seller_dashboard_data = createAsyncThunk(
                         const response = await api.get(`/dashboard/seller-dashboard-data`, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);

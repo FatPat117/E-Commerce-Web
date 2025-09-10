@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { FaRegImage } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
+import { add_banner } from "../../store/Reducers/bannerReducer";
 import { overrideStyle } from "../../utils/utils";
 const AddBanner = () => {
+        const dispatch = useDispatch();
         const loader = false;
+        const { productId } = useParams();
         const [imageShow, setImageShow] = useState("");
         const [image, setImage] = useState("");
 
@@ -18,7 +23,11 @@ const AddBanner = () => {
         };
 
         const addBanner = (e) => {
-                e.targetDefault();
+                e.preventDefault();
+                const formData = new FormData();
+                formData.append("productId", productId);
+                formData.append("banner", image);
+                dispatch(add_banner(formData));
         };
         return (
                 <div className="px-2 lg:px-7 pt-5">
