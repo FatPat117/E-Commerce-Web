@@ -128,4 +128,15 @@ const update_category = asyncHandler(async (req, res) => {
         await category.save();
         res.status(200).json(new ApiResponse(200, "Category updated successfully", { category }));
 });
-export default { add_category, get_category, update_category };
+
+const delete_category = asyncHandler(async (req, res, next) => {
+        const { categoryId } = req.params;
+
+        const deleteCategory = await Category.findByIdAndDelete(categoryId);
+        if (!deleteCategory) {
+                throw new ApiError(404, "Category not found");
+        }
+
+        res.status(200).json(new ApiResponse(200, "Category deleted successfully", { deleteCategory }));
+});
+export default { add_category, get_category, update_category, delete_category };

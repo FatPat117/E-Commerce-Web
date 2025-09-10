@@ -4,7 +4,13 @@ import { FaEdit, FaImage, FaTimes, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
-import { add_category, get_category, messageClear, update_category } from "../../store/Reducers/categoryReducer";
+import {
+        add_category,
+        delete_category,
+        get_category,
+        messageClear,
+        update_category,
+} from "../../store/Reducers/categoryReducer";
 import { overrideStyle } from "../../utils/utils";
 import Pagination from "../Pagination";
 import Search from "../components/Search";
@@ -86,6 +92,11 @@ const Category = () => {
                 setShowAddCategory(true);
         };
 
+        const handleDelete = (categoryId) => {
+                if (window.confirm("Are you sure you want to delete this category?")) {
+                        dispatch(delete_category(categoryId));
+                }
+        };
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         {/* Mobile view */}
@@ -177,7 +188,14 @@ const Category = () => {
                                                                                                                 >
                                                                                                                         <FaEdit />
                                                                                                                 </Link>
-                                                                                                                <Link className="p-[8px]  bg-red-500 rounded-md hover:shadow-lg hover:shadow-red-500/50">
+                                                                                                                <Link
+                                                                                                                        onClick={() =>
+                                                                                                                                handleDelete(
+                                                                                                                                        data._id
+                                                                                                                                )
+                                                                                                                        }
+                                                                                                                        className="p-[8px]  bg-red-500 rounded-md hover:shadow-lg hover:shadow-red-500/50"
+                                                                                                                >
                                                                                                                         <FaTrash />
                                                                                                                 </Link>
                                                                                                         </div>

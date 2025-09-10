@@ -53,6 +53,22 @@ export const update_category = createAsyncThunk(
                         const response = await api.patch(`/category/${categoryId}`, formData, {
                                 withCredentials: true,
                         });
+                        // console.log(response.data);
+                        return fulfillWithValue(response.data);
+                } catch (error) {
+                        return rejectWithValue(error.response.data.message);
+                }
+        }
+);
+
+// Delete category
+export const delete_category = createAsyncThunk(
+        "category/delete_category",
+        async (categoryId, { fulfillWithValue, rejectWithValue }) => {
+                try {
+                        const response = await api.delete(`/category/${categoryId}`, {
+                                withCredentials: true,
+                        });
                         console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
@@ -111,15 +127,31 @@ const categoryReducer = createSlice({
                         state.loader = true;
                 });
                 builder.addCase(update_category.fulfilled, (state, action) => {
-                        state.loader = false;
+                        state.loader = true;
                         state.successMessage = action.payload.message;
-                        const index = state.categories.findIndex((cat) => cat._id === action.payload.data.category._id);
+                        const index = state.categories.findIndex((cat) => cat._id != action.payload.data.category._id);
 
                         if (index != -1) {
                                 state.categories[index] = action.payload.data.category;
                         }
                 });
                 builder.addCase(update_category.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // Delete category
+                builder.addCase(delete_category.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(delete_category.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.successMessage = action.payload.message;
+                        state.categories = state.categories.filter(
+                                (cat) => cat._id === action.payload.data.deleteCategory._id
+                        );
+                });
+                builder.addCase(delete_category.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });
