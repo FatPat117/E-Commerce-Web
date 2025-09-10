@@ -6,5 +6,7 @@ const router = express.Router();
 router.get("/admin-dashboard-data", authMiddleware, dashboardControllers.get_admin_dashboard_data);
 router.get("/seller-dashboard-data", authMiddleware, dashboardControllers.get_seller_dashboard_data);
 router.post("/banner", authMiddleware, dashboardControllers.add_banner);
+router.get("/banner/:productId", authMiddleware, dashboardControllers.get_banner);
+router.patch("/banner/:bannerId", authMiddleware, dashboardControllers.update_banner);
 
 export default router;

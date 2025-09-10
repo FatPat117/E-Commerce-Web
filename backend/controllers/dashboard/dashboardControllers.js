@@ -90,38 +90,92 @@ const get_seller_dashboard_data = asyncHandler(async (req, res, next) => {
                 })
         );
 });
-
 const add_banner = asyncHandler(async (req, res, next) => {
-        const form = formidable({ multiples: true });
-        form.parse(req, async (err, fields, files) => {
-                if (err) {
-                        return next(new ApiError(400, err.messages));
-                }
-                const productId = fields.productId[0];
-                const bannerFile = files.banner[0];
+        const parseForm = (req) => {
+                return new Promise((resolve, reject) => {
+                        const form = formidable({ multiples: true });
+                        form.parse(req, (err, fields, files) => {
+                                if (err) return reject(err);
+                                resolve({ fields, files });
+                        });
+                });
+        };
 
-                cloudinary.config({
-                        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-                        api_key: process.env.CLOUDINARY_API_KEY,
-                        api_secret: process.env.CLOUDINARY_API_SECRET,
-                        secure: true,
-                });
-                const { slug } = await Product.findById(productId);
-                const result = await cloudinary.uploader.upload(bannerFile.filepath, { folder: "banners" });
-                const banner = await Banner.create({
-                        productId: new mongoose.Types.ObjectId(productId),
-                        banner: result.secure_url,
-                        link: slug,
-                });
-                if (!banner) {
-                        return next(new ApiError(400, "Banner not created"));
-                }
-                res.status(200).json(
-                        new ApiResponse(200, "Banner Add Successfully", {
-                                banner,
-                        })
-                );
+        const { fields, files } = await parseForm(req);
+
+        const productId = fields.productId[0];
+        const bannerFile = files.banner[0];
+
+        cloudinary.config({
+                cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+                api_key: process.env.CLOUDINARY_API_KEY,
+                api_secret: process.env.CLOUDINARY_API_SECRET,
+                secure: true,
         });
+
+        const { slug } = await Product.findById(productId);
+        const result = await cloudinary.uploader.upload(bannerFile.filepath, { folder: "banners" });
+
+        const banner = await Banner.create({
+                productId: new mongoose.Types.ObjectId(productId),
+                banner: result.secure_url,
+                link: slug,
+        });
+
+        if (!banner) {
+                throw new ApiError(400, "Banner not created");
+        }
+
+        return res.status(200).json(new ApiResponse(200, "Banner Add Successfully", { banner }));
 });
 
-export default { get_admin_dashboard_data, get_seller_dashboard_data, add_banner };
+const get_banner = asyncHandler(async (req, res, next) => {
+        const { productId } = req.params;
+        const banner = await Banner.findOne({ productId: new mongoose.Types.ObjectId(productId) });
+        if (!banner) {
+                return next(new ApiError(400, "Banner not found"));
+        }
+        return res.status(200).json(new ApiResponse(200, "Banner found", { banner: banner }));
+});
+
+const update_banner = asyncHandler(async (req, res, next) => {
+        const { bannerId } = req.params;
+
+        // Formidable to parse the req.body formData
+        const formParse = (req) => {
+                return new Promise((resolve, reject) => {
+                        const form = formidable({ multiples: true });
+                        form.parse(req, (err, fields, files) => {
+                                if (err) return reject(err);
+                                resolve({ fields, files });
+                        });
+                });
+        };
+        const { fields, files } = await formParse(req);
+        const bannerFile = files.banner[0];
+
+        cloudinary.config({
+                cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+                api_key: process.env.CLOUDINARY_API_KEY,
+                api_secret: process.env.CLOUDINARY_API_SECRET,
+                secure: true,
+        });
+
+        const banner = await Banner.findById(bannerId);
+        if (!banner) {
+                return next(new ApiError(400, "Banner not found"));
+        }
+
+        const publicId = banner.banner.split("/").pop().split(".")[0];
+
+        // Delete image from cloudinary
+        await cloudinary.uploader.destroy(publicId);
+
+        // Upload new image to cloudinary
+        const result = await cloudinary.uploader.upload(bannerFile.filepath, { folder: "banners" });
+
+        banner.banner = result.secure_url;
+        await banner.save();
+        return res.status(200).json(new ApiResponse(200, "Banner updated successfully", { banner }));
+});
+export default { get_admin_dashboard_data, get_seller_dashboard_data, add_banner, get_banner, update_banner };
