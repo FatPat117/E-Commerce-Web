@@ -135,6 +135,7 @@ const get_banner = asyncHandler(async (req, res, next) => {
         if (!banner) {
                 return next(new ApiError(400, "Banner not found"));
         }
+
         return res.status(200).json(new ApiResponse(200, "Banner found", { banner: banner }));
 });
 

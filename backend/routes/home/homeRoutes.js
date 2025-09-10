@@ -9,5 +9,6 @@ router.get("/query-products", homeControllers.query_products);
 router.get("/product-details/:slug", homeControllers.product_details);
 router.post("/customer-review", homeControllers.customer_review);
 router.get("/get-review/:productId", homeControllers.get_review);
+router.get("/banners", homeControllers.get_banners);
 
 export default router;

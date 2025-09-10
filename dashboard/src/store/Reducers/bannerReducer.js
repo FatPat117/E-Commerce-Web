@@ -85,7 +85,8 @@ const bannerReducer = createSlice({
                 });
                 builder.addCase(get_banner.rejected, (state, action) => {
                         state.loader = false;
-                        state.errorMessage = action.payload;
+
+                        state.banner = "";
                 });
 
                 // Update banner

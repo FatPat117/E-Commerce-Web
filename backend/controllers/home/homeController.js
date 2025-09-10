@@ -1,5 +1,6 @@
 import moment from "moment";
 import mongoose from "mongoose";
+import Banner from "../../models/bannerModel.js";
 import Category from "../../models/categoryModel.js";
 import Product from "../../models/productModel.js";
 import Review from "../../models/reviewModel.js";
@@ -236,6 +237,18 @@ const get_review = asyncHandler(async (req, res, next) => {
         res.status(200).json(new ApiResponse(200, "", { ratingReview, reviews, totalReview }));
 });
 
+const get_banners = asyncHandler(async (req, res, next) => {
+        console.log("haha");
+        const banners = await Banner.aggregate([
+                {
+                        $sample: {
+                                size: 5,
+                        },
+                },
+        ]);
+
+        res.status(200).json(new ApiResponse(200, "", { banners }));
+});
 export default {
         get_categories,
         get_products,
@@ -244,4 +257,5 @@ export default {
         product_details,
         customer_review,
         get_review,
+        get_banners,
 };

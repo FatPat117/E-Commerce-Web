@@ -106,7 +106,7 @@ export const get_review = createAsyncThunk(
                         const response = await api.get(`/home/get-review/${productId}?page=${pageNumber}`, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);
@@ -114,6 +114,18 @@ export const get_review = createAsyncThunk(
         }
 );
 
+// get banner
+export const get_banners = createAsyncThunk("home/get_banners", async (_, { fulfillWithValue, rejectWithValue }) => {
+        try {
+                const response = await api.get(`/home/banners`, {
+                        withCredentials: true,
+                });
+                // console.log(response.data);
+                return fulfillWithValue(response.data);
+        } catch (error) {
+                return rejectWithValue(error.response.data.message);
+        }
+});
 const homeReducer = createSlice({
         name: "home",
         initialState: {
@@ -137,6 +149,7 @@ const homeReducer = createSlice({
                 totalReview: 0,
                 ratingReview: [],
                 reviews: [],
+                banners: [],
         },
         reducers: {
                 messageClear(state) {
@@ -245,6 +258,19 @@ const homeReducer = createSlice({
                         state.reviews = action.payload.data.reviews;
                 });
                 builder.addCase(get_review.rejected, (state, action) => {
+                        state.loader = false;
+                        state.errorMessage = action.payload;
+                });
+
+                // get banners
+                builder.addCase(get_banners.pending, (state) => {
+                        state.loader = true;
+                });
+                builder.addCase(get_banners.fulfilled, (state, action) => {
+                        state.loader = false;
+                        state.banners = action.payload.data.banners;
+                });
+                builder.addCase(get_banners.rejected, (state, action) => {
                         state.loader = false;
                         state.errorMessage = action.payload;
                 });

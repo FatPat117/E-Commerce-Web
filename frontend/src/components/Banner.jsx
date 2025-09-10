@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { get_banners } from "../store/reducers/homeReducer";
 const Banner = () => {
+        const dispatch = useDispatch();
+        const { banners } = useSelector((state) => state.home);
+
         const responsive = {
                 superLargeDesktop: {
                         breakpoint: { max: 4000, min: 3000 },
@@ -22,6 +27,10 @@ const Banner = () => {
                 },
         };
 
+        useEffect(() => {
+                dispatch(get_banners());
+        }, []);
+
         return (
                 <div className="w-full md-lg:mt-6">
                         <div className="w-[85%] lg:w-[90%] mx-auto">
@@ -36,16 +45,32 @@ const Banner = () => {
                                                                 showDots={true}
                                                                 responsive={responsive}
                                                         >
-                                                                {[1, 2, 3, 4, 5].map((data, idx) => {
-                                                                        return (
-                                                                                <Link key={idx} to="#">
-                                                                                        <img
-                                                                                                src={`/images/banner/${data}.jpg`}
-                                                                                                alt=""
-                                                                                        />
-                                                                                </Link>
-                                                                        );
-                                                                })}
+                                                                {banners.length > 0
+                                                                        ? banners?.map((data, idx) => {
+                                                                                  return (
+                                                                                          <Link
+                                                                                                  key={idx}
+                                                                                                  to={`/product/details/${data?.link}`}
+                                                                                          >
+                                                                                                  <img
+                                                                                                          src={
+                                                                                                                  data?.banner
+                                                                                                          }
+                                                                                                          alt="banner"
+                                                                                                  />
+                                                                                          </Link>
+                                                                                  );
+                                                                          })
+                                                                        : [1, 2, 3, 4, 5].map((data, idx) => {
+                                                                                  return (
+                                                                                          <Link key={idx} to="#">
+                                                                                                  <img
+                                                                                                          src={`/images/banner/${data}.jpg`}
+                                                                                                          alt=""
+                                                                                                  />
+                                                                                          </Link>
+                                                                                  );
+                                                                          })}
                                                         </Carousel>
                                                 </div>
                                         </div>
