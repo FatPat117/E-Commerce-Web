@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { LuImageMinus } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { get_products } from "../../store/Reducers/productReducer";
@@ -143,6 +144,14 @@ const Products = () => {
                                                                                                 >
                                                                                                         <FaEdit />
                                                                                                 </Link>
+
+                                                                                                <Link
+                                                                                                        to={`/seller/dashboard/add-banner/${data._id}`}
+                                                                                                        className="p-[8px]  bg-sky-500 rounded-md hover:shadow-lg hover:shadow-yellow-500/50"
+                                                                                                >
+                                                                                                        <LuImageMinus />
+                                                                                                </Link>
+
                                                                                                 <Link className="p-[8px]  bg-green-500 rounded-md hover:shadow-lg hover:shadow-green-500/50">
                                                                                                         <FaEye />
                                                                                                 </Link>
