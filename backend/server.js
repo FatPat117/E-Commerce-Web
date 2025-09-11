@@ -112,6 +112,7 @@ const remove = (socketId) => {
 };
 
 io.on("connection", (socket) => {
+        console.log("Client connected:", socket.id);
         socket.on("add_user", (customerId, userInfo) => {
                 addUser(customerId, userInfo, socket.id);
                 io.emit("activeCustomer", allCustomer);
