@@ -6,9 +6,12 @@ import Index from "./components/dashboard/Index";
 import OrderDetails from "./components/dashboard/OrderDetails";
 import Orders from "./components/dashboard/Orders";
 import Wishlist from "./components/dashboard/Wishlist";
+import About from "./pages/About";
+import Blog from "./pages/Blog";
 import Cart from "./pages/Cart";
 import CategoryShop from "./pages/CategoryShop";
 import ConfirmOrders from "./pages/ConfirmOrders";
+import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
 import Details from "./pages/Details";
 import Home from "./pages/Home";
@@ -20,7 +23,6 @@ import SearchProduct from "./pages/SearchProduct";
 import Shipping from "./pages/Shipping";
 import Shops from "./pages/Shops";
 import ProtectedUser from "./utils/ProtectedUser";
-
 const router = createBrowserRouter([
         {
                 path: "/",
@@ -61,6 +63,18 @@ const router = createBrowserRouter([
                         {
                                 path: "/register",
                                 element: <Register />,
+                        },
+                        {
+                                path: "/blog",
+                                element: <Blog />,
+                        },
+                        {
+                                path: "/about",
+                                element: <About />,
+                        },
+                        {
+                                path: "/contact",
+                                element: <Contact />,
                         },
                         {
                                 path: "/payment",

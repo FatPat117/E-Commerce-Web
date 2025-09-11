@@ -198,7 +198,7 @@ const Header = () => {
                                                                                                         ? "text-[#059473]"
                                                                                                         : "text-slate-600"
                                                                                         }`}
-                                                                                        to="/shop"
+                                                                                        to="/about"
                                                                                 >
                                                                                         About Us
                                                                                 </Link>
@@ -210,7 +210,7 @@ const Header = () => {
                                                                                                         ? "text-[#059473]"
                                                                                                         : "text-slate-600"
                                                                                         }`}
-                                                                                        to="/shop"
+                                                                                        to="/contact"
                                                                                 >
                                                                                         Contact us
                                                                                 </Link>

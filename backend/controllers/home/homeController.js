@@ -238,7 +238,6 @@ const get_review = asyncHandler(async (req, res, next) => {
 });
 
 const get_banners = asyncHandler(async (req, res, next) => {
-        console.log("haha");
         const banners = await Banner.aggregate([
                 {
                         $sample: {
