@@ -221,6 +221,28 @@ const logout = asyncHandler(async (req, res, next) => {
         res.clearCookie("accessToken", cookieOptions);
         res.status(200).json(new ApiResponse(200, "Logout successful"));
 });
+
+const change_password = asyncHandler(async (req, res, next) => {
+        const { email, oldPassword, newPassword } = req.body;
+
+        const user = await Seller.findOne({ email }).select("+password");
+
+        if (!user) {
+                return next(new ApiError(400, "User not found"));
+        }
+
+        const isMatchPassword = await bcrypt.compare(oldPassword, user.password);
+
+        if (!isMatchPassword) {
+                return next(new ApiError(400, "Old password is incorrect"));
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+
+        res.status(200).json(new ApiResponse(200, "Password changed successfully"));
+});
 export default {
         admin_login,
         getUser,
@@ -229,4 +251,5 @@ export default {
         profile_image_upload,
         profile_info_update,
         logout,
+        change_password,
 };

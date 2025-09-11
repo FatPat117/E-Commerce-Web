@@ -38,7 +38,7 @@ export const update_banner = createAsyncThunk(
                         const response = await api.patch(`/dashboard/banner/${bannerId}`, info, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);

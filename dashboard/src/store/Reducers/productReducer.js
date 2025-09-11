@@ -82,7 +82,7 @@ export const update_product = createAsyncThunk(
                         const response = await api.patch(`/product/${product.productId}`, product, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);

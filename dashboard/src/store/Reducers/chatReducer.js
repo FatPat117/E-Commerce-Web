@@ -75,7 +75,7 @@ export const send_message_admin_to_seller = createAsyncThunk(
                         const response = await api.post(`/chat/admin/send-message-to-seller`, data, {
                                 withCredentials: true,
                         });
-                        console.log(response.data);
+                        // console.log(response.data);
                         return fulfillWithValue(response.data);
                 } catch (error) {
                         return rejectWithValue(error.response.data.message);

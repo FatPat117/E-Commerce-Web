@@ -4,6 +4,7 @@ import { FaEdit, FaEye, FaEyeSlash, FaImage } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { FadeLoader, PropagateLoader } from "react-spinners";
 import {
+        change_password,
         get_user_info,
         messageClear,
         profile_image_upload,
@@ -41,16 +42,6 @@ const Profile = () => {
                         });
                 }
         };
-        useEffect(() => {
-                if (successMessage) {
-                        toast.success(successMessage);
-                        dispatch(messageClear());
-                }
-                if (errorMessage) {
-                        toast.error(errorMessage);
-                        dispatch(messageClear());
-                }
-        }, [successMessage, errorMessage]);
 
         const inputHandle = (e) => {
                 setState({ ...state, [e.target.name]: e.target.value });
@@ -65,6 +56,27 @@ const Profile = () => {
                 dispatch(create_stripe_connect_account());
         };
 
+        const [passwordData, setPasswordData] = useState({
+                email: "",
+                oldPassword: "",
+                newPassword: "",
+        });
+
+        const handleChangePassword = (e) => {
+                e.preventDefault();
+                dispatch(change_password(passwordData));
+        };
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
         return (
                 <div className="px-2 lg:px-7 pt-5">
                         <div className="w-full flex flex-wrap">
@@ -72,7 +84,7 @@ const Profile = () => {
                                 <div className="w-full md:w-6/12">
                                         <div className="w-full p-4 bg-[#6a5fdf] rounded-md text-[#d0d2d6]">
                                                 <div className="flex justify-center items-center py-3">
-                                                        {userInfo.image ? (
+                                                        {userInfo?.image ? (
                                                                 <label
                                                                         htmlFor="img"
                                                                         className="h-[200px] w-[250px] relative p-3 cursor-pointer overflow-hidden"
@@ -308,7 +320,7 @@ const Profile = () => {
                                                                 Change Password
                                                         </h2>
 
-                                                        <form>
+                                                        <form onSubmit={handleChangePassword}>
                                                                 {/* Email*/}
                                                                 <div className="flex flex-col w-full gap-1 mb-2">
                                                                         <label htmlFor="email">Email</label>
@@ -317,6 +329,13 @@ const Profile = () => {
                                                                                 id="email"
                                                                                 name="email"
                                                                                 placeholder="Email"
+                                                                                value={passwordData.email}
+                                                                                onChange={(e) =>
+                                                                                        setPasswordData({
+                                                                                                ...passwordData,
+                                                                                                email: e.target.value,
+                                                                                        })
+                                                                                }
                                                                                 className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                                                         />
                                                                 </div>
@@ -332,6 +351,14 @@ const Profile = () => {
                                                                                 }
                                                                                 id="o_password"
                                                                                 name="old_password"
+                                                                                value={passwordData.oldPassword}
+                                                                                onChange={(e) =>
+                                                                                        setPasswordData({
+                                                                                                ...passwordData,
+                                                                                                oldPassword:
+                                                                                                        e.target.value,
+                                                                                        })
+                                                                                }
                                                                                 placeholder="Old Password"
                                                                                 className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                                                         />
@@ -359,6 +386,14 @@ const Profile = () => {
                                                                                 id="n_password"
                                                                                 name="new_password"
                                                                                 placeholder="New Password"
+                                                                                value={passwordData.newPassword}
+                                                                                onChange={(e) =>
+                                                                                        setPasswordData({
+                                                                                                ...passwordData,
+                                                                                                newPassword:
+                                                                                                        e.target.value,
+                                                                                        })
+                                                                                }
                                                                                 className="px-4 py-2 focus:outline-none focus:border-indigo-500 focus:bg-slate-900/50 border-slate-900 border-2 rounded-md text-[#d0d2d6] overflow-hidden outline-none"
                                                                         />
                                                                         <span
@@ -376,8 +411,13 @@ const Profile = () => {
                                                                 {/* button */}
                                                                 <div className="flex">
                                                                         <div className=" text-center rounded-lg px-7 py-3 mt-2 bg-red-500  hover:shadow-red-500/50 hover:shadow-md hover:bg-red-400 transition-colors duration-300 text-white cursor-pointer ">
-                                                                                <button className="cursor-pointer">
-                                                                                        Save changes
+                                                                                <button
+                                                                                        disabled={loader}
+                                                                                        className="cursor-pointer"
+                                                                                >
+                                                                                        {loader
+                                                                                                ? "Loading..."
+                                                                                                : "Save changes"}
                                                                                 </button>
                                                                         </div>
                                                                 </div>
