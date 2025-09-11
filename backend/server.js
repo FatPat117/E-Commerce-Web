@@ -30,7 +30,10 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
+const allowedOrigins =
+        process.env.MODE == "pro"
+                ? [process.env.CLIENT_CUSTOMER_PRODUCTION_URL]
+                : ["http://localhost:3000", "http://localhost:3001"];
 
 app.use(
         cors({
@@ -64,7 +67,13 @@ app.use(globalErrorHandler);
 // 🔥 Socket.IO init
 const io = new Server(server, {
         cors: {
-                origin: "*",
+                origin: function (origin, callback) {
+                        if (!origin || allowedOrigins.includes(origin)) {
+                                callback(null, true);
+                        } else {
+                                callback(new Error("Not allowed by CORS"));
+                        }
+                },
                 credentials: true,
         },
 });
