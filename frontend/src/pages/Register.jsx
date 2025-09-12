@@ -137,16 +137,18 @@ const Register = () => {
 
                                                         {/* Login as Seller */}
                                                         <a
-                                                                href="http://localhost:3001/login"
+                                                                href="https://dashboard-e-commerce-web-8e26.vercel.app/login"
                                                                 target="_blank"
-                                                                className="px-8 w-full py-2 bg-cyan-400 shadow-md hover:shadow-cyan-500/50 text-white rounded-md cursor-pointer flex justify-center items-center gap-2 mb-3 md-lg:mt-5 cursor-pointer"
+                                                                className="px-8 w-full py-2 bg-cyan-400 shadow-md hover:shadow-cyan-500/50 text-white rounded-md cursor-pointer flex justify-center items-center gap-2 mb-3 md-lg:mt-5 "
                                                         >
                                                                 <span>Login As Seller</span>
                                                         </a>
 
                                                         {/* Register as Seller  */}
                                                         <a
-                                                                href={"http://localhost:3001/register"}
+                                                                href={
+                                                                        "https://dashboard-e-commerce-web-8e26.vercel.app/register"
+                                                                }
                                                                 target="_blank"
                                                                 className="px-8 w-full py-2 bg-indigo-500 shadow-md hover:shadow-indigo-500 text-white rounded-md cursor-pointer flex justify-center items-center gap-2 mb-3"
                                                         >
