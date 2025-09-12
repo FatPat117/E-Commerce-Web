@@ -34,7 +34,7 @@ const admin_login = asyncHandler(async (req, res) => {
         const cookieOptions = {
                 httpOnly: true,
                 secure: process.env.MODE == "pro",
-                sameSite: "strict",
+                sameSite: "none",
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         };
 
@@ -108,7 +108,7 @@ const seller_register = asyncHandler(async (req, res, next) => {
         const cookieOptions = {
                 httpOnly: true,
                 secure: process.env.MODE == "pro",
-                sameSite: "strict",
+                sameSite: "none",
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         };
 
@@ -141,7 +141,7 @@ const seller_login = asyncHandler(async (req, res, next) => {
         const cookieOptions = {
                 httpOnly: true,
                 secure: process.env.MODE == "pro",
-                sameSite: "strict",
+                sameSite: "none",
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         };
 
@@ -215,7 +215,7 @@ const logout = asyncHandler(async (req, res, next) => {
         const cookieOptions = {
                 httpOnly: true,
                 secure: process.env.MODE === "pro",
-                sameSite: "strict",
+                sameSite: "none",
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         };
         res.clearCookie("accessToken", cookieOptions);
