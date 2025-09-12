@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 const allowedOrigins =
         process.env.MODE == "pro"
-                ? [process.env.CLIENT_CUSTOMER_PRODUCTION_URL]
+                ? [process.env.CLIENT_CUSTOMER_PRODUCTION_URL, process.env.CLIENT_ADMIN_PRODUCTION_URL]
                 : ["http://localhost:3000", "http://localhost:3001"];
 
 app.use(
