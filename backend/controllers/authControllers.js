@@ -214,7 +214,7 @@ const profile_info_update = asyncHandler(async (req, res, next) => {
 const logout = asyncHandler(async (req, res, next) => {
         const cookieOptions = {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
+                secure: process.env.MODE === "pro",
                 sameSite: "strict",
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         };
