@@ -10,7 +10,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import Products from "../components/products/Products";
 import ShopProduct from "../components/products/ShopProduct";
-import { get_category, get_products, price_range_product, query_products } from "../store/reducers/homeReducer";
+import { get_category, price_range_product, query_products } from "../store/reducers/homeReducer";
 import { URL } from "../utils/utils";
 const CategoryShop = () => {
         const dispatch = useDispatch();
@@ -20,7 +20,6 @@ const CategoryShop = () => {
         const { latestProduct, priceRange, totalProducts, perPage, products } = useSelector((state) => state.home);
         useEffect(() => {
                 dispatch(get_category());
-                dispatch(get_products());
                 dispatch(price_range_product());
         }, []);
 
