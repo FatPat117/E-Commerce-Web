@@ -33,7 +33,7 @@ const admin_login = asyncHandler(async (req, res) => {
 
         const cookieOptions = {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
+                secure: process.env.MODE == "pro",
                 sameSite: "strict",
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         };
@@ -107,7 +107,7 @@ const seller_register = asyncHandler(async (req, res, next) => {
         const accessToken = createToken({ _id: newSeller._id, role: newSeller.role });
         const cookieOptions = {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
+                secure: process.env.MODE == "pro",
                 sameSite: "strict",
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         };
@@ -140,7 +140,7 @@ const seller_login = asyncHandler(async (req, res, next) => {
         const accessToken = createToken({ _id: seller._id, role: seller.role });
         const cookieOptions = {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
+                secure: process.env.MODE == "pro",
                 sameSite: "strict",
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         };
