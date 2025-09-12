@@ -1,6 +1,6 @@
 import axios from "axios";
 const localUrl = "http://localhost:5000";
-const productionUrl = "http://localhost:6000";
+const productionUrl = "https://e-commerce-web-8l3q.onrender.com";
 
 let API_URL = "";
 let mode = "pro";
