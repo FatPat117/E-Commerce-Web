@@ -1,9 +1,56 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { FaEye, FaRegHeart } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { add_to_cart, add_to_wishlist, messageClear } from "../../store/reducers/cartReducer";
 import Rating from "../Rating";
-
 const ShopProduct = ({ style, products }) => {
+        const { userInfo } = useSelector((state) => state.auth);
+        const { successMessage, errorMessage } = useSelector((state) => state.cart);
+        const dispatch = useDispatch();
+        const navigate = useNavigate();
+
+        const addToCart = (productId) => {
+                if (userInfo) {
+                        dispatch(
+                                add_to_cart({
+                                        userId: userInfo.id,
+                                        productId: productId,
+                                        quantity: 1,
+                                })
+                        );
+                } else {
+                        navigate("/login");
+                }
+        };
+
+        useEffect(() => {
+                if (successMessage) {
+                        toast.success(successMessage);
+                        dispatch(messageClear());
+                }
+                if (errorMessage) {
+                        toast.error(errorMessage);
+                        dispatch(messageClear());
+                }
+        }, [successMessage, errorMessage]);
+
+        const addToWishList = (product) => {
+                dispatch(
+                        add_to_wishlist({
+                                userId: userInfo.id,
+                                productId: product._id,
+                                name: product?.name,
+                                price: product?.price,
+                                image: product?.images[0],
+                                discount: product?.discount,
+                                rating: product?.rating,
+                                slug: product?.slug,
+                        })
+                );
+        };
         return (
                 <div
                         className={`w-full grid ${
@@ -35,13 +82,22 @@ const ShopProduct = ({ style, products }) => {
                                                         />
 
                                                         <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
-                                                                <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
+                                                                <li
+                                                                        onClick={() => addToWishList(data)}
+                                                                        className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all"
+                                                                >
                                                                         <FaRegHeart />
                                                                 </li>
-                                                                <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
+                                                                <Link
+                                                                        to={`/product/details/${data?.slug}`}
+                                                                        className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all"
+                                                                >
                                                                         <FaEye />
-                                                                </li>
-                                                                <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
+                                                                </Link>
+                                                                <li
+                                                                        onClick={() => addToCart(data?._id)}
+                                                                        className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all"
+                                                                >
                                                                         <RiShoppingCartLine />
                                                                 </li>
                                                         </ul>

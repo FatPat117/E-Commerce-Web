@@ -82,7 +82,7 @@ const price_range_latest_product = asyncHandler(async (req, res, next) => {
 });
 
 const query_products = asyncHandler(async (req, res, next) => {
-        const query = { ...req.query, perPage: 2 };
+        const query = { ...req.query, perPage: 5 };
 
         // const { category, rating, sortByPrice, lowPrice, highPrice, pageNumber } = req.query;
 
