@@ -17,6 +17,7 @@ import customerRoutes from "./routes/home/customerRoutes.js";
 import homeRoutes from "./routes/home/homeRoutes.js";
 import orderRoutes from "./routes/order/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import testRoutes from "./routes/testRoutes.js";
 import connectDB from "./utils/db.js";
 dotenv.config();
 
@@ -52,6 +53,7 @@ app.use(
 );
 
 // Routes
+app.use("/api", testRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/product", productRoutes);
