@@ -1,5 +1,15 @@
 import io from "socket.io-client";
-const socket = io("http://localhost:5000");
+
+const localUrl = "http://localhost:5000";
+const productionUrl = "https://e-commerce-web-8l3q.onrender.com";
+const mode = "pro";
+
+const API_URL = mode == "pro" ? productionUrl : localUrl;
+// socket client
+const socket = io(API_URL, {
+        withCredentials: true,
+        transports: ["websocket"], // đảm bảo dùng websocket
+});
 
 const overrideStyle = {
         display: "flex",

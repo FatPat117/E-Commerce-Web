@@ -9,9 +9,17 @@ import { Link, useParams } from "react-router-dom";
 import io from "socket.io-client";
 import { add_friend, messageClear, send_message, updateMessage } from "../../store/reducers/chatReducer";
 // chỉ tạo socket 1 lần
-const socket = io("http://localhost:5000", {
-        transports: ["websocket"], // giúp ổn định hơn
+const localUrl = "http://localhost:5000";
+const productionUrl = "https://e-commerce-web-8l3q.onrender.com";
+const mode = "pro";
+
+const API_URL = mode == "pro" ? productionUrl : localUrl;
+// socket client
+const socket = io(API_URL, {
+        withCredentials: true,
+        transports: ["websocket"], // đảm bảo dùng websocket
 });
+
 const Chat = () => {
         const dispatch = useDispatch();
         const { sellerId } = useParams();
