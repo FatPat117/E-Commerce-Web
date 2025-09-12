@@ -134,13 +134,13 @@ const Profile = () => {
                                                                         <span className="font-bold text-md">
                                                                                 Name:{" "}
                                                                         </span>
-                                                                        <span>{userInfo.name}</span>
+                                                                        <span>{userInfo?.name}</span>
                                                                 </div>
                                                                 <div className="flex gap-2">
                                                                         <span className="font-bold text-md">
                                                                                 Email:{" "}
                                                                         </span>
-                                                                        <span>{userInfo.email}</span>
+                                                                        <span>{userInfo?.email}</span>
                                                                 </div>
                                                                 <div className="flex gap-2 capitalize">
                                                                         <span className="font-bold text-md">
