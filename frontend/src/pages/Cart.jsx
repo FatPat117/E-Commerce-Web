@@ -419,7 +419,7 @@ const Cart = () => {
                                                                                                                                                                                 data._id
                                                                                                                                                                         )
                                                                                                                                                                 }
-                                                                                                                                                                className="px-5 py-[3px] bg-red-500 rounded-sm text-white"
+                                                                                                                                                                className="px-5 py-[3px] bg-red-500 rounded-sm text-white cursor-pointer"
                                                                                                                                                         >
                                                                                                                                                                 Delete
                                                                                                                                                         </button>
