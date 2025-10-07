@@ -40,6 +40,10 @@ const Shops = () => {
         }, [priceRange.low, priceRange.high]);
 
         useEffect(() => {
+                setCurrentPage(1);
+        }, [category, rating, sortBy, state.values]);
+
+        useEffect(() => {
                 dispatch(
                         query_products({
                                 category: category,

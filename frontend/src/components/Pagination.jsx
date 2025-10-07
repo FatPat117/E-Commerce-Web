@@ -2,32 +2,30 @@ import React from "react";
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 const Pagination = ({ pageNumber, setPageNumber, totalItem, perPage, showPage }) => {
-        let totalPage = Math.ceil(totalItem / perPage);
-        let startPage = pageNumber;
+        const totalPage = Math.ceil(totalItem / perPage);
 
-        let dif = totalPage - pageNumber;
+        const currentPage = Math.max(1, Math.min(pageNumber, totalPage));
 
-        if (dif <= showPage) {
-                startPage = totalPage - showPage;
-        }
-        let endPage = startPage < 0 ? showPage : showPage + startPage;
+        let startPage = Math.max(1, currentPage - Math.floor(showPage / 2));
+        let endPage = startPage + showPage - 1;
 
-        if (startPage <= 0) {
-                startPage = 1;
+        if (endPage > totalPage) {
+                endPage = totalPage;
+                startPage = Math.max(1, endPage - showPage + 1);
         }
 
         const createButton = () => {
                 const btns = [];
-
-                for (let i = startPage; i < endPage; i++) {
+                for (let i = startPage; i <= endPage; i++) {
                         btns.push(
                                 <li
                                         key={i}
-                                        className={`w-[33px] h-[33px] rounded-full flex justify-center items-center cursor-pointer text-[#d0d2d6] transition-all duration-300  ${
-                                                pageNumber === i
-                                                        ? "bg-green-700 shadow-lg shadow-indigo-300/50 text-white"
-                                                        : "bg-slate-600 hover:bg-green-700 shadow-lg hover:shadow-green-450/50 hover:text-white"
-                                        }`}
+                                        className={`w-[33px] h-[33px] rounded-full flex justify-center items-center cursor-pointer text-[#d0d2d6] transition-all duration-300
+                        ${
+                                currentPage === i
+                                        ? "bg-green-700 shadow-lg shadow-green-400/50 text-white"
+                                        : "bg-slate-600 hover:bg-green-700 hover:text-white"
+                        }`}
                                         onClick={() => setPageNumber(i)}
                                 >
                                         {i}
@@ -37,25 +35,28 @@ const Pagination = ({ pageNumber, setPageNumber, totalItem, perPage, showPage })
                 return btns;
         };
 
+        if (totalPage <= 1) return null;
+
         return (
-                <ul className="flex gap-3">
-                        {pageNumber > 1 && (
+                <ul className="flex gap-3 items-center justify-center">
+                        {/* Nút Previous */}
+                        {currentPage > 1 && (
                                 <li
-                                        className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-[#000000] cursor-pointer hover:bg-indigo-400 hover:text-white transition-colors duration-300"
-                                        onClick={() => {
-                                                setPageNumber(pageNumber - 1 <= 0 ? 1 : pageNumber - 1);
-                                        }}
+                                        className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-black cursor-pointer hover:bg-green-400 hover:text-white transition-colors duration-300"
+                                        onClick={() => setPageNumber(currentPage - 1)}
                                 >
                                         <MdKeyboardDoubleArrowLeft />
                                 </li>
                         )}
+
+                        {/* Các nút trang */}
                         {createButton()}
-                        {pageNumber < totalPage && (
+
+                        {/* Nút Next */}
+                        {currentPage < totalPage && (
                                 <li
-                                        className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-[#000000] cursor-pointer hover:bg-green-400 hover:text-white transition-colors duration-300"
-                                        onClick={() => {
-                                                setPageNumber(pageNumber + 1 > totalPage ? totalPage : pageNumber + 1);
-                                        }}
+                                        className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 text-black cursor-pointer hover:bg-green-400 hover:text-white transition-colors duration-300"
+                                        onClick={() => setPageNumber(currentPage + 1)}
                                 >
                                         <MdKeyboardDoubleArrowRight />
                                 </li>
