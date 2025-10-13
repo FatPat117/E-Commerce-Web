@@ -1,8 +1,3 @@
-Tốt lắm 👍 — dưới đây là **phiên bản đầy đủ, chi tiết và chuyên nghiệp nhất của file `README.md`** cho dự án **🛍 Easy Shop – E-commerce Web Application**.
-Bạn chỉ cần **copy toàn bộ nội dung dưới đây** và **dán vào file `README.md`** trong thư mục gốc của dự án (`Ecommerce/`).
-
----
-
 # 🛍 Easy Shop – E-commerce Web Application
 
 A **fullstack e-commerce website** built with **ReactJS, NodeJS, ExpressJS, and MongoDB**, providing role-based access control (Admin, Seller, Customer), real-time communication, and responsive UI/UX.
