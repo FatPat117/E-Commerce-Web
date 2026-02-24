@@ -66,6 +66,10 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
+app.get("/", (req, res) => {
+	res.send("Server is running smoothly!");
+});
+
 app.use(notFound);
 app.use(globalErrorHandler);
 
